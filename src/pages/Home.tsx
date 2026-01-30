@@ -112,10 +112,7 @@ const Home: React.FC = () => {
             animate={{ scale: [1, 1.02, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            Welcome to{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
-              Mobile Gear
-            </span>
+            Welcome to <span className="text-yellow-400">Mobile Gear</span>
           </motion.h1>
           <p className="text-2xl mb-8 text-gray-100">
             Your one-stop shop for the latest mobile devices and accessories
