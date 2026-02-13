@@ -25,12 +25,12 @@ const columns: Column[] = [
   { key: "actions", label: "Actions", sortable: false },
 ];
 
-const ProductList: React.FC<ProductListProps> = ({ 
-  products, 
+const ProductList: React.FC<ProductListProps> = ({
+  products,
   onDelete,
   onSort,
   sortBy,
-  sortOrder 
+  sortOrder,
 }) => {
   const getSortIcon = (field: string) => {
     if (!onSort) return null;
@@ -53,7 +53,9 @@ const ProductList: React.FC<ProductListProps> = ({
               <th
                 key={column.key}
                 className={`py-2 px-4 border-b ${
-                  column.sortable && onSort ? "cursor-pointer hover:bg-gray-200" : ""
+                  column.sortable && onSort
+                    ? "cursor-pointer hover:bg-gray-200"
+                    : ""
                 }`}
                 onClick={() => {
                   if (column.sortable && onSort) {

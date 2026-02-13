@@ -17,7 +17,7 @@ const CATEGORIES = [
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, error, loading, filters, pagination } = useSelector(
-    (state: RootState) => state.products
+    (state: RootState) => state.products,
   );
 
   const debouncedFilters = useDebounce(filters, 500);
@@ -61,7 +61,7 @@ const ProductsPage: React.FC = () => {
         sortBy: newOrder ? field : undefined,
         sortOrder: newOrder,
         page: 1,
-      })
+      }),
     );
   };
 

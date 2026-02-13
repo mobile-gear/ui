@@ -9,7 +9,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const { items } = useSelector((state: RootState) => state.cart);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

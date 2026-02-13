@@ -38,7 +38,7 @@ const Register: React.FC = () => {
           lastName,
           email,
           password,
-        })
+        }),
       ).unwrap();
 
       navigate("/login");

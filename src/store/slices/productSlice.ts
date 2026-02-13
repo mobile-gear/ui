@@ -65,20 +65,20 @@ export const fetchProducts = createAsyncThunk(
 
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_URL}/products`,
-      { params }
+      { params },
     );
     return data;
-  }
+  },
 );
 
 export const fetchProductById = createAsyncThunk<Product, number>(
   "products/fetchProductById",
   async (id: number) => {
     const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/products/${id}`
+      `${import.meta.env.VITE_API_URL}/products/${id}`,
     );
     return response.data;
-  }
+  },
 );
 
 export const createProduct = createAsyncThunk(
@@ -87,10 +87,10 @@ export const createProduct = createAsyncThunk(
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/products`,
       product,
-      getHeaders()
+      getHeaders(),
     );
     return response.data;
-  }
+  },
 );
 
 export const updateProduct = createAsyncThunk(
@@ -105,10 +105,10 @@ export const updateProduct = createAsyncThunk(
     const response = await axios.put(
       `${import.meta.env.VITE_API_URL}/products/${id}`,
       product,
-      getHeaders()
+      getHeaders(),
     );
     return response.data;
-  }
+  },
 );
 
 export const deleteProduct = createAsyncThunk(
@@ -116,10 +116,10 @@ export const deleteProduct = createAsyncThunk(
   async (id: number) => {
     await axios.delete(
       `${import.meta.env.VITE_API_URL}/products/${id}`,
-      getHeaders()
+      getHeaders(),
     );
     return id;
-  }
+  },
 );
 
 const productSlice = createSlice({
@@ -182,7 +182,7 @@ const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.products.findIndex(
-          (p) => p.id === action.payload.id
+          (p) => p.id === action.payload.id,
         );
         if (index !== -1) {
           state.products[index] = action.payload;

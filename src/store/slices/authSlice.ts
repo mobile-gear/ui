@@ -36,7 +36,7 @@ export const registerUser = createAsyncThunk(
       email: string;
       password: string;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const { data } = await axios.post(`${API_URL}/auth/register`, userData);
@@ -44,19 +44,19 @@ export const registerUser = createAsyncThunk(
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         return rejectWithValue(
-          error.response?.data.message || "Registration failed"
+          error.response?.data.message || "Registration failed",
         );
       }
       return rejectWithValue("An unknown error occurred");
     }
-  }
+  },
 );
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (
     credentials: { email: string; password: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const { data } = await axios.post(`${API_URL}/auth/login`, credentials);
@@ -67,7 +67,7 @@ export const loginUser = createAsyncThunk(
       }
       return rejectWithValue("An unknown error occurred");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({

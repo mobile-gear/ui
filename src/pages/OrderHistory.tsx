@@ -6,7 +6,7 @@ import { fetchUserOrders } from "../store/slices/orderSlice";
 const OrderHistory: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { orders, isLoading, error } = useSelector(
-    (state: RootState) => state.orders
+    (state: RootState) => state.orders,
   );
 
   useEffect(() => {
@@ -55,12 +55,12 @@ const OrderHistory: React.FC = () => {
                     order.status === "delivered"
                       ? "bg-green-100 text-green-800"
                       : order.status === "processing"
-                      ? "bg-blue-100 text-blue-800"
-                      : order.status === "shipped"
-                      ? "bg-purple-100 text-purple-800"
-                      : order.status === "cancelled"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-800"
+                        ? "bg-blue-100 text-blue-800"
+                        : order.status === "shipped"
+                          ? "bg-purple-100 text-purple-800"
+                          : order.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
                   }`}
                 >
                   {order.status.charAt(0).toUpperCase() + order.status.slice(1)}

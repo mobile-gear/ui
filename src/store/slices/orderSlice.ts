@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, isAxiosError } from "axios";
 import getHeaders from "../../utils/getHeaders";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -107,15 +107,18 @@ export const createOrder = createAsyncThunk(
       const { data } = await axios.post(
         `${API_URL}/orders`,
         orderData,
-        getHeaders()
+        getHeaders(),
       );
       return data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to create order"
-      );
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to create order",
+        );
+      }
+      return rejectWithValue("Failed to create order");
     }
-  }
+  },
 );
 
 export const fetchUserOrders = createAsyncThunk(
@@ -124,15 +127,18 @@ export const fetchUserOrders = createAsyncThunk(
     try {
       const { data } = await axios.get(
         `${API_URL}/orders/my-orders`,
-        getHeaders()
+        getHeaders(),
       );
       return data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch orders"
-      );
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to fetch orders",
+        );
+      }
+      return rejectWithValue("Failed to fetch orders");
     }
-  }
+  },
 );
 
 export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
@@ -150,12 +156,12 @@ export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         return rejectWithValue(
-          error.response?.data.message || "Failed to fetch orders"
+          error.response?.data.message || "Failed to fetch orders",
         );
       }
       return rejectWithValue("An unknown error occurred");
     }
-  }
+  },
 );
 
 export const updateOrderStatus = createAsyncThunk(
@@ -168,24 +174,24 @@ export const updateOrderStatus = createAsyncThunk(
       orderId: number;
       status: Order["status"];
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const { data } = await axios.patch(
         `${API_URL}/orders/${orderId}/status`,
         { status },
-        getHeaders()
+        getHeaders(),
       );
       return data;
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         return rejectWithValue(
-          error.response?.data.message || "Failed to update order status"
+          error.response?.data.message || "Failed to update order status",
         );
       }
       return rejectWithValue("An unknown error occurred");
     }
-  }
+  },
 );
 
 const orderSlice = createSlice({
@@ -246,7 +252,7 @@ const orderSlice = createSlice({
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.isLoading = false;
         const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id
+          (order) => order.id === action.payload.id,
         );
         if (index !== -1) {
           state.orders[index] = action.payload;

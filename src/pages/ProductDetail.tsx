@@ -10,7 +10,7 @@ const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const { selectedProduct, loading, error } = useSelector(
-    (state: RootState) => state.products
+    (state: RootState) => state.products,
   );
 
   const [quantity, setQuantity] = useState(1);
@@ -76,8 +76,8 @@ const ProductDetail: React.FC = () => {
                 selectedProduct.stock > 10
                   ? "text-green-600"
                   : selectedProduct.stock > 0
-                  ? "text-yellow-600"
-                  : "text-red-600"
+                    ? "text-yellow-600"
+                    : "text-red-600"
               }`}
             >
               {selectedProduct.stock > 0

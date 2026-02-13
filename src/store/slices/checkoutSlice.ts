@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import getHeaders from "../../utils/getHeaders";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -32,7 +32,7 @@ export const createPaymentIntent = createAsyncThunk(
   "checkout/createPaymentIntent",
   async (
     cartItems: { productId: number; quantity: number }[],
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const { data } = await axios.post(
@@ -40,15 +40,18 @@ export const createPaymentIntent = createAsyncThunk(
         {
           items: cartItems,
         },
-        getHeaders()
+        getHeaders(),
       );
       return data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to create payment intent"
-      );
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to create payment intent",
+        );
+      }
+      return rejectWithValue("Failed to create payment intent");
     }
-  }
+  },
 );
 
 const checkoutSlice = createSlice({
@@ -62,7 +65,7 @@ const checkoutSlice = createSlice({
         JSON.stringify({
           ...state,
           shippingAddress: action.payload,
-        })
+        }),
       );
     },
     resetCheckout: (state) => {

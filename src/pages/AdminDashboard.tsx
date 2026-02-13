@@ -31,7 +31,7 @@ const AdminDashboard: React.FC = () => {
     error,
   } = useSelector((state: RootState) => state.orders);
   const { products, loading: productsLoading } = useSelector(
-    (state: RootState) => state.products
+    (state: RootState) => state.products,
   );
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
@@ -54,11 +54,11 @@ const AdminDashboard: React.FC = () => {
 
   const handleStatusChange = async (
     orderId: number,
-    newStatus: Order["status"]
+    newStatus: Order["status"],
   ) => {
     try {
       await dispatch(
-        updateOrderStatus({ orderId, status: newStatus })
+        updateOrderStatus({ orderId, status: newStatus }),
       ).unwrap();
     } catch (err) {
       console.error("Failed to update order status:", err);
@@ -87,8 +87,13 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingProduct) {
-      const { id, ...productData } = newProduct;
-      dispatch(updateProduct({ id: editingProduct, product: productData }));
+      const { name, description, price, category, stock, img } = newProduct;
+      dispatch(
+        updateProduct({
+          id: editingProduct,
+          product: { name, description, price, category, stock, img },
+        }),
+      );
       setEditingProduct(null);
       setNewProduct({
         id: 0,
@@ -166,19 +171,19 @@ const AdminDashboard: React.FC = () => {
                   onChange={(e) =>
                     handleStatusChange(
                       order.id,
-                      e.target.value as Order["status"]
+                      e.target.value as Order["status"],
                     )
                   }
                   className={`px-3 py-1 rounded-full text-sm border ${
                     order.status === "delivered"
                       ? "bg-green-100 text-green-800 border-green-200"
                       : order.status === "processing"
-                      ? "bg-blue-100 text-blue-800 border-blue-200"
-                      : order.status === "shipped"
-                      ? "bg-purple-100 text-purple-800 border-purple-200"
-                      : order.status === "cancelled"
-                      ? "bg-red-100 text-red-800 border-red-200"
-                      : "bg-gray-100 text-gray-800 border-gray-200"
+                        ? "bg-blue-100 text-blue-800 border-blue-200"
+                        : order.status === "shipped"
+                          ? "bg-purple-100 text-purple-800 border-purple-200"
+                          : order.status === "cancelled"
+                            ? "bg-red-100 text-red-800 border-red-200"
+                            : "bg-gray-100 text-gray-800 border-gray-200"
                   }`}
                 >
                   <option value="pending">Pending</option>

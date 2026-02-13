@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RootState, AppDispatch } from "../store";
-import { createPaymentIntent, setShippingAddress } from "../store/slices/checkoutSlice";
+import {
+  createPaymentIntent,
+  setShippingAddress,
+} from "../store/slices/checkoutSlice";
 import CheckoutForm from "../components/CheckoutForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -22,7 +25,7 @@ const Checkout: React.FC = () => {
 
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
   const { clientSecret, isLoading, error } = useSelector(
-    (state: RootState) => state.checkout
+    (state: RootState) => state.checkout,
   );
 
   useEffect(() => {

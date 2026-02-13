@@ -23,7 +23,7 @@ const orderStatuses = [
 const OrdersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { orders, error, filters } = useSelector(
-    (state: RootState) => state.orders
+    (state: RootState) => state.orders,
   );
   const debouncedFilters = useDebounce(filters, 500);
 
@@ -33,11 +33,11 @@ const OrdersPage: React.FC = () => {
 
   const handleStatusChange = async (
     orderId: number,
-    newStatus: Order["status"]
+    newStatus: Order["status"],
   ) => {
     try {
       await dispatch(
-        updateOrderStatus({ orderId, status: newStatus })
+        updateOrderStatus({ orderId, status: newStatus }),
       ).unwrap();
     } catch (error) {
       console.error("Failed to update order status:", error);
@@ -63,7 +63,7 @@ const OrdersPage: React.FC = () => {
       updateFilters({
         sortBy: field,
         sortOrder: newSortOrder,
-      })
+      }),
     );
   };
 

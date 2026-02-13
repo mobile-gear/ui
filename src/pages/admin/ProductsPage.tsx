@@ -12,6 +12,7 @@ import AdminLayout from "../../components/AdminLayout";
 import ProductList from "../../components/admin/ProductList";
 import Pagination from "../../components/Pagination";
 import { useDebounce } from "../../hooks/useDebounce";
+import { isAxiosError } from "axios";
 
 const CATEGORIES = [
   { value: "smartphone", label: "Smartphones" },
@@ -22,7 +23,7 @@ const CATEGORIES = [
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, error, filters, pagination } = useSelector(
-    (state: RootState) => state.products
+    (state: RootState) => state.products,
   );
 
   const debouncedFilters = useDebounce(filters, 500);
@@ -40,7 +41,7 @@ const ProductsPage: React.FC = () => {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setNewProduct((prev) => ({
@@ -55,7 +56,7 @@ const ProductsPage: React.FC = () => {
       updateFilters({
         [name]: value === "" ? undefined : value,
         page: 1,
-      })
+      }),
     );
   };
 
@@ -84,9 +85,15 @@ const ProductsPage: React.FC = () => {
     try {
       setDeleteError(null);
       await dispatch(deleteProduct(id)).unwrap();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to delete product:", error);
-      setDeleteError(error?.message || "Failed to delete product");
+      if (isAxiosError(error)) {
+        setDeleteError(
+          error.response?.data?.message || "Failed to delete product",
+        );
+      } else {
+        setDeleteError("Failed to delete product");
+      }
     }
   };
 
@@ -110,7 +117,7 @@ const ProductsPage: React.FC = () => {
         sortBy: newOrder ? field : undefined,
         sortOrder: newOrder,
         page: 1,
-      })
+      }),
     );
   };
 

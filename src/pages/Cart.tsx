@@ -12,7 +12,7 @@ const Cart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { items, totalItems, totalPrice } = useSelector(
-    (state: RootState) => state.cart
+    (state: RootState) => state.cart,
   );
   const { user } = useSelector((state: RootState) => state.auth);
 

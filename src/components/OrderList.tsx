@@ -22,15 +22,16 @@ const columns: ColumnHeader[] = [
   { field: "total", label: "Total" },
 ];
 
-const OrderList: React.FC<OrderListProps> = ({ 
-  orders, 
+const OrderList: React.FC<OrderListProps> = ({
+  orders,
   onStatusChange,
   onSort,
   sortBy,
   sortOrder,
 }) => {
   const renderSortIcon = (field: string) => {
-    if (sortBy !== field) return <FaSort className="inline ml-1 text-gray-400" />;
+    if (sortBy !== field)
+      return <FaSort className="inline ml-1 text-gray-400" />;
     return sortOrder === "asc" ? (
       <FaSortUp className="inline ml-1 text-blue-500" />
     ) : (
@@ -71,10 +72,7 @@ const OrderList: React.FC<OrderListProps> = ({
                 <select
                   value={order.status}
                   onChange={(e) =>
-                    onStatusChange(
-                      order.id,
-                      e.target.value as Order["status"]
-                    )
+                    onStatusChange(order.id, e.target.value as Order["status"])
                   }
                   className="p-2 border rounded"
                 >

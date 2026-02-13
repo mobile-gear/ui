@@ -41,7 +41,7 @@ const CheckoutSuccess: React.FC = () => {
             paymentIntentId,
             status: "completed",
             shippingAddress,
-          })
+          }),
         ).unwrap();
 
         dispatch(clearCart());
