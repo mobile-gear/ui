@@ -15,8 +15,6 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -52,9 +50,9 @@ const Navbar = () => {
         <div className="flex items-center space-x-6">
           <Link to="/cart" className="text-white hover:text-gray-200 relative">
             <BsCart3 className="text-2xl" />
-            {totalItems > 0 && (
+            {items.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {totalItems}
+                {items.length}
               </span>
             )}
           </Link>
