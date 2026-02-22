@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { fetchProducts, updateFilters } from "../store/slices/productSlice";
@@ -6,6 +6,7 @@ import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
 import { useDebounce } from "../hooks/useDebounce";
 import { BiSortUp, BiSortDown, BiSort } from "react-icons/bi";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CATEGORIES = [
   { value: "", label: "All Categories" },
@@ -16,29 +17,207 @@ const CATEGORIES = [
 
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { products, error, loading, filters, pagination } = useSelector(
     (state: RootState) => state.products,
   );
 
+  const [draftCategory, setDraftCategory] = useState<string>(
+    filters.category || "",
+  );
+  const [draftSearchTerm, setDraftSearchTerm] = useState<string>(
+    filters.searchTerm || "",
+  );
+  const [draftMinPrice, setDraftMinPrice] = useState<string>(
+    filters.minPrice !== undefined ? String(filters.minPrice) : "",
+  );
+  const [draftMaxPrice, setDraftMaxPrice] = useState<string>(
+    filters.maxPrice !== undefined ? String(filters.maxPrice) : "",
+  );
+  const [draftSortBy, setDraftSortBy] = useState<string>(filters.sortBy || "");
+  const [draftSortOrder, setDraftSortOrder] = useState<"asc" | "desc" | "">(
+    filters.sortOrder || "",
+  );
+
+  const buildSearchFromParams = (params: URLSearchParams) => {
+    const next = new URLSearchParams();
+
+    const category = params.get("category") || "";
+    const searchTerm = params.get("searchTerm") || "";
+    const minPrice = params.get("minPrice") || "";
+    const maxPrice = params.get("maxPrice") || "";
+    const sortBy = params.get("sortBy") || "";
+    const sortOrder = params.get("sortOrder") || "";
+
+    if (category) next.set("category", category);
+    if (searchTerm) next.set("searchTerm", searchTerm);
+    if (minPrice) next.set("minPrice", minPrice);
+    if (maxPrice) next.set("maxPrice", maxPrice);
+    if (sortBy) next.set("sortBy", sortBy);
+    if (sortOrder) next.set("sortOrder", sortOrder);
+
+    return next.toString();
+  };
+
+  const buildSearchFromDraft = () => {
+    const next = new URLSearchParams();
+
+    if (draftCategory) next.set("category", draftCategory);
+    if (draftSearchTerm) next.set("searchTerm", draftSearchTerm);
+    if (draftMinPrice) next.set("minPrice", draftMinPrice);
+    if (draftMaxPrice) next.set("maxPrice", draftMaxPrice);
+    if (draftSortBy) next.set("sortBy", draftSortBy);
+    if (draftSortOrder) next.set("sortOrder", draftSortOrder);
+
+    return next.toString();
+  };
+
   const debouncedFilters = useDebounce(filters, 500);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const allowedCategories = new Set(CATEGORIES.map((c) => c.value));
+
+    const categoryParam = params.get("category") || "";
+    const nextCategory = allowedCategories.has(categoryParam)
+      ? categoryParam || undefined
+      : filters.category;
+
+    const searchTermParam = params.get("searchTerm") || "";
+    const nextSearchTerm = searchTermParam || undefined;
+
+    const parseNumberParam = (key: string) => {
+      const raw = params.get(key);
+      if (!raw) return undefined;
+      const n = Number(raw);
+      return Number.isFinite(n) ? n : undefined;
+    };
+
+    const nextMinPrice = parseNumberParam("minPrice");
+    const nextMaxPrice = parseNumberParam("maxPrice");
+
+    const sortByParam = params.get("sortBy") || "";
+    const nextSortBy = sortByParam || undefined;
+
+    const sortOrderParam = params.get("sortOrder") || "";
+    const nextSortOrder =
+      sortOrderParam === "asc" || sortOrderParam === "desc"
+        ? sortOrderParam
+        : undefined;
+
+    const hasChanges =
+      filters.category !== nextCategory ||
+      filters.searchTerm !== nextSearchTerm ||
+      filters.minPrice !== nextMinPrice ||
+      filters.maxPrice !== nextMaxPrice ||
+      filters.sortBy !== nextSortBy ||
+      filters.sortOrder !== nextSortOrder;
+
+    setDraftCategory(nextCategory || "");
+    setDraftSearchTerm(nextSearchTerm || "");
+    setDraftMinPrice(nextMinPrice !== undefined ? String(nextMinPrice) : "");
+    setDraftMaxPrice(nextMaxPrice !== undefined ? String(nextMaxPrice) : "");
+    setDraftSortBy(nextSortBy || "");
+    setDraftSortOrder(nextSortOrder || "");
+
+    if (!hasChanges) return;
+
+    dispatch(
+      updateFilters({
+        category: nextCategory,
+        searchTerm: nextSearchTerm,
+        minPrice: nextMinPrice,
+        maxPrice: nextMaxPrice,
+        sortBy: nextSortBy,
+        sortOrder: nextSortOrder,
+        page: 1,
+      }),
+    );
+  }, [dispatch, location.search]);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch, debouncedFilters]);
 
+  const applyDraftFilters = () => {
+    const parseDraftNumber = (raw: string) => {
+      if (!raw) return undefined;
+      const n = Number(raw);
+      return Number.isFinite(n) ? n : undefined;
+    };
+
+    const nextCategory = draftCategory || undefined;
+    const nextSearchTerm = draftSearchTerm || undefined;
+    const nextMinPrice = parseDraftNumber(draftMinPrice);
+    const nextMaxPrice = parseDraftNumber(draftMaxPrice);
+    const nextSortBy = draftSortBy || undefined;
+    const nextSortOrder = draftSortOrder || undefined;
+
+    dispatch(
+      updateFilters({
+        category: nextCategory,
+        searchTerm: nextSearchTerm,
+        minPrice: nextMinPrice,
+        maxPrice: nextMaxPrice,
+        sortBy: nextSortBy,
+        sortOrder: nextSortOrder,
+        page: 1,
+      }),
+    );
+
+    const nextSearch = buildSearchFromDraft();
+    const currentParams = new URLSearchParams(location.search);
+    const currentSearch = buildSearchFromParams(currentParams);
+
+    if (nextSearch === currentSearch) return;
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
+  };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateFilters({ searchTerm: e.target.value, page: 1 }));
+    setDraftSearchTerm(e.target.value);
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const numValue = value === "" ? undefined : Number(value);
-    dispatch(updateFilters({ [name]: numValue, page: 1 }));
+    if (name === "minPrice") setDraftMinPrice(value);
+    if (name === "maxPrice") setDraftMaxPrice(value);
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value || undefined;
-    dispatch(updateFilters({ category: value, page: 1 }));
+    const value = e.target.value;
+    setDraftCategory(value);
+
+    const nextCategory = value || undefined;
+    dispatch(updateFilters({ category: nextCategory, page: 1 }));
+
+    const params = new URLSearchParams(location.search);
+    if (nextCategory) {
+      params.set("category", nextCategory);
+    } else {
+      params.delete("category");
+    }
+
+    const nextSearch = buildSearchFromParams(params);
+    const currentParams = new URLSearchParams(location.search);
+    const currentSearch = buildSearchFromParams(currentParams);
+
+    if (nextSearch === currentSearch) return;
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const handleSort = (field: string) => {
@@ -56,12 +235,45 @@ const ProductsPage: React.FC = () => {
       }
     }
 
+    const nextSortBy = newOrder ? field : undefined;
+    const nextSortOrder = newOrder;
+
+    setDraftSortBy(nextSortBy || "");
+    setDraftSortOrder(nextSortOrder || "");
+
     dispatch(
       updateFilters({
-        sortBy: newOrder ? field : undefined,
-        sortOrder: newOrder,
+        sortBy: nextSortBy,
+        sortOrder: nextSortOrder,
         page: 1,
       }),
+    );
+
+    const params = new URLSearchParams(location.search);
+    if (nextSortBy) {
+      params.set("sortBy", nextSortBy);
+    } else {
+      params.delete("sortBy");
+    }
+
+    if (nextSortOrder) {
+      params.set("sortOrder", nextSortOrder);
+    } else {
+      params.delete("sortOrder");
+    }
+
+    const nextSearch = buildSearchFromParams(params);
+    const currentParams = new URLSearchParams(location.search);
+    const currentSearch = buildSearchFromParams(currentParams);
+
+    if (nextSearch === currentSearch) return;
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
     );
   };
 
@@ -70,10 +282,10 @@ const ProductsPage: React.FC = () => {
   };
 
   const getSortIcon = (field: string) => {
-    if (filters.sortBy !== field) {
+    if (draftSortBy !== field) {
       return <BiSort className="h-5 w-5" />;
     }
-    return filters.sortOrder === "asc" ? (
+    return draftSortOrder === "asc" ? (
       <BiSortUp className="h-5 w-5" />
     ) : (
       <BiSortDown className="h-5 w-5" />
@@ -82,16 +294,24 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 space-y-4">
+      <form
+        className="mb-6 space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          applyDraftFilters();
+        }}
+      >
         <div className="flex gap-4 items-center">
           <input
             type="text"
             placeholder="Search products..."
-            value={filters.searchTerm || ""}
+            value={draftSearchTerm}
             onChange={handleSearch}
             className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
+            type="button"
+            aria-label="Ordenar por precio"
             onClick={() => handleSort("price")}
             className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 inline-flex items-center gap-2"
             title="Sort by price"
@@ -110,7 +330,7 @@ const ProductsPage: React.FC = () => {
             </label>
             <select
               id="category"
-              value={filters.category || ""}
+              value={draftCategory}
               onChange={handleCategoryChange}
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
             >
@@ -136,7 +356,7 @@ const ProductsPage: React.FC = () => {
               id="minPrice"
               name="minPrice"
               min="0"
-              value={filters.minPrice ?? ""}
+              value={draftMinPrice}
               onChange={handlePriceChange}
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Min. price"
@@ -154,15 +374,22 @@ const ProductsPage: React.FC = () => {
               type="number"
               id="maxPrice"
               name="maxPrice"
-              min={filters.minPrice || 0}
-              value={filters.maxPrice ?? ""}
+              min={draftMinPrice ? Number(draftMinPrice) || 0 : 0}
+              value={draftMaxPrice}
               onChange={handlePriceChange}
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Max. price"
             />
           </div>
         </div>
-      </div>
+        <button
+          type="submit"
+          aria-label="Aplicar filtros"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Aplicar
+        </button>
+      </form>
 
       <ProductList products={products} error={error} loading={loading} />
 
