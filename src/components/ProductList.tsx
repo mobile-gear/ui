@@ -45,7 +45,18 @@ const ProductList = memo(({ products, error, loading }: ProductListProps) => {
             >
               {product.name}
             </Link>
-            <p className="text-gray-600 mt-2">{product.description}</p>
+            <p
+              className="text-gray-600 mt-2"
+              style={{
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 3,
+                overflow: "hidden",
+                minHeight: "72px",
+              }}
+            >
+              {product.description}
+            </p>
             <div className="mt-4 flex items-center justify-between">
               <span className="text-xl font-bold">${product.price}</span>
               <button

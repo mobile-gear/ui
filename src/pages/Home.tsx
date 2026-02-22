@@ -18,21 +18,21 @@ const Home: React.FC = () => {
   const categories = [
     {
       name: "Smartphones",
-      icon: "📱",
+      image: "/categories/smartphones.jpg",
       category: "smartphone",
       bgClass: "bg-gradient-to-br from-blue-500 to-blue-600",
       hoverClass: "hover:from-blue-600 hover:to-blue-700",
     },
     {
       name: "Accessories",
-      icon: "🎧",
+      image: "/categories/accessories.jpg",
       category: "accessories",
       bgClass: "bg-gradient-to-br from-green-500 to-green-600",
       hoverClass: "hover:from-green-600 hover:to-green-700",
     },
     {
       name: "Tablets",
-      icon: "📲",
+      image: "/categories/tablets.jpg",
       category: "tablets",
       bgClass: "bg-gradient-to-br from-purple-500 to-purple-600",
       hoverClass: "hover:from-purple-600 hover:to-purple-700",
@@ -171,22 +171,25 @@ const Home: React.FC = () => {
                 key={item.name}
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
-                className={`${item.bgClass} ${item.hoverClass} p-8 rounded-2xl shadow-xl text-white text-center transform transition-all duration-300`}
+                className={`${item.bgClass} ${item.hoverClass} rounded-2xl shadow-xl text-white text-center transform transition-all duration-300 overflow-hidden`}
               >
-                <motion.div
-                  className="text-7xl mb-6"
-                  animate={{ rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  {item.icon}
-                </motion.div>
-                <h3 className="text-2xl font-bold mb-4">{item.name}</h3>
-                <Link
-                  to={`/products?category=${item.category}`}
-                  className="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition duration-300"
-                >
-                  Shop Now
-                </Link>
+                <div className="w-full h-48 relative">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40" />
+                </div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold mb-4">{item.name}</h3>
+                  <Link
+                    to={`/products?category=${item.category}`}
+                    className="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition duration-300"
+                  >
+                    Shop Now
+                  </Link>
+                </div>
               </motion.div>
             ))}
           </div>

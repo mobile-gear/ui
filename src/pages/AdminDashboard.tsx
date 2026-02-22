@@ -216,13 +216,13 @@ const AdminDashboard: React.FC = () => {
                 <div>
                   <h3 className="font-medium mb-2">Shipping Address</h3>
                   <div className="text-gray-600">
-                    <p>{order.shippingAddress?.street ?? ""}</p>
+                    <p>{order.shippingAddress?.street}</p>
                     <p>
-                      {order.shippingAddress?.city ?? ""},{" "}
-                      {order.shippingAddress?.state ?? ""}{" "}
-                      {order.shippingAddress?.zipCode ?? ""}
+                      {order.shippingAddress?.city},{" "}
+                      {order.shippingAddress?.state}{" "}
+                      {order.shippingAddress?.zipCode}
                     </p>
-                    <p>{order.shippingAddress?.country ?? ""}</p>
+                    <p>{order.shippingAddress?.country}</p>
                   </div>
                 </div>
               </div>
