@@ -23,6 +23,14 @@ const ProductsPage: React.FC = () => {
     (state: RootState) => state.products,
   );
 
+  const parsePageParam = (params: URLSearchParams) => {
+    const raw = params.get("page");
+    if (!raw) return 1;
+    const n = Number(raw);
+    if (!Number.isFinite(n)) return 1;
+    return Math.max(1, Math.floor(n));
+  };
+
   const [draftCategory, setDraftCategory] = useState<string>(
     filters.category || "",
   );
@@ -49,6 +57,7 @@ const ProductsPage: React.FC = () => {
     const maxPrice = params.get("maxPrice") || "";
     const sortBy = params.get("sortBy") || "";
     const sortOrder = params.get("sortOrder") || "";
+    const page = parsePageParam(params);
 
     if (category) next.set("category", category);
     if (searchTerm) next.set("searchTerm", searchTerm);
@@ -56,6 +65,8 @@ const ProductsPage: React.FC = () => {
     if (maxPrice) next.set("maxPrice", maxPrice);
     if (sortBy) next.set("sortBy", sortBy);
     if (sortOrder) next.set("sortOrder", sortOrder);
+
+    next.set("page", String(page));
 
     return next.toString();
   };
@@ -69,6 +80,8 @@ const ProductsPage: React.FC = () => {
     if (draftMaxPrice) next.set("maxPrice", draftMaxPrice);
     if (draftSortBy) next.set("sortBy", draftSortBy);
     if (draftSortOrder) next.set("sortOrder", draftSortOrder);
+
+    next.set("page", "1");
 
     return next.toString();
   };
@@ -106,13 +119,28 @@ const ProductsPage: React.FC = () => {
         ? sortOrderParam
         : undefined;
 
+    const nextPage = parsePageParam(params);
+
+    if (!params.get("page")) {
+      params.set("page", String(nextPage));
+      const nextSearch = buildSearchFromParams(params);
+      navigate(
+        {
+          pathname: location.pathname,
+          search: nextSearch ? `?${nextSearch}` : "",
+        },
+        { replace: true },
+      );
+    }
+
     const hasChanges =
       filters.category !== nextCategory ||
       filters.searchTerm !== nextSearchTerm ||
       filters.minPrice !== nextMinPrice ||
       filters.maxPrice !== nextMaxPrice ||
       filters.sortBy !== nextSortBy ||
-      filters.sortOrder !== nextSortOrder;
+      filters.sortOrder !== nextSortOrder ||
+      (filters.page || 1) !== nextPage;
 
     setDraftCategory(nextCategory || "");
     setDraftSearchTerm(nextSearchTerm || "");
@@ -131,7 +159,7 @@ const ProductsPage: React.FC = () => {
         maxPrice: nextMaxPrice,
         sortBy: nextSortBy,
         sortOrder: nextSortOrder,
-        page: 1,
+        page: nextPage,
       }),
     );
   }, [dispatch, location.search]);
@@ -205,6 +233,8 @@ const ProductsPage: React.FC = () => {
       params.delete("category");
     }
 
+    params.set("page", "1");
+
     const nextSearch = buildSearchFromParams(params);
     const currentParams = new URLSearchParams(location.search);
     const currentSearch = buildSearchFromParams(currentParams);
@@ -262,6 +292,8 @@ const ProductsPage: React.FC = () => {
       params.delete("sortOrder");
     }
 
+    params.set("page", "1");
+
     const nextSearch = buildSearchFromParams(params);
     const currentParams = new URLSearchParams(location.search);
     const currentSearch = buildSearchFromParams(currentParams);
@@ -279,6 +311,23 @@ const ProductsPage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     dispatch(updateFilters({ page }));
+
+    const params = new URLSearchParams(location.search);
+    params.set("page", String(page));
+
+    const nextSearch = buildSearchFromParams(params);
+    const currentParams = new URLSearchParams(location.search);
+    const currentSearch = buildSearchFromParams(currentParams);
+
+    if (nextSearch === currentSearch) return;
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const getSortIcon = (field: string) => {
@@ -291,6 +340,17 @@ const ProductsPage: React.FC = () => {
       <BiSortDown className="h-5 w-5" />
     );
   };
+
+  const totalCount = pagination
+    ? ((pagination as unknown as { count?: number }).count ?? pagination.total ?? 0)
+    : 0;
+  const derivedTotalPages = pagination
+    ? totalCount > 0
+      ? Math.ceil(totalCount / 10)
+      : pagination.totalPages
+    : 1;
+  const isNextDisabled =
+    totalCount > 0 ? (filters.page || 1) * 10 >= totalCount : false;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -396,7 +456,8 @@ const ProductsPage: React.FC = () => {
       {pagination && (
         <Pagination
           currentPage={filters.page || 1}
-          totalPages={pagination.totalPages}
+          totalPages={derivedTotalPages}
+          isNextDisabled={isNextDisabled}
           onPageChange={handlePageChange}
         />
       )}

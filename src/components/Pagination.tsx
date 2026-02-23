@@ -3,12 +3,14 @@ import React from "react";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  isNextDisabled?: boolean;
   onPageChange: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
+  isNextDisabled,
   onPageChange,
 }) => {
   const getPageNumbers = () => {
@@ -75,9 +77,9 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || Boolean(isNextDisabled)}
         className={`px-3 py-1 rounded-lg ${
-          currentPage === totalPages
+          currentPage === totalPages || Boolean(isNextDisabled)
             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
             : "bg-white border border-gray-300 hover:bg-gray-50"
         }`}
@@ -86,9 +88,9 @@ const Pagination: React.FC<PaginationProps> = ({
       </button>
       <button
         onClick={() => onPageChange(totalPages)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || Boolean(isNextDisabled)}
         className={`px-3 py-1 rounded-lg ${
-          currentPage === totalPages
+          currentPage === totalPages || Boolean(isNextDisabled)
             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
             : "bg-white border border-gray-300 hover:bg-gray-50"
         }`}
