@@ -1,16 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { isAxiosError } from "axios";
-import getHeaders from "../../utils/getHeaders";
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-export interface ShippingAddress {
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
+import { isAxiosError } from "axios";
+import { ShippingAddress, CartItemPayload } from "../../interfaces/checkout";
+import { checkoutService } from "../../services/checkout.service";
 
 interface CheckoutState {
   isLoading: boolean;
@@ -30,24 +21,12 @@ const initialState: CheckoutState = {
 
 export const createPaymentIntent = createAsyncThunk(
   "checkout/createPaymentIntent",
-  async (
-    cartItems: { productId: number; quantity: number }[],
-    { rejectWithValue },
-  ) => {
+  async (cartItems: CartItemPayload[], { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${API_URL}/checkout/create-payment-intent`,
-        {
-          items: cartItems,
-        },
-        getHeaders(),
-      );
-      return data;
+      return await checkoutService.createPaymentIntent(cartItems);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data?.message || "Failed to create payment intent",
-        );
+        return rejectWithValue(error.response?.data?.message || "Failed to create payment intent");
       }
       return rejectWithValue("Failed to create payment intent");
     }
@@ -62,10 +41,7 @@ const checkoutSlice = createSlice({
       state.shippingAddress = action.payload;
       localStorage.setItem(
         "checkoutState",
-        JSON.stringify({
-          ...state,
-          shippingAddress: action.payload,
-        }),
+        JSON.stringify({ ...state, shippingAddress: action.payload }),
       );
     },
     resetCheckout: (state) => {
@@ -94,5 +70,6 @@ const checkoutSlice = createSlice({
   },
 });
 
+export type { ShippingAddress };
 export const { setShippingAddress, resetCheckout } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

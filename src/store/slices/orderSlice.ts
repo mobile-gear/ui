@@ -1,76 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError, isAxiosError } from "axios";
-import getHeaders from "../../utils/getHeaders";
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-interface OrderItem {
-  productId: number;
-  quantity: number;
-  price: number;
-  product?: {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-  };
-}
-
-interface CreateOrderPayload {
-  items: OrderItem[];
-  totalAmount: number;
-  paymentIntentId: string;
-  status: string;
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-}
-
-export interface Order {
-  id: number;
-  userId: number;
-  items: OrderItem[];
-  total: number;
-  paymentIntentId: string;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  createdAt: string;
-  updatedAt?: string;
-}
-
-interface OrderFilters {
-  status?: string;
-  minTotal?: number;
-  maxTotal?: number;
-  startDate?: string;
-  endDate?: string;
-  page?: number;
-  limit?: number;
-  sortBy?: "id" | "createdAt" | "status" | "total";
-  sortOrder?: "asc" | "desc";
-}
-
-interface PaginationData {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-interface OrdersResponse {
-  orders: Order[];
-  pagination: PaginationData;
-}
+import { AxiosError } from "axios";
+import {
+  Order,
+  CreateOrderPayload,
+  OrderFilters,
+  OrdersResponse,
+  PaginationData,
+} from "../../interfaces/order";
+import { orderService } from "../../services/order.service";
 
 interface OrderState {
   orders: Order[];
@@ -104,17 +41,10 @@ export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData: CreateOrderPayload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${API_URL}/orders`,
-        orderData,
-        getHeaders(),
-      );
-      return data;
+      return await orderService.create(orderData);
     } catch (error: unknown) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data?.message || "Failed to create order",
-        );
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.message || "Failed to create order");
       }
       return rejectWithValue("Failed to create order");
     }
@@ -125,16 +55,10 @@ export const fetchUserOrders = createAsyncThunk(
   "orders/fetchUserOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${API_URL}/orders/my-orders`,
-        getHeaders(),
-      );
-      return data;
+      return await orderService.getUserOrders();
     } catch (error: unknown) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data?.message || "Failed to fetch orders",
-        );
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.message || "Failed to fetch orders");
       }
       return rejectWithValue("Failed to fetch orders");
     }
@@ -146,18 +70,10 @@ export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState() as { orders: OrderState };
-      const { filters: params } = state.orders;
-
-      const { data } = await axios.get(`${API_URL}/orders`, {
-        params,
-        ...getHeaders(),
-      });
-      return data;
+      return await orderService.getAll(state.orders.filters);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(
-          error.response?.data.message || "Failed to fetch orders",
-        );
+        return rejectWithValue(error.response?.data.message || "Failed to fetch orders");
       }
       return rejectWithValue("An unknown error occurred");
     }
@@ -166,28 +82,12 @@ export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
 
 export const updateOrderStatus = createAsyncThunk(
   "orders/updateOrderStatus",
-  async (
-    {
-      orderId,
-      status,
-    }: {
-      orderId: number;
-      status: Order["status"];
-    },
-    { rejectWithValue },
-  ) => {
+  async ({ orderId, status }: { orderId: number; status: Order["status"] }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.patch(
-        `${API_URL}/orders/${orderId}/status`,
-        { status },
-        getHeaders(),
-      );
-      return data;
+      return await orderService.updateStatus(orderId, status);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(
-          error.response?.data.message || "Failed to update order status",
-        );
+        return rejectWithValue(error.response?.data.message || "Failed to update order status");
       }
       return rejectWithValue("An unknown error occurred");
     }
@@ -199,10 +99,7 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     updateFilters: (state, action) => {
-      state.filters = {
-        ...state.filters,
-        ...action.payload,
-      };
+      state.filters = { ...state.filters, ...action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -251,12 +148,8 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id,
-        );
-        if (index !== -1) {
-          state.orders[index] = action.payload;
-        }
+        const index = state.orders.findIndex((order) => order.id === action.payload.id);
+        if (index !== -1) state.orders[index] = action.payload;
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
         state.isLoading = false;
@@ -265,5 +158,6 @@ const orderSlice = createSlice({
   },
 });
 
+export type { Order };
 export const { updateFilters } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -1,35 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import getHeaders from "../../utils/getHeaders";
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  img: string;
-  price: number;
-  category: string;
-  stock: number;
-}
-
-interface PaginationData {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-interface ProductFilters {
-  searchTerm?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  category?: string;
-  outOfStock?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  page?: number;
-  limit?: number;
-}
+import { Product, ProductFilters, PaginationData } from "../../interfaces/product";
+import { productService } from "../../services/product.service";
 
 interface ProductState {
   products: Product[];
@@ -61,65 +32,29 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (_, { getState }) => {
     const state = getState() as { products: ProductState };
-    const { filters: params } = state.products;
-
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/products`,
-      { params },
-    );
-    return data;
+    return productService.getAll(state.products.filters);
   },
 );
 
 export const fetchProductById = createAsyncThunk<Product, number>(
   "products/fetchProductById",
-  async (id: number) => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/products/${id}`,
-    );
-    return response.data;
-  },
+  async (id) => productService.getById(id),
 );
 
 export const createProduct = createAsyncThunk(
   "products/createProduct",
-  async (product: Omit<Product, "id">) => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/products`,
-      product,
-      getHeaders(),
-    );
-    return response.data;
-  },
+  async (product: Omit<Product, "id">) => productService.create(product),
 );
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async ({
-    id,
-    product,
-  }: {
-    id: number;
-    product: Partial<Omit<Product, "id">>;
-  }) => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_API_URL}/products/${id}`,
-      product,
-      getHeaders(),
-    );
-    return response.data;
-  },
+  async ({ id, product }: { id: number; product: Partial<Omit<Product, "id">> }) =>
+    productService.update(id, product),
 );
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
-  async (id: number) => {
-    await axios.delete(
-      `${import.meta.env.VITE_API_URL}/products/${id}`,
-      getHeaders(),
-    );
-    return id;
-  },
+  async (id: number) => productService.delete(id),
 );
 
 const productSlice = createSlice({
@@ -181,15 +116,9 @@ const productSlice = createSlice({
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.products.findIndex(
-          (p) => p.id === action.payload.id,
-        );
-        if (index !== -1) {
-          state.products[index] = action.payload;
-        }
-        if (state.selectedProduct?.id === action.payload.id) {
-          state.selectedProduct = action.payload;
-        }
+        const index = state.products.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) state.products[index] = action.payload;
+        if (state.selectedProduct?.id === action.payload.id) state.selectedProduct = action.payload;
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
@@ -203,9 +132,7 @@ const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products = state.products.filter((p) => p.id !== action.payload);
-        if (state.selectedProduct?.id === action.payload) {
-          state.selectedProduct = null;
-        }
+        if (state.selectedProduct?.id === action.payload) state.selectedProduct = null;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
@@ -214,5 +141,6 @@ const productSlice = createSlice({
   },
 });
 
+export type { Product };
 export const { updateFilters } = productSlice.actions;
 export default productSlice.reducer;

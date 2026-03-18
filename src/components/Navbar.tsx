@@ -4,31 +4,24 @@ import { RootState } from "../store";
 import { logout } from "../store/slices/authSlice";
 import { BsCart3, BsChevronDown } from "react-icons/bs";
 import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const { items } = useSelector((state: RootState) => state.cart);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -38,79 +31,101 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-orange-500 py-4">
-      <div className="container mx-auto flex justify-between items-center px-4">
+    <nav className="bg-[#13131C] border-b border-[#252535]">
+      <div className="container mx-auto flex justify-between items-center px-6 h-16">
         <Link
           to="/"
-          className="text-2xl font-bold text-white hover:text-gray-200"
+          className="font-display font-bold text-xl tracking-tight text-[#F0EEFF] hover:text-[#FF4500] transition-colors"
         >
-          Mobile Gear
+          Mobile<span className="text-[#FF4500]">Gear</span>
         </Link>
 
-        <div className="flex items-center space-x-6">
-          <Link to="/cart" className="text-white hover:text-gray-200 relative">
-            <BsCart3 className="text-2xl" />
-            {items.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {items.length}
-              </span>
-            )}
+        <div className="flex items-center gap-7">
+          <Link
+            to="/products"
+            className="text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
+          >
+            Products
           </Link>
 
-          <Link to="/products" className="text-white hover:text-gray-200">
-            Products
+          <Link to="/cart" className="relative text-[#7A7A8C] hover:text-[#F0EEFF] transition-colors">
+            <BsCart3 className="text-xl" />
+            <AnimatePresence>
+              {items.length > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  className="absolute -top-2 -right-2 bg-[#FF4500] text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold font-body"
+                >
+                  {items.length}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </Link>
 
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-1 text-white hover:text-gray-200 p-0"
+                className="flex items-center gap-1.5 text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
               >
                 <span>{user?.firstName}</span>
                 <BsChevronDown
-                  className={`w-3 h-3 mt-1 transition-transform duration-200 ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
+                  className={`w-3 h-3 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                  <Link
-                    to="/orders"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-3 w-44 bg-[#1E1E2C] border border-[#252535] rounded-xl shadow-xl py-1 z-50 overflow-hidden"
                   >
-                    My Orders
-                  </Link>
-                  {user?.role === "admin" && (
                     <Link
-                      to="/admin/orders"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      to="/orders"
+                      className="block px-4 py-2.5 text-sm text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#252535] font-body transition-colors"
                       onClick={() => setIsDropdownOpen(false)}
                     >
-                      Dashboard
+                      My Orders
                     </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+                    {user?.role === "admin" && (
+                      <Link
+                        to="/admin/orders"
+                        className="block px-4 py-2.5 text-sm text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#252535] font-body transition-colors"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2.5 text-sm text-[#FF4500] hover:bg-[#252535] font-body transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ) : (
-            <>
-              <Link to="/login" className="text-white hover:text-gray-200">
+            <div className="flex items-center gap-4">
+              <Link
+                to="/login"
+                className="text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
+              >
                 Login
               </Link>
-              <Link to="/register" className="text-white hover:text-gray-200">
+              <Link
+                to="/register"
+                className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-body text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              >
                 Register
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

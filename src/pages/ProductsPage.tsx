@@ -15,6 +15,10 @@ const CATEGORIES = [
   { value: "accessories", label: "Accessories" },
 ];
 
+const inputClass =
+  "w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-2.5 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors placeholder-[#3A3A4A]";
+const labelClass = "block text-xs font-medium text-[#7A7A8C] mb-1.5 font-body uppercase tracking-wider";
+
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
@@ -31,12 +35,8 @@ const ProductsPage: React.FC = () => {
     return Math.max(1, Math.floor(n));
   };
 
-  const [draftCategory, setDraftCategory] = useState<string>(
-    filters.category || "",
-  );
-  const [draftSearchTerm, setDraftSearchTerm] = useState<string>(
-    filters.searchTerm || "",
-  );
+  const [draftCategory, setDraftCategory] = useState<string>(filters.category || "");
+  const [draftSearchTerm, setDraftSearchTerm] = useState<string>(filters.searchTerm || "");
   const [draftMinPrice, setDraftMinPrice] = useState<string>(
     filters.minPrice !== undefined ? String(filters.minPrice) : "",
   );
@@ -50,7 +50,6 @@ const ProductsPage: React.FC = () => {
 
   const buildSearchFromParams = (params: URLSearchParams) => {
     const next = new URLSearchParams();
-
     const category = params.get("category") || "";
     const searchTerm = params.get("searchTerm") || "";
     const minPrice = params.get("minPrice") || "";
@@ -58,31 +57,25 @@ const ProductsPage: React.FC = () => {
     const sortBy = params.get("sortBy") || "";
     const sortOrder = params.get("sortOrder") || "";
     const page = parsePageParam(params);
-
     if (category) next.set("category", category);
     if (searchTerm) next.set("searchTerm", searchTerm);
     if (minPrice) next.set("minPrice", minPrice);
     if (maxPrice) next.set("maxPrice", maxPrice);
     if (sortBy) next.set("sortBy", sortBy);
     if (sortOrder) next.set("sortOrder", sortOrder);
-
     next.set("page", String(page));
-
     return next.toString();
   };
 
   const buildSearchFromDraft = () => {
     const next = new URLSearchParams();
-
     if (draftCategory) next.set("category", draftCategory);
     if (draftSearchTerm) next.set("searchTerm", draftSearchTerm);
     if (draftMinPrice) next.set("minPrice", draftMinPrice);
     if (draftMaxPrice) next.set("maxPrice", draftMaxPrice);
     if (draftSortBy) next.set("sortBy", draftSortBy);
     if (draftSortOrder) next.set("sortOrder", draftSortOrder);
-
     next.set("page", "1");
-
     return next.toString();
   };
 
@@ -109,28 +102,17 @@ const ProductsPage: React.FC = () => {
 
     const nextMinPrice = parseNumberParam("minPrice");
     const nextMaxPrice = parseNumberParam("maxPrice");
-
     const sortByParam = params.get("sortBy") || "";
     const nextSortBy = sortByParam || undefined;
-
     const sortOrderParam = params.get("sortOrder") || "";
     const nextSortOrder =
-      sortOrderParam === "asc" || sortOrderParam === "desc"
-        ? sortOrderParam
-        : undefined;
-
+      sortOrderParam === "asc" || sortOrderParam === "desc" ? sortOrderParam : undefined;
     const nextPage = parsePageParam(params);
 
     if (!params.get("page")) {
       params.set("page", String(nextPage));
       const nextSearch = buildSearchFromParams(params);
-      navigate(
-        {
-          pathname: location.pathname,
-          search: nextSearch ? `?${nextSearch}` : "",
-        },
-        { replace: true },
-      );
+      navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
     }
 
     const hasChanges =
@@ -151,17 +133,15 @@ const ProductsPage: React.FC = () => {
 
     if (!hasChanges) return;
 
-    dispatch(
-      updateFilters({
-        category: nextCategory,
-        searchTerm: nextSearchTerm,
-        minPrice: nextMinPrice,
-        maxPrice: nextMaxPrice,
-        sortBy: nextSortBy,
-        sortOrder: nextSortOrder,
-        page: nextPage,
-      }),
-    );
+    dispatch(updateFilters({
+      category: nextCategory,
+      searchTerm: nextSearchTerm,
+      minPrice: nextMinPrice,
+      maxPrice: nextMaxPrice,
+      sortBy: nextSortBy,
+      sortOrder: nextSortOrder,
+      page: nextPage,
+    }));
   }, [dispatch, location.search]);
 
   useEffect(() => {
@@ -175,292 +155,175 @@ const ProductsPage: React.FC = () => {
       return Number.isFinite(n) ? n : undefined;
     };
 
-    const nextCategory = draftCategory || undefined;
-    const nextSearchTerm = draftSearchTerm || undefined;
-    const nextMinPrice = parseDraftNumber(draftMinPrice);
-    const nextMaxPrice = parseDraftNumber(draftMaxPrice);
-    const nextSortBy = draftSortBy || undefined;
-    const nextSortOrder = draftSortOrder || undefined;
-
-    dispatch(
-      updateFilters({
-        category: nextCategory,
-        searchTerm: nextSearchTerm,
-        minPrice: nextMinPrice,
-        maxPrice: nextMaxPrice,
-        sortBy: nextSortBy,
-        sortOrder: nextSortOrder,
-        page: 1,
-      }),
-    );
+    dispatch(updateFilters({
+      category: draftCategory || undefined,
+      searchTerm: draftSearchTerm || undefined,
+      minPrice: parseDraftNumber(draftMinPrice),
+      maxPrice: parseDraftNumber(draftMaxPrice),
+      sortBy: draftSortBy || undefined,
+      sortOrder: draftSortOrder || undefined,
+      page: 1,
+    }));
 
     const nextSearch = buildSearchFromDraft();
-    const currentParams = new URLSearchParams(location.search);
-    const currentSearch = buildSearchFromParams(currentParams);
-
+    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
     if (nextSearch === currentSearch) return;
-
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
-      { replace: true },
-    );
-  };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDraftSearchTerm(e.target.value);
-  };
-
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "minPrice") setDraftMinPrice(value);
-    if (name === "maxPrice") setDraftMaxPrice(value);
+    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setDraftCategory(value);
-
-    const nextCategory = value || undefined;
-    dispatch(updateFilters({ category: nextCategory, page: 1 }));
-
+    dispatch(updateFilters({ category: value || undefined, page: 1 }));
     const params = new URLSearchParams(location.search);
-    if (nextCategory) {
-      params.set("category", nextCategory);
-    } else {
-      params.delete("category");
-    }
-
+    if (value) params.set("category", value);
+    else params.delete("category");
     params.set("page", "1");
-
     const nextSearch = buildSearchFromParams(params);
-    const currentParams = new URLSearchParams(location.search);
-    const currentSearch = buildSearchFromParams(currentParams);
-
+    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
     if (nextSearch === currentSearch) return;
-
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
-      { replace: true },
-    );
+    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
   };
 
   const handleSort = (field: string) => {
     let newOrder: "asc" | "desc" | undefined;
-
-    if (filters.sortBy !== field) {
-      newOrder = "asc";
-    } else {
-      if (filters.sortOrder === "asc") {
-        newOrder = "desc";
-      } else if (filters.sortOrder === "desc") {
-        newOrder = undefined;
-      } else {
-        newOrder = "asc";
-      }
-    }
+    if (filters.sortBy !== field) newOrder = "asc";
+    else if (filters.sortOrder === "asc") newOrder = "desc";
+    else if (filters.sortOrder === "desc") newOrder = undefined;
+    else newOrder = "asc";
 
     const nextSortBy = newOrder ? field : undefined;
-    const nextSortOrder = newOrder;
-
     setDraftSortBy(nextSortBy || "");
-    setDraftSortOrder(nextSortOrder || "");
-
-    dispatch(
-      updateFilters({
-        sortBy: nextSortBy,
-        sortOrder: nextSortOrder,
-        page: 1,
-      }),
-    );
+    setDraftSortOrder(newOrder || "");
+    dispatch(updateFilters({ sortBy: nextSortBy, sortOrder: newOrder, page: 1 }));
 
     const params = new URLSearchParams(location.search);
-    if (nextSortBy) {
-      params.set("sortBy", nextSortBy);
-    } else {
-      params.delete("sortBy");
-    }
-
-    if (nextSortOrder) {
-      params.set("sortOrder", nextSortOrder);
-    } else {
-      params.delete("sortOrder");
-    }
-
+    if (nextSortBy) params.set("sortBy", nextSortBy); else params.delete("sortBy");
+    if (newOrder) params.set("sortOrder", newOrder); else params.delete("sortOrder");
     params.set("page", "1");
-
     const nextSearch = buildSearchFromParams(params);
-    const currentParams = new URLSearchParams(location.search);
-    const currentSearch = buildSearchFromParams(currentParams);
-
+    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
     if (nextSearch === currentSearch) return;
-
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
-      { replace: true },
-    );
+    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
   };
 
   const handlePageChange = (page: number) => {
     dispatch(updateFilters({ page }));
-
     const params = new URLSearchParams(location.search);
     params.set("page", String(page));
-
     const nextSearch = buildSearchFromParams(params);
-    const currentParams = new URLSearchParams(location.search);
-    const currentSearch = buildSearchFromParams(currentParams);
-
+    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
     if (nextSearch === currentSearch) return;
-
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
-      { replace: true },
-    );
+    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
   };
 
   const getSortIcon = (field: string) => {
-    if (draftSortBy !== field) {
-      return <BiSort className="h-5 w-5" />;
-    }
-    return draftSortOrder === "asc" ? (
-      <BiSortUp className="h-5 w-5" />
-    ) : (
-      <BiSortDown className="h-5 w-5" />
-    );
+    if (draftSortBy !== field) return <BiSort className="h-4 w-4" />;
+    return draftSortOrder === "asc" ? <BiSortUp className="h-4 w-4" /> : <BiSortDown className="h-4 w-4" />;
   };
 
   const totalCount = pagination
     ? ((pagination as unknown as { count?: number }).count ?? pagination.total ?? 0)
     : 0;
   const derivedTotalPages = pagination
-    ? totalCount > 0
-      ? Math.ceil(totalCount / 10)
-      : pagination.totalPages
+    ? totalCount > 0 ? Math.ceil(totalCount / 10) : pagination.totalPages
     : 1;
-  const isNextDisabled =
-    totalCount > 0 ? (filters.page || 1) * 10 >= totalCount : false;
+  const isNextDisabled = totalCount > 0 ? (filters.page || 1) * 10 >= totalCount : false;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <form
-        className="mb-6 space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          applyDraftFilters();
-        }}
-      >
-        <div className="flex gap-4 items-center">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={draftSearchTerm}
-            onChange={handleSearch}
-            className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <button
-            type="button"
-            aria-label="Ordenar por precio"
-            onClick={() => handleSort("price")}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 inline-flex items-center gap-2"
-            title="Sort by price"
-          >
-            <span>Price</span> {getSortIcon("price")}
-          </button>
-        </div>
+    <div className="min-h-screen bg-[#09090F]">
+      <div className="container mx-auto px-6 py-10">
+        <h1 className="font-display font-bold text-[#F0EEFF] text-3xl mb-8">Products</h1>
 
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              value={draftCategory}
-              onChange={handleCategoryChange}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-            >
-              {CATEGORIES.map((category) => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label
-              htmlFor="minPrice"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Min. Price
-            </label>
-            <input
-              type="number"
-              id="minPrice"
-              name="minPrice"
-              min="0"
-              value={draftMinPrice}
-              onChange={handlePriceChange}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Min. price"
-            />
-          </div>
-
-          <div className="flex-1">
-            <label
-              htmlFor="maxPrice"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Max. Price
-            </label>
-            <input
-              type="number"
-              id="maxPrice"
-              name="maxPrice"
-              min={draftMinPrice ? Number(draftMinPrice) || 0 : 0}
-              value={draftMaxPrice}
-              onChange={handlePriceChange}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Max. price"
-            />
-          </div>
-        </div>
-        <button
-          type="submit"
-          aria-label="Aplicar filtros"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        <form
+          className="mb-8 bg-[#13131C] border border-[#252535] rounded-2xl p-6 space-y-5"
+          onSubmit={(e) => { e.preventDefault(); applyDraftFilters(); }}
         >
-          Aplicar
-        </button>
-      </form>
+          <div className="flex gap-3 items-end">
+            <div className="flex-1">
+              <label className={labelClass}>Search</label>
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={draftSearchTerm}
+                onChange={(e) => setDraftSearchTerm(e.target.value)}
+                className={inputClass}
+              />
+            </div>
+            <button
+              type="button"
+              aria-label="Sort by price"
+              onClick={() => handleSort("price")}
+              className="flex items-center gap-2 bg-[#1E1E2C] border border-[#252535] hover:border-[#FF4500]/40 text-[#9B9BAD] hover:text-[#F0EEFF] font-body text-sm px-4 py-2.5 rounded-lg transition-colors"
+              title="Sort by price"
+            >
+              Price {getSortIcon("price")}
+            </button>
+          </div>
 
-      <ProductList products={products} error={error} loading={loading} />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label htmlFor="category" className={labelClass}>Category</label>
+              <select
+                id="category"
+                value={draftCategory}
+                onChange={handleCategoryChange}
+                className={inputClass + " appearance-none"}
+              >
+                {CATEGORIES.map((cat) => (
+                  <option key={cat.value} value={cat.value} className="bg-[#13131C]">
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="minPrice" className={labelClass}>Min. Price</label>
+              <input
+                type="number"
+                id="minPrice"
+                name="minPrice"
+                min="0"
+                value={draftMinPrice}
+                onChange={(e) => setDraftMinPrice(e.target.value)}
+                className={inputClass}
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <label htmlFor="maxPrice" className={labelClass}>Max. Price</label>
+              <input
+                type="number"
+                id="maxPrice"
+                name="maxPrice"
+                min={draftMinPrice ? Number(draftMinPrice) || 0 : 0}
+                value={draftMaxPrice}
+                onChange={(e) => setDraftMaxPrice(e.target.value)}
+                className={inputClass}
+                placeholder="Any"
+              />
+            </div>
+          </div>
 
-      {pagination && (
-        <Pagination
-          currentPage={filters.page || 1}
-          totalPages={derivedTotalPages}
-          isNextDisabled={isNextDisabled}
-          onPageChange={handlePageChange}
-        />
-      )}
+          <button
+            type="submit"
+            className="w-full bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase py-3 rounded-lg transition-colors"
+          >
+            Apply Filters
+          </button>
+        </form>
+
+        <ProductList products={products} error={error} loading={loading} />
+
+        {pagination && (
+          <Pagination
+            currentPage={filters.page || 1}
+            totalPages={derivedTotalPages}
+            isNextDisabled={isNextDisabled}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
     </div>
   );
 };
