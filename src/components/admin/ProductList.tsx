@@ -25,64 +25,46 @@ const columns: Column[] = [
   { key: "actions", label: "Actions", sortable: false },
 ];
 
-const ProductList: React.FC<ProductListProps> = ({
-  products,
-  onDelete,
-  onSort,
-  sortBy,
-  sortOrder,
-}) => {
+const ProductList: React.FC<ProductListProps> = ({ products, onDelete, onSort, sortBy, sortOrder }) => {
   const getSortIcon = (field: string) => {
     if (!onSort) return null;
-    if (sortBy !== field) {
-      return <BiSort className="h-5 w-5" />;
-    }
-    return sortOrder === "asc" ? (
-      <BiSortUp className="h-5 w-5" />
-    ) : (
-      <BiSortDown className="h-5 w-5" />
-    );
+    if (sortBy !== field) return <BiSort className="h-4 w-4 text-[#3A3A4A]" />;
+    return sortOrder === "asc"
+      ? <BiSortUp className="h-4 w-4 text-[#FF4500]" />
+      : <BiSortDown className="h-4 w-4 text-[#FF4500]" />;
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-300">
+    <div className="overflow-x-auto rounded-2xl border border-[#252535]">
+      <table className="min-w-full">
         <thead>
-          <tr className="bg-gray-100">
-            {columns.map((column) => (
+          <tr className="bg-[#1E1E2C] border-b border-[#252535]">
+            {columns.map((col) => (
               <th
-                key={column.key}
-                className={`py-2 px-4 border-b ${
-                  column.sortable && onSort
-                    ? "cursor-pointer hover:bg-gray-200"
-                    : ""
-                }`}
-                onClick={() => {
-                  if (column.sortable && onSort) {
-                    onSort(column.key);
-                  }
-                }}
+                key={col.key}
+                onClick={() => col.sortable && onSort?.(col.key)}
+                className={`py-3 px-4 text-left font-body text-xs text-[#7A7A8C] uppercase tracking-wider select-none ${col.sortable && onSort ? "cursor-pointer hover:text-[#F0EEFF] transition-colors" : ""}`}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span>{column.label}</span>
-                  {column.sortable && getSortIcon(column.key)}
+                <div className="flex items-center gap-1.5">
+                  {col.label}
+                  {col.sortable && getSortIcon(col.key)}
                 </div>
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-[#13131C] divide-y divide-[#252535]">
           {products.map((product) => (
-            <tr key={product.id} className="border-b hover:bg-gray-50">
-              <td className="py-2 px-4">{product.id}</td>
-              <td className="py-2 px-4">{product.name}</td>
-              <td className="py-2 px-4">{product.category}</td>
-              <td className="py-2 px-4">${product.price.toFixed(2)}</td>
-              <td className="py-2 px-4">{product.stock}</td>
-              <td className="py-2 px-4">
+            <tr key={product.id} className="hover:bg-[#1E1E2C] transition-colors">
+              <td className="py-3 px-4 font-body text-sm text-[#7A7A8C]">{product.id}</td>
+              <td className="py-3 px-4 font-body text-sm text-[#F0EEFF] max-w-[12rem] truncate">{product.name}</td>
+              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD] capitalize">{product.category}</td>
+              <td className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm">${product.price.toFixed(2)}</td>
+              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">{product.stock}</td>
+              <td className="py-3 px-4">
                 <button
                   onClick={() => onDelete(product.id)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-xs font-body text-[#FF6B47] hover:text-[#FF4500] transition-colors"
                 >
                   Delete
                 </button>

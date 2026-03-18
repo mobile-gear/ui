@@ -31,6 +31,7 @@ body {
   margin: 0;
   width: 100%;
   min-height: 100vh;
+  color-scheme: dark;
   background-color: var(--bg);
   color: var(--text);
   font-family: "Figtree", sans-serif;
@@ -63,6 +64,11 @@ h6 {
   font-weight: 700;
   line-height: 1.15;
   margin: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.25;
 }
 
 @layer utilities {
