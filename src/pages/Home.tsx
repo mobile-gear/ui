@@ -57,12 +57,11 @@ const Home: React.FC = () => {
 
           <motion.h1
             variants={rise}
-            className="font-display font-bold text-[#F0EEFF] leading-[1.05] mb-6"
-            style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
+            className="font-bold text-[#F0EEFF] leading-[1.05] mb-6"
+            style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontFamily: "'Big Shoulders Display', sans-serif", scaleX: 1.25 }}
           >
             The gear you need.
-            <br />
-            <span className="text-[#FF4500]">The signal you send.</span>
+            <span className="text-[#FF4500]" style={{ display: "block", marginTop: "0.5rem" }}>The signal you send.</span>
           </motion.h1>
 
           <motion.p
@@ -123,7 +122,8 @@ const Home: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="font-display font-bold text-[#F0EEFF] text-3xl mb-10"
+            className="font-bold text-[#F0EEFF] text-3xl mb-10"
+            style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
             Featured
           </motion.h2>
@@ -138,7 +138,8 @@ const Home: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="font-display font-bold text-[#F0EEFF] text-3xl mb-10"
+            className="font-bold text-[#F0EEFF] text-3xl mb-10"
+            style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
             Shop by Category
           </motion.h2>
