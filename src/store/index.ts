@@ -6,12 +6,6 @@ import orderReducer from "./slices/orderSlice";
 import checkoutReducer from "./slices/checkoutSlice";
 
 const persistedCheckoutState = localStorage.getItem("checkoutState");
-const persistedAuthState = localStorage.getItem("authState");
-
-const preloadedState = {
-  checkout: persistedCheckoutState ? JSON.parse(persistedCheckoutState) : {},
-  auth: persistedAuthState ? JSON.parse(persistedAuthState) : {},
-};
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +15,9 @@ export const store = configureStore({
     orders: orderReducer,
     checkout: checkoutReducer,
   },
-  preloadedState,
+  preloadedState: {
+    checkout: persistedCheckoutState ? JSON.parse(persistedCheckoutState) : {},
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

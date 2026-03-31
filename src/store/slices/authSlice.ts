@@ -5,17 +5,17 @@ import { authService } from "../../services/auth.service";
 
 interface AuthState {
   user: User | null;
-  token: string;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
+const persistedUser = localStorage.getItem("user");
+
 const initialState: AuthState = {
-  user: null,
-  token: "",
-  isAuthenticated: false,
-  isLoading: true,
+  user: persistedUser ? JSON.parse(persistedUser) : null,
+  isAuthenticated: !!persistedUser,
+  isLoading: false,
   error: null,
 };
 
@@ -47,17 +47,19 @@ export const loginUser = createAsyncThunk(
   },
 );
 
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+  await authService.logout();
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
+    clearAuth: (state) => {
       state.user = null;
       state.isAuthenticated = false;
       state.error = null;
-      state.isLoading = false;
-      localStorage.removeItem("token");
-      localStorage.removeItem("authState");
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -70,9 +72,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.error = null;
-        localStorage.setItem("authState", JSON.stringify(state));
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -88,18 +89,29 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.error = null;
-        localStorage.setItem("authState", JSON.stringify(state));
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
         state.error = action.payload as string;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
+        localStorage.removeItem("user");
+      })
+      .addCase(logoutUser.rejected, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
+        localStorage.removeItem("user");
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { clearAuth } = authSlice.actions;
 export default authSlice.reducer;
