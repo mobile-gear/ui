@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "iPhone 15 Pro",
+      "description": "Latest Apple smartphone",
+      "img": "/placeholder.jpg",
+      "price": 999.99,
+      "category": "smartphone",
+      "stock": 25
+    },
+    {
+      "id": 2,
+      "name": "Samsung Galaxy S24",
+      "description": "Premium Android phone",
+      "img": "/placeholder.jpg",
+      "price": 849.99,
+      "category": "smartphone",
+      "stock": 30
+    },
+    {
+      "id": 3,
+      "name": "USB-C Fast Charger",
+      "description": "65W GaN charger",
+      "img": "/placeholder.jpg",
+      "price": 29.99,
+      "category": "accessories",
+      "stock": 100
+    },
+    {
+      "id": 4,
+      "name": "iPad Air",
+      "description": "Lightweight tablet",
+      "img": "/placeholder.jpg",
+      "price": 599.99,
+      "category": "tablets",
+      "stock": 15
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 4,
+    "totalPages": 1
+  }
+}

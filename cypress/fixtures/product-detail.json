@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "name": "iPhone 15 Pro",
+  "description": "Latest Apple smartphone with A17 Pro chip",
+  "img": "/placeholder.jpg",
+  "price": 999.99,
+  "category": "smartphone",
+  "stock": 25
+}

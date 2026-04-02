@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { fetchAllOrders, updateOrderStatus, Order } from "../store/slices/orderSlice";
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from "../store/slices/productSlice";
+import AdminLayout from "../components/AdminLayout";
 
 interface Product {
   id: number;
@@ -87,8 +88,9 @@ const AdminDashboard: React.FC = () => {
     );
 
   return (
-    <div className="space-y-10">
-      <section>
+    <AdminLayout>
+      <div className="max-w-5xl mx-auto space-y-10">
+      <section className="mt-4">
         <div className="flex items-center justify-between mb-6">
           <h1 className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
           <select
@@ -197,10 +199,10 @@ const AdminDashboard: React.FC = () => {
               className={inputClass + " appearance-none"}
             >
               <option value="" className="bg-[#13131C]">Select category</option>
-              <option value="Smartphones" className="bg-[#13131C]">Smartphones</option>
-              <option value="Tablets" className="bg-[#13131C]">Tablets</option>
-              <option value="Accessories" className="bg-[#13131C]">Accessories</option>
-              <option value="Wearables" className="bg-[#13131C]">Wearables</option>
+              <option value="smartphone" className="bg-[#13131C]">Smartphones</option>
+              <option value="tablets" className="bg-[#13131C]">Tablets</option>
+              <option value="accessories" className="bg-[#13131C]">Accessories</option>
+              <option value="wearables" className="bg-[#13131C]">Wearables</option>
             </select>
             <input
               type="number"
@@ -295,7 +297,8 @@ const AdminDashboard: React.FC = () => {
           </div>
         )}
       </section>
-    </div>
+      </div>
+    </AdminLayout>
   );
 };
 

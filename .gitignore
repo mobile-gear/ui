@@ -1,4 +1,3 @@
-# Logs
 logs
 *.log
 npm-debug.log*
@@ -23,3 +22,10 @@ dist-ssr
 *.sw?
 
 .env
+
+cypress/videos
+cypress/screenshots
+tsconfig.tsbuildinfo
+
+coverage
+.nyc_output

@@ -17,7 +17,7 @@ const Login: React.FC = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        const user = await dispatch(loginUser(values)).unwrap();
+        const { user } = await dispatch(loginUser(values)).unwrap();
         navigate(user.role === "admin" ? "/admin" : "/");
       } catch {}
     },
