@@ -14,8 +14,6 @@ describe("Admin Dashboard", () => {
   it("displays orders section", () => {
     cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
     
-    cy.wait(500);
-    
     cy.getBySel("admin-orders-heading").should("exist");
     cy.getBySel("order-number").should("exist");
     cy.getBySel("order-total").should("exist");
@@ -23,21 +21,18 @@ describe("Admin Dashboard", () => {
 
   it("has status filter dropdown", () => {
     cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
-    cy.wait(500);
     cy.getBySel("status-filter").should("exist");
     cy.getBySel("status-filter").select("pending");
   });
 
   it("displays products section", () => {
     cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
-    cy.wait(500);
     cy.getBySel("admin-products-heading").should("exist");
     cy.getBySel("product-name").should("exist");
   });
 
   it("shows add/edit product form", () => {
     cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
-    cy.wait(500);
     cy.getBySel("add-product-btn").should("exist");
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-description").should("exist");
