@@ -62,6 +62,7 @@ const ProductList = memo(({ products, error, loading }: ProductListProps) => {
                 ${product.price.toFixed(2)}
               </span>
               <button
+                data-test="add-to-cart"
                 onClick={() => dispatch(addToCart(product))}
                 className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-body text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
               >

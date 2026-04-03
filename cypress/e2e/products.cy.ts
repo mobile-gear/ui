@@ -5,7 +5,7 @@ describe("Products page", () => {
   });
 
   it("displays the products heading", () => {
-    cy.contains("Products").should("exist");
+    cy.getBySel("products-heading").should("exist");
   });
 
   it("shows product cards after loading", () => {
@@ -16,26 +16,26 @@ describe("Products page", () => {
   });
 
   it("has a search input", () => {
-    cy.get('input[placeholder="Search products..."]').should("exist");
+    cy.getBySel("search-input").should("exist");
   });
 
   it("has category filter", () => {
-    cy.get("#category").should("exist");
-    cy.get("#category").select("smartphone");
+    cy.getBySel("category-filter").should("exist");
+    cy.getBySel("category-filter").select("smartphone");
   });
 
   it("has price filter inputs", () => {
-    cy.get("#minPrice").should("exist");
-    cy.get("#maxPrice").should("exist");
+    cy.getBySel("min-price").should("exist");
+    cy.getBySel("max-price").should("exist");
   });
 
   it("has Apply Filters button", () => {
-    cy.contains("Apply Filters").should("exist");
+    cy.getBySel("apply-filters").should("exist");
   });
 
   it("shows Add to cart buttons", () => {
     cy.wait("@getProducts");
-    cy.contains("Add to cart").should("exist");
+    cy.getBySel("add-to-cart").first().should("exist");
   });
 });
 
@@ -56,7 +56,7 @@ describe("Product detail page", () => {
 
   it("has quantity controls", () => {
     cy.wait("@getProduct");
-    cy.get("#quantity").should("exist");
-    cy.contains("Add to Cart").should("exist");
+    cy.getBySel("quantity-input").should("exist");
+    cy.getBySel("add-to-cart").should("exist");
   });
 });

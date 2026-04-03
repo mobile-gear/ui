@@ -19,7 +19,7 @@ describe("Checkout success page", () => {
   it("shows error when redirect_status is not succeeded", () => {
     cy.visit("/checkout/success?payment_intent=pi_123&redirect_status=failed");
     cy.contains("Payment verification failed").should("exist");
-    cy.contains("Return to Cart").should("exist");
+    cy.getBySel("return-to-cart").should("exist");
   });
 
   it("shows success message on valid payment", () => {
@@ -39,13 +39,13 @@ describe("Checkout success page", () => {
 
     cy.visit("/checkout/success?payment_intent=pi_123&redirect_status=succeeded");
     cy.wait("@createOrder");
-    cy.contains("Payment Successful").should("exist");
+    cy.getBySel("payment-success").should("exist");
     cy.contains("Thank you for your purchase").should("exist");
   });
 
   it("navigates to cart on error", () => {
     cy.visit("/checkout/success?payment_intent=pi_123&redirect_status=failed");
-    cy.contains("Return to Cart").click();
+    cy.getBySel("return-to-cart").click();
     cy.url().should("include", "/cart");
   });
 });

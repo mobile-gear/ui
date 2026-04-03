@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { User, LoginCredentials, RegisterData } from "../../interfaces/auth";
 import { authService } from "../../services/auth.service";
 
-interface AuthState {
+export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;

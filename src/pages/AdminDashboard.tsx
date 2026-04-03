@@ -92,8 +92,9 @@ const AdminDashboard: React.FC = () => {
       <div className="max-w-5xl mx-auto space-y-10">
       <section className="mt-4">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
+          <h1 data-test="admin-orders-heading" className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
           <select
+            data-test="status-filter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
             className="bg-[#13131C] border border-[#252535] text-[#9B9BAD] rounded-lg px-3 py-2 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors"
@@ -173,7 +174,7 @@ const AdminDashboard: React.FC = () => {
       </section>
 
       <section>
-        <h2 className="font-display font-bold text-[#F0EEFF] text-2xl mb-6">Products</h2>
+        <h2 data-test="admin-products-heading" className="font-display font-bold text-[#F0EEFF] text-2xl mb-6">Products</h2>
 
         <form
           onSubmit={editingProduct ? handleUpdateProduct : handleCreateProduct}
@@ -185,6 +186,7 @@ const AdminDashboard: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
+              data-test="product-name"
               type="text"
               placeholder="Product name"
               value={newProduct.name}
@@ -193,6 +195,7 @@ const AdminDashboard: React.FC = () => {
               className={inputClass}
             />
             <select
+              data-test="product-category"
               value={newProduct.category}
               onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
               required
@@ -205,6 +208,7 @@ const AdminDashboard: React.FC = () => {
               <option value="wearables" className="bg-[#13131C]">Wearables</option>
             </select>
             <input
+              data-test="product-price"
               type="number"
               placeholder="Price"
               value={newProduct.price || ""}
@@ -214,6 +218,7 @@ const AdminDashboard: React.FC = () => {
               className={inputClass}
             />
             <input
+              data-test="product-stock"
               type="number"
               placeholder="Stock"
               value={newProduct.stock || ""}
@@ -224,6 +229,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <textarea
+            data-test="product-description"
             placeholder="Product description"
             value={newProduct.description}
             onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
@@ -233,6 +239,7 @@ const AdminDashboard: React.FC = () => {
           />
 
           <input
+            data-test="product-img"
             type="text"
             placeholder="Image URL"
             value={newProduct.img}

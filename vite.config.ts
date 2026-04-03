@@ -3,9 +3,15 @@ import react from "@vitejs/plugin-react-swc";
 import istanbul from "vite-plugin-istanbul";
 import path from "path";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      plugins: isProduction
+        ? [["@swc/plugin-react-remove-properties", { properties: ["^data-test$"] }]]
+        : [],
+    }),
     istanbul({
       include: "src/**/*.{ts,tsx}",
       exclude: ["node_modules", "cypress", "src/interfaces/**", "src/types/**"],

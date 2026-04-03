@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#13131C] border-b border-[#252535]">
+    <nav data-test="navbar" className="bg-[#13131C] border-b border-[#252535]">
       <div className="container mx-auto flex justify-between items-center px-6 h-16">
         <Link
           to="/"
@@ -49,7 +49,7 @@ const Navbar = () => {
             Products
           </Link>
 
-          <Link to="/cart" className="relative text-[#7A7A8C] hover:text-[#F0EEFF] transition-colors">
+          <Link to="/cart" data-test="cart-link" className="relative text-[#7A7A8C] hover:text-[#F0EEFF] transition-colors">
             <BsCart3 className="text-xl" />
             <AnimatePresence>
               {items.length > 0 && (
@@ -57,6 +57,7 @@ const Navbar = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
+                  data-test="cart-badge"
                   className="absolute -top-2 -right-2 bg-[#FF4500] text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold font-body"
                 >
                   {items.length}

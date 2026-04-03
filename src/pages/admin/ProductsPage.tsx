@@ -76,7 +76,7 @@ const ProductsPage: React.FC = () => {
 
   return (
     <AdminLayout>
-      <h1 className="font-display font-bold text-[#F0EEFF] text-2xl mb-8">Products</h1>
+      <h1 data-test="admin-products-heading" className="font-display font-bold text-[#F0EEFF] text-2xl mb-8">Products</h1>
 
       {deleteError && (
         <div className="mb-4 bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF6B47] font-body text-sm rounded-lg px-4 py-3">
@@ -89,11 +89,11 @@ const ProductsPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className={labelClass}>Name</label>
-            <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} className={inputClass} required />
+            <input data-test="new-product-name" type="text" name="name" value={newProduct.name} onChange={handleInputChange} className={inputClass} required />
           </div>
           <div>
             <label className={labelClass}>Category</label>
-            <select name="category" value={newProduct.category} onChange={handleInputChange} className={inputClass + " appearance-none"} required>
+            <select data-test="new-product-category" name="category" value={newProduct.category} onChange={handleInputChange} className={inputClass + " appearance-none"} required>
               {CATEGORIES.map((c) => <option key={c.value} value={c.value} className="bg-[#13131C]">{c.label}</option>)}
             </select>
           </div>

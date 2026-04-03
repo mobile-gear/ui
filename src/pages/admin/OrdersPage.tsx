@@ -57,7 +57,7 @@ const OrdersPage: React.FC = () => {
   return (
     <AdminLayout>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
+        <h1 data-test="orders-heading" className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
         <div className="flex items-center gap-3 flex-wrap">
           <input
             type="number"
@@ -77,6 +77,7 @@ const OrdersPage: React.FC = () => {
             className={inputClass + " w-24"}
           />
           <select
+            data-test="order-status-filter"
             value={filters.status || ""}
             onChange={handleFilterChange}
             className={inputClass}

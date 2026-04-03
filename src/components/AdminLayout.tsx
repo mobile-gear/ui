@@ -23,10 +23,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <span className="text-[#7A7A8C] font-body text-xs uppercase tracking-widest mr-4">
               Admin
             </span>
-            <Link to="/admin/orders" className={navLink("/admin/orders", "Orders")}>
+            <Link data-test="admin-nav-orders" to="/admin/orders" className={navLink("/admin/orders", "Orders")}>
               Orders
             </Link>
-            <Link to="/admin/products" className={navLink("/admin/products", "Products")}>
+            <Link data-test="admin-nav-products" to="/admin/products" className={navLink("/admin/products", "Products")}>
               Products
             </Link>
           </div>

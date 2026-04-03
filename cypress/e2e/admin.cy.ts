@@ -11,13 +11,13 @@ describe("Admin pages", () => {
     });
 
     it("displays orders heading", () => {
-      cy.contains("Orders").should("exist");
+      cy.getBySel("orders-heading").should("exist");
     });
 
     it("shows the admin nav", () => {
       cy.contains("Admin").should("exist");
-      cy.get('a[href="/admin/orders"]').should("exist");
-      cy.get('a[href="/admin/products"]').should("exist");
+      cy.getBySel("admin-nav-orders").should("exist");
+      cy.getBySel("admin-nav-products").should("exist");
     });
 
     it("shows order list after loading", () => {
@@ -27,7 +27,7 @@ describe("Admin pages", () => {
     });
 
     it("has status filter", () => {
-      cy.get("select").should("exist");
+      cy.getBySel("order-status-filter").should("exist");
     });
   });
 
@@ -37,13 +37,13 @@ describe("Admin pages", () => {
     });
 
     it("displays products heading", () => {
-      cy.contains("Products").should("exist");
+      cy.getBySel("admin-products-heading").should("exist");
     });
 
     it("shows add product form", () => {
       cy.contains("Add New Product").should("exist");
-      cy.get('input[name="name"]').should("exist");
-      cy.get('select[name="category"]').should("exist");
+      cy.getBySel("new-product-name").should("exist");
+      cy.getBySel("new-product-category").should("exist");
       cy.get('input[name="price"]').should("exist");
       cy.get('input[name="stock"]').should("exist");
     });

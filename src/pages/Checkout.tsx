@@ -67,10 +67,10 @@ const Checkout: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
-        <h1 className="text-3xl font-display font-bold text-gray-900">Checkout</h1>
+        <h1 data-test="checkout-heading" className="text-3xl font-display font-bold text-gray-900">Checkout</h1>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <h2 className="text-lg font-display font-bold text-gray-900 mb-6">Shipping Address</h2>
+          <h2 data-test="shipping-heading" className="text-lg font-display font-bold text-gray-900 mb-6">Shipping Address</h2>
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="street" className={labelClass}>
@@ -170,6 +170,7 @@ const Checkout: React.FC = () => {
             </div>
 
             <button
+              data-test="save-address"
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-display font-bold text-sm tracking-widest uppercase py-3.5 rounded-lg transition-colors"
             >
@@ -188,7 +189,7 @@ const Checkout: React.FC = () => {
         )}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <h2 className="text-lg font-display font-bold text-gray-900 mb-4">Order Summary</h2>
+          <h2 data-test="order-summary" className="text-lg font-display font-bold text-gray-900 mb-4">Order Summary</h2>
           <div className="divide-y divide-gray-100">
             {items.map((item) => (
               <div key={item.id} className="flex justify-between py-3 text-sm text-gray-700">

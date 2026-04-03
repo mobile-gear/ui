@@ -233,7 +233,7 @@ const ProductsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#09090F]">
       <div className="container mx-auto px-6 py-10">
-        <h1 className="font-display font-bold text-[#F0EEFF] text-3xl mb-8">Products</h1>
+        <h1 data-test="products-heading" className="font-display font-bold text-[#F0EEFF] text-3xl mb-8">Products</h1>
 
         <form
           className="mb-8 bg-[#13131C] border border-[#252535] rounded-2xl p-6 space-y-5"
@@ -243,6 +243,7 @@ const ProductsPage: React.FC = () => {
             <div className="flex-1">
               <label className={labelClass}>Search</label>
               <input
+                data-test="search-input"
                 type="text"
                 placeholder="Search products..."
                 value={draftSearchTerm}
@@ -253,6 +254,7 @@ const ProductsPage: React.FC = () => {
             <button
               type="button"
               aria-label="Sort by price"
+              data-test="sort-price"
               onClick={() => handleSort("price")}
               className="flex items-center gap-2 bg-[#1E1E2C] border border-[#252535] hover:border-[#FF4500]/40 text-[#9B9BAD] hover:text-[#F0EEFF] font-body text-sm px-4 py-2.5 rounded-lg transition-colors"
               title="Sort by price"
@@ -265,6 +267,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <label htmlFor="category" className={labelClass}>Category</label>
               <select
+                data-test="category-filter"
                 id="category"
                 value={draftCategory}
                 onChange={handleCategoryChange}
@@ -280,6 +283,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <label htmlFor="minPrice" className={labelClass}>Min. Price</label>
               <input
+                data-test="min-price"
                 type="number"
                 id="minPrice"
                 name="minPrice"
@@ -293,6 +297,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <label htmlFor="maxPrice" className={labelClass}>Max. Price</label>
               <input
+                data-test="max-price"
                 type="number"
                 id="maxPrice"
                 name="maxPrice"
@@ -306,6 +311,7 @@ const ProductsPage: React.FC = () => {
           </div>
 
           <button
+            data-test="apply-filters"
             type="submit"
             className="w-full bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase py-3 rounded-lg transition-colors"
           >

@@ -1,18 +1,18 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "@/store/slices/authSlice";
+import authReducer, { AuthState } from "@/store/slices/authSlice";
 import PrivateRoute from "@/components/PrivateRoute";
 
-const createStore = (authState: Record<string, unknown>) =>
+const createStore = (authState: AuthState) =>
   configureStore({
     reducer: { auth: authReducer },
-    preloadedState: { auth: authState as ReturnType<typeof authReducer> },
+    preloadedState: { auth: authState },
   });
 
-const renderRoute = (authState: Record<string, unknown>, allowedRoles: string[]) =>
+const renderRoute = (authState: AuthState, allowedRoles: string[]) =>
   render(
     <Provider store={createStore(authState)}>
       <MemoryRouter>

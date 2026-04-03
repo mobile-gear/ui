@@ -3,9 +3,10 @@ import { describe, it, expect, vi } from "vitest";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { MemoryRouter } from "react-router-dom";
-import cartReducer from "@/store/slices/cartSlice";
+import cartReducer, { CartItem } from "@/store/slices/cartSlice";
 import authReducer from "@/store/slices/authSlice";
 import Cart from "@/pages/Cart";
+import { User } from "@/interfaces/auth";
 
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -13,9 +14,9 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
-const cartItem = { id: 1, name: "Phone", price: 999, img: "/img.jpg", quantity: 2 };
+const cartItem: CartItem = { id: 1, name: "Phone", description: "", img: "/img.jpg", price: 999, category: "", stock: 10, quantity: 2 };
 
-const createStore = (cartItems: typeof cartItem[] = [], user: Record<string, unknown> | null = null) =>
+const createStore = (cartItems: CartItem[] = [], user: User | null = null) =>
   configureStore({
     reducer: { cart: cartReducer, auth: authReducer },
     preloadedState: {
@@ -24,11 +25,11 @@ const createStore = (cartItems: typeof cartItem[] = [], user: Record<string, unk
         totalItems: cartItems.reduce((s, i) => s + i.quantity, 0),
         totalPrice: cartItems.reduce((s, i) => s + i.price * i.quantity, 0),
       },
-      auth: { user: user as ReturnType<typeof authReducer>["user"], isAuthenticated: !!user, isLoading: false, error: null },
+      auth: { user, isAuthenticated: !!user, isLoading: false, error: null },
     },
   });
 
-const renderWith = (cartItems: typeof cartItem[] = [], user: Record<string, unknown> | null = null) =>
+const renderWith = (cartItems: CartItem[] = [], user: User | null = null) =>
   render(
     <Provider store={createStore(cartItems, user)}>
       <MemoryRouter>
@@ -106,7 +107,7 @@ describe("Cart", () => {
   });
 
   it("navigates to /checkout on checkout when logged in", () => {
-    renderWith([cartItem], { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" });
+    renderWith([cartItem], { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" as const });
     fireEvent.click(screen.getByText("Proceed to Checkout"));
     expect(mockNavigate).toHaveBeenCalledWith("/checkout");
   });

@@ -33,11 +33,11 @@ const Cart: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-black">Your Cart</h1>
+      <h1 data-test="cart-heading" className="text-3xl font-bold mb-8 text-black">Your Cart</h1>
 
       {items.length === 0 ? (
         <div className="text-center">
-          <p className="text-xl text-gray-600 mb-4">Your cart is empty</p>
+          <p data-test="empty-cart" className="text-xl text-gray-600 mb-4">Your cart is empty</p>
           <Link
             to="/products"
             className="bg-blue-600 text-white hover:text-white px-6 py-3 rounded hover:bg-blue-700"
@@ -107,6 +107,7 @@ const Cart: React.FC = () => {
             </div>
 
             <button
+              data-test="checkout-btn"
               onClick={handleCheckout}
               className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
             >

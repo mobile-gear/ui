@@ -8,30 +8,30 @@ describe("Admin Dashboard", () => {
 
   it("displays orders section", () => {
     cy.wait("@getOrders");
-    cy.contains("Orders").should("exist");
+    cy.getBySel("admin-orders-heading").should("exist");
     cy.contains("Order #1").should("exist");
     cy.contains("$1999.98").should("exist");
   });
 
   it("has status filter dropdown", () => {
     cy.wait("@getOrders");
-    cy.get("select").first().should("exist");
-    cy.get("select").first().select("pending");
+    cy.getBySel("status-filter").should("exist");
+    cy.getBySel("status-filter").select("pending");
   });
 
   it("displays products section", () => {
     cy.wait("@getProducts");
-    cy.contains("Products").should("exist");
+    cy.getBySel("admin-products-heading").should("exist");
     cy.contains("iPhone 15 Pro").should("exist");
   });
 
   it("shows add/edit product form", () => {
     cy.contains("Add Product").should("exist");
-    cy.get('input[placeholder="Product name"]').should("exist");
-    cy.get('textarea[placeholder="Product description"]').should("exist");
-    cy.get('input[placeholder="Price"]').should("exist");
-    cy.get('input[placeholder="Stock"]').should("exist");
-    cy.get('input[placeholder="Image URL"]').should("exist");
+    cy.getBySel("product-name").should("exist");
+    cy.getBySel("product-description").should("exist");
+    cy.getBySel("product-price").should("exist");
+    cy.getBySel("product-stock").should("exist");
+    cy.getBySel("product-img").should("exist");
   });
 
   it("fills and submits the add product form", () => {
@@ -40,12 +40,12 @@ describe("Admin Dashboard", () => {
       body: { id: 5, name: "New Phone", description: "A new phone", price: 499, category: "smartphone", stock: 20, img: "/new.jpg" },
     }).as("createProduct");
 
-    cy.get('input[placeholder="Product name"]').type("New Phone");
-    cy.get('form select').select("smartphone");
-    cy.get('input[placeholder="Price"]').type("499");
-    cy.get('input[placeholder="Stock"]').type("20");
-    cy.get('textarea[placeholder="Product description"]').type("A new phone");
-    cy.get('input[placeholder="Image URL"]').type("/new.jpg");
+    cy.getBySel("product-name").type("New Phone");
+    cy.getBySel("product-category").select("smartphone");
+    cy.getBySel("product-price").type("499");
+    cy.getBySel("product-stock").type("20");
+    cy.getBySel("product-description").type("A new phone");
+    cy.getBySel("product-img").type("/new.jpg");
     cy.get('form button[type="submit"]').click();
 
     cy.wait("@createProduct");

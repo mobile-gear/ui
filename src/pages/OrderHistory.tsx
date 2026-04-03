@@ -42,7 +42,7 @@ const OrderHistory: React.FC = () => {
     <div className="min-h-screen bg-[#0D0D14] px-4 py-10">
       <div className="container mx-auto max-w-3xl">
         <h1 className="font-display text-2xl font-bold text-[#F0EEFF] mb-8 tracking-tight">
-          Order History
+          <span data-test="order-history-heading">Order History</span>
         </h1>
 
         {orders.length === 0 ? (

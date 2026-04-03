@@ -52,6 +52,7 @@ const Login: React.FC = () => {
               Email address
             </label>
             <input
+              data-test="login-email"
               id="email"
               name="email"
               type="email"
@@ -72,6 +73,7 @@ const Login: React.FC = () => {
               Password
             </label>
             <input
+              data-test="login-password"
               id="password"
               name="password"
               type="password"
@@ -94,6 +96,7 @@ const Login: React.FC = () => {
           )}
 
           <motion.button
+            data-test="login-submit"
             type="submit"
             disabled={isLoading || formik.isSubmitting}
             whileTap={{ scale: 0.98 }}

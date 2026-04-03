@@ -38,7 +38,7 @@ describe("Register page", () => {
     cy.get("#password").type("password123");
     cy.get("#confirmPassword").type("password123");
 
-    cy.get("form").submit();
+    cy.getBySel("register-form").submit();
 
     cy.wait("@register", { timeout: 10000 });
     cy.url().should("include", "/login");

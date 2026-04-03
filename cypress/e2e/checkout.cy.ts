@@ -20,18 +20,18 @@ describe("Checkout page", () => {
 
   function addItemAndGoToCheckout() {
     cy.visit("/products/1");
-    cy.contains("Add to Cart").click();
-    cy.contains("Proceed to Checkout").should("not.exist");
-    cy.get('a[href="/cart"]').first().click();
-    cy.contains("Proceed to Checkout").click();
+    cy.getBySel("add-to-cart").click();
+    cy.getBySel("checkout-btn").should("not.exist");
+    cy.getBySel("cart-link").first().click();
+    cy.getBySel("checkout-btn").click();
   }
 
   it("shows checkout page with items", () => {
     addItemAndGoToCheckout();
     cy.wait("@createPayment");
-    cy.contains("Checkout").should("exist");
-    cy.contains("Shipping Address").should("exist");
-    cy.contains("Order Summary").should("exist");
+    cy.getBySel("checkout-heading").should("exist");
+    cy.getBySel("shipping-heading").should("exist");
+    cy.getBySel("order-summary").should("exist");
     cy.contains("iPhone 15 Pro").should("exist");
   });
 
@@ -48,7 +48,7 @@ describe("Checkout page", () => {
   it("validates shipping address form", () => {
     addItemAndGoToCheckout();
     cy.wait("@createPayment");
-    cy.contains("Save address").click();
+    cy.getBySel("save-address").click();
     cy.contains("Street address is required").should("exist");
   });
 
@@ -60,7 +60,7 @@ describe("Checkout page", () => {
     cy.get("#state").type("IL");
     cy.get("#zipCode").type("62704");
     cy.get("#country").type("US");
-    cy.contains("Save address").click();
+    cy.getBySel("save-address").click();
     cy.contains("Update address").should("exist");
   });
 });

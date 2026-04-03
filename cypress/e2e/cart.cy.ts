@@ -6,7 +6,7 @@ describe("Cart page", () => {
 
   it("shows empty cart message when no items", () => {
     cy.visit("/cart");
-    cy.contains("Your cart is empty").should("exist");
+    cy.getBySel("empty-cart").should("exist");
     cy.contains("Continue Shopping").should("exist");
   });
 
@@ -14,8 +14,8 @@ describe("Cart page", () => {
     cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" }).as("getProduct");
     cy.visit("/products/1");
     cy.wait("@getProduct");
-    cy.contains("Add to Cart").click();
-    cy.get('a[href="/cart"]').first().click();
+    cy.getBySel("add-to-cart").click();
+    cy.getBySel("cart-link").first().click();
     cy.contains("iPhone 15 Pro").should("exist");
     cy.contains("$999.99").should("exist");
     cy.contains("Cart Summary").should("exist");

@@ -61,7 +61,7 @@ const Home: React.FC = () => {
             style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontFamily: "'Big Shoulders Display', sans-serif", scaleX: 1.25 }}
           >
             The gear you need.
-            <span className="text-[#FF4500]" style={{ display: "block", marginTop: "0.5rem" }}>The signal you send.</span>
+            <span data-test="hero-subtitle" className="text-[#FF4500]" style={{ display: "block", marginTop: "0.5rem" }}>The signal you send.</span>
           </motion.h1>
 
           <motion.p
@@ -99,12 +99,14 @@ const Home: React.FC = () => {
               <motion.div key="guest" variants={rise} className="flex justify-center gap-4">
                 <Link
                   to="/register"
+                  data-test="get-started-btn"
                   className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-xl transition-colors"
                 >
                   Get Started
                 </Link>
                 <Link
                   to="/products"
+                  data-test="browse-btn"
                   className="bg-[#1E1E2C] hover:bg-[#252535] border border-[#252535] text-[#F0EEFF] font-display font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-xl transition-colors"
                 >
                   Browse
@@ -141,7 +143,7 @@ const Home: React.FC = () => {
             className="font-bold text-[#F0EEFF] text-3xl mb-10"
             style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
-            Shop by Category
+            <span data-test="category-heading">Shop by Category</span>
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

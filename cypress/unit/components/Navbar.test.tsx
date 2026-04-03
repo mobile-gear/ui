@@ -4,8 +4,9 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { MemoryRouter } from "react-router-dom";
 import authReducer from "@/store/slices/authSlice";
-import cartReducer from "@/store/slices/cartSlice";
+import cartReducer, { CartItem } from "@/store/slices/cartSlice";
 import Navbar from "@/components/Navbar";
+import { User } from "@/interfaces/auth";
 
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -13,10 +14,10 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
-const user = { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" as const };
-const admin = { ...user, role: "admin" as const };
+const user: User = { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" };
+const admin: User = { ...user, role: "admin" };
 
-const createStore = (authUser: typeof user | null = null, cartItems: { id: number; name: string; price: number; img: string; quantity: number }[] = []) =>
+const createStore = (authUser: User | null = null, cartItems: CartItem[] = []) =>
   configureStore({
     reducer: { auth: authReducer, cart: cartReducer },
     preloadedState: {
@@ -25,7 +26,7 @@ const createStore = (authUser: typeof user | null = null, cartItems: { id: numbe
     },
   });
 
-const renderWith = (authUser: typeof user | null = null, cartItems: { id: number; name: string; price: number; img: string; quantity: number }[] = []) =>
+const renderWith = (authUser: User | null = null, cartItems: CartItem[] = []) =>
   render(
     <Provider store={createStore(authUser, cartItems)}>
       <MemoryRouter>
@@ -56,7 +57,7 @@ describe("Navbar", () => {
   });
 
   it("shows cart badge when items in cart", () => {
-    renderWith(null, [{ id: 1, name: "P", price: 10, img: "", quantity: 1 }]);
+    renderWith(null, [{ id: 1, name: "P", description: "", img: "", price: 10, category: "", stock: 5, quantity: 1 }]);
     expect(screen.getByText("1")).toBeInTheDocument();
   });
 

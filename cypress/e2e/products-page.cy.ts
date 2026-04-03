@@ -6,33 +6,33 @@ describe("Products page - filters and interactions", () => {
   });
 
   it("applies search filter", () => {
-    cy.get('input[placeholder="Search products..."]').type("iPhone");
-    cy.contains("Apply Filters").click();
+    cy.getBySel("search-input").type("iPhone");
+    cy.getBySel("apply-filters").click();
   });
 
   it("applies price filters", () => {
-    cy.get("#minPrice").type("100");
-    cy.get("#maxPrice").type("1000");
-    cy.contains("Apply Filters").click();
+    cy.getBySel("min-price").type("100");
+    cy.getBySel("max-price").type("1000");
+    cy.getBySel("apply-filters").click();
   });
 
   it("sorts by price", () => {
-    cy.contains("Price").click();
+    cy.getBySel("sort-price").click();
   });
 
   it("toggles sort order on double click", () => {
-    cy.contains("Price").click();
-    cy.contains("Price").click();
+    cy.getBySel("sort-price").click();
+    cy.getBySel("sort-price").click();
   });
 
   it("clears sort on triple click", () => {
-    cy.contains("Price").click();
-    cy.contains("Price").click();
-    cy.contains("Price").click();
+    cy.getBySel("sort-price").click();
+    cy.getBySel("sort-price").click();
+    cy.getBySel("sort-price").click();
   });
 
   it("changes category filter", () => {
-    cy.get("#category").select("smartphone");
+    cy.getBySel("category-filter").select("smartphone");
     cy.wait("@getProducts");
   });
 
@@ -43,7 +43,7 @@ describe("Products page - filters and interactions", () => {
   });
 
   it("adds product to cart from listing", () => {
-    cy.contains("Add to cart").first().click();
+    cy.getBySel("add-to-cart").first().click();
   });
 
   it("shows page number in URL", () => {
@@ -60,19 +60,19 @@ describe("Product detail - interactions", () => {
   });
 
   it("increments quantity", () => {
-    cy.contains("+").click();
-    cy.get("#quantity").should("have.value", "2");
+    cy.getBySel("qty-increment").click();
+    cy.getBySel("quantity-input").should("have.value", "2");
   });
 
   it("decrements quantity (min 1)", () => {
-    cy.contains("+").click();
-    cy.contains("−").click();
-    cy.get("#quantity").should("have.value", "1");
+    cy.getBySel("qty-increment").click();
+    cy.getBySel("qty-decrement").click();
+    cy.getBySel("quantity-input").should("have.value", "1");
   });
 
   it("adds multiple items to cart", () => {
-    cy.contains("+").click();
-    cy.contains("+").click();
-    cy.contains("Add to Cart").click();
+    cy.getBySel("qty-increment").click();
+    cy.getBySel("qty-increment").click();
+    cy.getBySel("add-to-cart").click();
   });
 });

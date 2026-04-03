@@ -73,7 +73,7 @@ const Register: React.FC = () => {
           </p>
         </div>
 
-        <form onSubmit={formik.handleSubmit} className="space-y-5">
+        <form data-test="register-form" onSubmit={formik.handleSubmit} className="space-y-5">
           <div className="grid grid-cols-2 gap-4">
             {fields.slice(0, 2).map((field) => (
               <div key={field.id}>
@@ -132,6 +132,7 @@ const Register: React.FC = () => {
           )}
 
           <motion.button
+            data-test="register-submit"
             type="submit"
             disabled={isLoading || formik.isSubmitting}
             whileTap={{ scale: 0.98 }}

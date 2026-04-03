@@ -7,7 +7,7 @@ describe("Order history page", () => {
   });
 
   it("displays order history heading", () => {
-    cy.contains("Order History").should("exist");
+    cy.getBySel("order-history-heading").should("exist");
   });
 
   it("shows orders after loading", () => {

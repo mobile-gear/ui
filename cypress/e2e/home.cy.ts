@@ -7,12 +7,12 @@ describe("Home page", () => {
   });
 
   it("loads and displays the navbar", () => {
-    cy.get("nav").should("exist");
+    cy.getBySel("navbar").should("exist");
   });
 
   it("displays the hero section", () => {
     cy.contains("The gear you need.").should("be.visible");
-    cy.contains("The signal you send.").should("be.visible");
+    cy.getBySel("hero-subtitle").should("be.visible");
   });
 
   it("shows featured products after loading", () => {
@@ -22,14 +22,14 @@ describe("Home page", () => {
   });
 
   it("shows category links", () => {
-    cy.contains("Shop by Category").scrollIntoView().should("be.visible");
+    cy.getBySel("category-heading").scrollIntoView().should("be.visible");
     cy.contains("Smartphones").should("be.visible");
     cy.contains("Accessories").should("be.visible");
     cy.contains("Tablets").should("be.visible");
   });
 
   it("shows guest CTA buttons when not logged in", () => {
-    cy.contains("Get Started").should("be.visible");
-    cy.contains("Browse").should("be.visible");
+    cy.getBySel("get-started-btn").should("be.visible");
+    cy.getBySel("browse-btn").should("be.visible");
   });
 });
