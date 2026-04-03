@@ -44,15 +44,17 @@ const Register: React.FC = () => {
     type: string;
     placeholder: string;
     autoComplete?: string;
+    "data-test"?: string;
   }> = [
-    { id: "firstName", label: "First name", type: "text", placeholder: "John" },
-    { id: "lastName", label: "Last name", type: "text", placeholder: "Doe" },
+    { id: "firstName", label: "First name", type: "text", placeholder: "John", "data-test": "first-name" },
+    { id: "lastName", label: "Last name", type: "text", placeholder: "Doe", "data-test": "last-name" },
     {
       id: "email",
       label: "Email address",
       type: "email",
       placeholder: "you@example.com",
       autoComplete: "email",
+      "data-test": "email",
     },
     {
       id: "password",
@@ -60,12 +62,14 @@ const Register: React.FC = () => {
       type: "password",
       placeholder: "Min. 8 characters",
       autoComplete: "new-password",
+      "data-test": "password",
     },
     {
       id: "confirmPassword",
       label: "Confirm password",
       type: "password",
       placeholder: "Repeat your password",
+      "data-test": "confirm-password",
     },
   ];
 
@@ -124,6 +128,7 @@ const Register: React.FC = () => {
                   value={formik.values[field.id]}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  data-test={field["data-test"]}
                   className="w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors placeholder-[#3A3A4A]"
                 />
                 {formik.touched[field.id] && formik.errors[field.id] && (
