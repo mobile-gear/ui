@@ -14,7 +14,6 @@ global.IntersectionObserver = class IntersectionObserver {
   takeRecords(): IntersectionObserverEntry[] { return []; }
 };
 
-// Ignorar errores de compatibilidad ES/CommonJS que no afectan los tests
 const originalConsoleError = console.error;
 console.error = (...args) => {
   const message = args[0];
@@ -24,7 +23,7 @@ console.error = (...args) => {
      message.includes('html-encoding-sniffer') ||
      message.includes('@exodus/bytes'))
   ) {
-    return; // Ignorar estos errores
+    return;
   }
   originalConsoleError(...args);
 };
