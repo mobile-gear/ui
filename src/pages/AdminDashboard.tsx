@@ -118,7 +118,7 @@ const AdminDashboard: React.FC = () => {
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="font-display font-bold text-[#F0EEFF] text-sm">
+                  <p data-test="order-number" className="font-display font-bold text-[#F0EEFF] text-sm">
                     Order #{order.id}
                   </p>
                   <p className="text-[#7A7A8C] font-body text-xs mt-0.5">
@@ -138,7 +138,7 @@ const AdminDashboard: React.FC = () => {
                 </select>
               </div>
 
-              <div className="border-t border-[#252535] pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div data-test="order-items-section" className="border-t border-[#252535] pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <p className="font-body text-xs text-[#7A7A8C] uppercase tracking-wider mb-2">Items</p>
                   <div className="space-y-1">
@@ -166,7 +166,7 @@ const AdminDashboard: React.FC = () => {
 
               <div className="border-t border-[#252535] mt-4 pt-4 flex justify-between items-center">
                 <span className="text-[#7A7A8C] font-body text-sm">Total</span>
-                <span className="font-display font-bold text-[#FF4500] text-lg">
+                <span data-test="order-total" className="font-display font-bold text-[#FF4500] text-lg">
                   ${order.total.toFixed?.(2)}
                 </span>
               </div>
@@ -182,7 +182,7 @@ const AdminDashboard: React.FC = () => {
           onSubmit={editingProduct ? handleUpdateProduct : handleCreateProduct}
           className="bg-[#13131C] border border-[#252535] rounded-2xl p-6 mb-8"
         >
-          <h3 className="font-display font-bold text-[#F0EEFF] text-lg mb-5">
+          <h3 data-test="add-product-title" className="font-display font-bold text-[#F0EEFF] text-lg mb-5">
             {editingProduct ? "Edit Product" : "Add Product"}
           </h3>
 
@@ -252,6 +252,7 @@ const AdminDashboard: React.FC = () => {
 
           <div className="flex gap-3">
             <button
+              data-test={editingProduct ? "update-product-btn" : "add-product-btn"}
               type="submit"
               className="flex-1 bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase py-3 rounded-lg transition-colors"
             >
@@ -259,6 +260,7 @@ const AdminDashboard: React.FC = () => {
             </button>
             {editingProduct && (
               <button
+                data-test="cancel-edit-btn"
                 type="button"
                 onClick={() => { setEditingProduct(null); setNewProduct(emptyProduct); }}
                 className="flex-1 bg-[#1E1E2C] hover:bg-[#252535] border border-[#252535] text-[#9B9BAD] font-body text-sm py-3 rounded-lg transition-colors"
@@ -288,12 +290,14 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   <div className="flex gap-2 mt-3">
                     <button
+                      data-test="edit-product"
                       onClick={() => handleEditProduct(product)}
                       className="flex-1 bg-[#1E1E2C] hover:bg-[#252535] border border-[#252535] text-[#F0EEFF] font-body text-xs py-2 rounded-lg transition-colors"
                     >
                       Edit
                     </button>
                     <button
+                      data-test="delete-product-btn"
                       onClick={() => handleDeleteProduct(product.id)}
                       className="flex-1 bg-[#FF4500]/10 hover:bg-[#FF4500]/20 border border-[#FF4500]/20 text-[#FF6B47] font-body text-xs py-2 rounded-lg transition-colors"
                     >

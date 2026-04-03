@@ -23,7 +23,7 @@ describe("Home page", () => {
 
   it("shows category links", () => {
     cy.getBySel("category-heading").scrollIntoView().should("be.visible");
-    cy.getBySel("category-smartphones").should("be.visible");
+    cy.getBySel("category-smartphone").should("be.visible");
     cy.getBySel("category-accessories").should("be.visible");
     cy.getBySel("category-tablets").should("be.visible");
   });

@@ -74,7 +74,7 @@ const FeaturedProducts = () => {
                 <h3 data-test="featured-product" className="font-body font-medium text-[#F0EEFF] text-sm mb-2 line-clamp-2">
                   {product.name}
                 </h3>
-                <p data-test="featured-price" className="font-display font-bold text-[#FF4500] text-xl">
+                <p data-test="product-price" className="font-display font-bold text-[#FF4500] text-xl">
                   ${product.price.toFixed(2)}
                 </p>
               </div>

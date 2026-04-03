@@ -3,11 +3,12 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { MemoryRouter } from "react-router-dom";
-import cartReducer from "@/store/slices/cartSlice";
+import cartReducer, { CartItem } from "@/store/slices/cartSlice";
 import checkoutReducer from "@/store/slices/checkoutSlice";
 import orderReducer from "@/store/slices/orderSlice";
 import CheckoutSuccess from "@/pages/CheckoutSuccess";
 import { orderService } from "@/services/order.service";
+import { OrderFilters } from "@/interfaces/order";
 
 vi.mock("@/services/order.service");
 const mockedOrderService = vi.mocked(orderService, true);
@@ -19,7 +20,16 @@ vi.mock("react-router-dom", async () => {
 });
 
 const address = { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" };
-const cartItem = { id: 1, name: "Phone", price: 999, img: "/img.jpg", quantity: 2 };
+const cartItem: CartItem = { 
+  id: 1, 
+  name: "Phone", 
+  description: "A smartphone", 
+  category: "smartphones", 
+  stock: 10,
+  price: 999, 
+  img: "/img.jpg", 
+  quantity: 2 
+};
 
 const createStore = (shippingAddress = address as ReturnType<typeof checkoutReducer>["shippingAddress"], items = [cartItem]) =>
   configureStore({
@@ -27,7 +37,19 @@ const createStore = (shippingAddress = address as ReturnType<typeof checkoutRedu
     preloadedState: {
       cart: { items, totalItems: items.length, totalPrice: items.reduce((s, i) => s + i.price * i.quantity, 0) },
       checkout: { isLoading: false, error: null, clientSecret: null, shippingAddress, success: false },
-      orders: { orders: [], currentOrder: null, isLoading: false, error: null, pagination: null, filters: { page: 1, limit: 10, sortBy: "createdAt", sortOrder: "desc" as const } },
+      orders: { 
+        orders: [], 
+        currentOrder: null, 
+        isLoading: false, 
+        error: null, 
+        pagination: null, 
+        filters: { 
+          page: 1, 
+          limit: 10, 
+          sortBy: "createdAt" as OrderFilters["sortBy"], 
+          sortOrder: "desc" as const 
+        } 
+      },
     },
   });
 
@@ -43,8 +65,8 @@ afterEach(() => {
 });
 
 const setSearch = (search: string) => {
-  delete (window as Record<string, unknown>).location;
-  (window as Record<string, unknown>).location = { ...originalLocation, search, origin: "http://localhost:3000" };
+  delete (window as unknown as Record<string, unknown>).location;
+  (window as unknown as Record<string, unknown>).location = { ...originalLocation, search, origin: "http://localhost:3000" };
 };
 
 describe("CheckoutSuccess", () => {
@@ -54,7 +76,7 @@ describe("CheckoutSuccess", () => {
     setSearch("?payment_intent=pi_123&redirect_status=succeeded");
     mockedOrderService.create.mockResolvedValue({
       id: 1, userId: 1, items: [{ productId: 1, quantity: 2, price: 999 }],
-      total: 1998, paymentIntentId: "pi_123", status: "completed", shippingAddress: address, createdAt: "",
+      total: 1998, paymentIntentId: "pi_123", status: "delivered", shippingAddress: address, createdAt: "",
     });
 
     render(

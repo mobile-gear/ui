@@ -41,7 +41,7 @@ describe("Admin pages", () => {
     });
 
     it("shows add product form", () => {
-      cy.getBySel("add-new-product-btn").should("exist");
+      cy.getBySel("add-product-btn").should("exist");
       cy.getBySel("new-product-name").should("exist");
       cy.getBySel("new-product-category").should("exist");
       cy.get('input[name="price"]').should("exist");
@@ -50,7 +50,7 @@ describe("Admin pages", () => {
 
     it("shows product table", () => {
       cy.contains("iPhone 15 Pro").should("exist");
-      cy.getBySel("delete-product-btn").should("exist");
+      cy.getBySel("delete-product").should("exist");
     });
   });
 });

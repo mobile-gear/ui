@@ -30,7 +30,7 @@ describe("OrderList", () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
     );
-    const orderIds = await screen.findAllByTestId("order-id");
+    const orderIds = await screen.findAllByTestId("order-number-short");
     expect(orderIds[0]).toHaveTextContent("#1");
     expect(orderIds[1]).toHaveTextContent("#2");
     const orderTotals = await screen.findAllByTestId("order-total");

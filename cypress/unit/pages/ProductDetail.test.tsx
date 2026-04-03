@@ -118,7 +118,7 @@ describe("ProductDetail", () => {
       </Provider>,
     );
     expect(await screen.findByText("Out of stock")).toBeInTheDocument();
-    expect(screen.getByTestId("out-of-stock-btn")).toBeDisabled();
+    expect(screen.getByTestId("add-to-cart")).toBeDisabled();
   });
 
   it("renders product details", async () => {
@@ -146,9 +146,9 @@ describe("ProductDetail", () => {
       </Provider>,
     );
     const input = await screen.findByDisplayValue("1");
-    fireEvent.click(screen.getByTestId("quantity-increment"));
+    fireEvent.click(screen.getByTestId("qty-increment"));
     expect(input).toHaveValue(2);
-    fireEvent.click(screen.getByTestId("quantity-decrement"));
+    fireEvent.click(screen.getByTestId("qty-decrement"));
     expect(input).toHaveValue(1);
   });
 
@@ -163,7 +163,7 @@ describe("ProductDetail", () => {
       </Provider>,
     );
     const input = await screen.findByDisplayValue("1");
-    fireEvent.click(screen.getByTestId("quantity-decrement"));
+    fireEvent.click(screen.getByTestId("qty-decrement"));
     expect(input).toHaveValue(1);
   });
 
@@ -208,8 +208,8 @@ describe("ProductDetail", () => {
       </Provider>,
     );
     await screen.findByText("Out of stock");
-    expect(screen.queryByTestId("quantity-increment")).not.toBeInTheDocument();
-    expect(screen.queryByTestId("quantity-decrement")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("qty-increment")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("qty-decrement")).not.toBeInTheDocument();
   });
 
   it("dispatches addToCart on click", async () => {

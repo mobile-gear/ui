@@ -1,10 +1,14 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "@/store/slices/cartSlice";
 import ProductList from "@/components/ProductList";
+
+vi.mock("@/components/Spinner", () => ({
+  default: () => <div data-test="spinner">Loading...</div>,
+}));
 
 const mockProducts = [
   { id: 1, name: "Phone Case", description: "Protective case", img: "/case.jpg", price: 19.99, category: "accessories", stock: 50 },
@@ -12,7 +16,9 @@ const mockProducts = [
 ];
 
 const renderWith = (props: { products: typeof mockProducts; error: string | null; loading: boolean }) => {
-  const store = configureStore({ reducer: { cart: cartReducer } });
+  const store = configureStore({
+    reducer: { cart: cartReducer },
+  });
   return render(
     <Provider store={store}>
       <MemoryRouter>
@@ -22,7 +28,11 @@ const renderWith = (props: { products: typeof mockProducts; error: string | null
   );
 };
 
-describe("ProductList", () => {
+describe("ProductList - Branch Coverage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("renders product cards", async () => {
     renderWith({ products: mockProducts, error: null, loading: false });
     const names = await screen.findAllByTestId("product-name");
@@ -56,5 +66,37 @@ describe("ProductList", () => {
     const prices = await screen.findAllByTestId("product-price");
     expect(prices[0]).toHaveTextContent("$19.99");
     expect(prices[1]).toHaveTextContent("$29.99");
+  });
+
+  it("renders product links correctly", async () => {
+    renderWith({ products: mockProducts, error: null, loading: false });
+    const links = await screen.findAllByTestId("product-name");
+    expect(links[0]).toHaveAttribute("href", "/products/1");
+    expect(links[1]).toHaveAttribute("href", "/products/2");
+  });
+
+  it("renders correct number of product cards", () => {
+    renderWith({ products: mockProducts, error: null, loading: false });
+    const cards = screen.getAllByTestId("product-card");
+    expect(cards).toHaveLength(2);
+  });
+
+  it("handles single product correctly", () => {
+    const singleProduct = [mockProducts[0]];
+    renderWith({ products: singleProduct, error: null, loading: false });
+    expect(screen.getByTestId("product-card")).toBeInTheDocument();
+    expect(screen.getByTestId("product-name")).toHaveTextContent("Phone Case");
+  });
+
+  it("shows error with custom message", () => {
+    renderWith({ products: [], error: "Network timeout", loading: false });
+    expect(screen.getByTestId("product-list-error")).toHaveTextContent("Network timeout");
+  });
+
+  it("shows empty state with no products", () => {
+    renderWith({ products: [], error: null, loading: false });
+    const emptyMessage = screen.getByTestId("product-list-empty");
+    expect(emptyMessage).toBeInTheDocument();
+    expect(emptyMessage).toHaveTextContent("No products found.");
   });
 });

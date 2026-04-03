@@ -193,7 +193,7 @@ const Checkout: React.FC = () => {
           <div className="divide-y divide-gray-100">
             {items.map((item) => (
               <div key={item.id} className="flex justify-between py-3 text-sm text-gray-700">
-                <span>
+                <span data-test="product-name">
                   {item.name} <span className="text-gray-400">× {item.quantity}</span>
                 </span>
                 <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>

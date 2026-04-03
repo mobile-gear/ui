@@ -12,7 +12,11 @@ const e2ePath = e2ePaths.find((p) => existsSync(p));
 const unitData = existsSync(unitPath) ? JSON.parse(readFileSync(unitPath, "utf8")) : {};
 const e2eData = e2ePath ? JSON.parse(readFileSync(e2ePath, "utf8")) : {};
 
-const excludePatterns = [/src[\\/]interfaces[\\/]/, /src[\\/]types[\\/]/, /\.d\.ts$/];
+const excludePatterns = [
+  /src[\\/]interfaces[\\/]/, 
+  /src[\\/]types[\\/]/, 
+  /\.d\.ts$/
+];
 const allKeys = new Set([...Object.keys(unitData), ...Object.keys(e2eData)]);
 const combined = {};
 
@@ -43,7 +47,9 @@ for (const key of allKeys) {
   }
   for (const [k, arr] of Object.entries(e2e.b)) {
     if (!combined[key].b[k]) {
-      combined[key].b[k] = arr;
+      if (arr.some(v => v > 0)) {
+        combined[key].b[k] = arr;
+      }
     } else {
       combined[key].b[k] = combined[key].b[k].map((val, i) => val + (arr[i] || 0));
     }

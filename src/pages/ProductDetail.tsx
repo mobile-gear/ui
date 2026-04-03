@@ -86,7 +86,7 @@ const ProductDetail: React.FC = () => {
                 </label>
                 <div className="flex items-center bg-[#13131C] border border-[#252535] rounded-lg overflow-hidden">
                   <button
-                    data-test="quantity-decrement"
+                    data-test="qty-decrement"
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     className="px-3 py-2 text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#1E1E2C] transition-colors font-body text-lg"
@@ -104,7 +104,7 @@ const ProductDetail: React.FC = () => {
                     className="w-12 text-center bg-transparent text-[#F0EEFF] font-body text-sm focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <button
-                    data-test="quantity-increment"
+                    data-test="qty-increment"
                     type="button"
                     onClick={() => setQuantity((q) => Math.min(selectedProduct.stock, q + 1))}
                     className="px-3 py-2 text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#1E1E2C] transition-colors font-body text-lg"
@@ -116,7 +116,7 @@ const ProductDetail: React.FC = () => {
             )}
 
             <motion.button
-              data-test={selectedProduct.stock === 0 ? "out-of-stock-btn" : "add-to-cart-btn"}
+              data-test="add-to-cart"
               whileTap={{ scale: 0.98 }}
               onClick={handleAddToCart}
               disabled={selectedProduct.stock === 0}

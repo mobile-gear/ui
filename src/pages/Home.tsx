@@ -146,7 +146,7 @@ const Home: React.FC = () => {
             className="font-bold text-[#F0EEFF] text-3xl mb-10"
             style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
-            <span data-test="category-title">Shop by Category</span>
+            <span data-test="category-heading">Shop by Category</span>
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

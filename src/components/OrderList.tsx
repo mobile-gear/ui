@@ -61,7 +61,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, s
         <tbody className="bg-[#13131C] divide-y divide-[#252535]">
           {orders.map((order) => (
             <tr key={order.id} data-test="order-row" className="hover:bg-[#1E1E2C] transition-colors">
-              <td data-test="order-id" className="py-3 px-4 font-body text-sm text-[#F0EEFF]">#{order.id}</td>
+              <td data-test="order-number-short" className="py-3 px-4 font-body text-sm text-[#F0EEFF]">#{order.id}</td>
               <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">
                 {new Date(order.createdAt).toLocaleDateString()}
               </td>

@@ -87,7 +87,7 @@ const Login: React.FC = () => {
               placeholder="••••••••"
             />
             {formik.touched.password && formik.errors.password && (
-              <p data-test="invalid-email-error" className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors.password}</p>
+              <p data-test="password-required-error" className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors.password}</p>
             )}
           </div>
 

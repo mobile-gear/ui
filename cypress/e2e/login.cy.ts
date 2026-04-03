@@ -21,7 +21,7 @@ describe("Login page", () => {
   it("shows invalid email error", () => {
     cy.getBySel("login-email").type("notanemail");
     cy.getBySel("login-password").click();
-    cy.getBySel("invalid-email-error").should("exist");
+    cy.getBySel("email-required-error").should("exist");
   });
 
   it("submits and redirects on successful login", () => {
@@ -36,7 +36,7 @@ describe("Login page", () => {
   });
 
   it("has a link to register page", () => {
-    cy.getBySel("register-link").click();
+    cy.getBySel("register-link").first().click();
     cy.url().should("include", "/register");
   });
 });

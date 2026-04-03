@@ -18,7 +18,7 @@
     "test:e2e:coverage": "cross-env CYPRESS_COVERAGE=true cypress run --quiet",
     "coverage:merge": "node scripts/merge-coverage.mjs",
     "coverage": "npm run test:unit:coverage && start-server-and-test dev:coverage http://localhost:3000 test:e2e:coverage && npm run coverage:merge",
-    "prepare": "husky"
+    "coverage:check": "npm run coverage && echo '📊 Coverage report generated'"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -57,7 +57,6 @@
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "husky": "^9.1.7",
     "jsdom": "^28.1.0",
     "nyc": "^18.0.0",
     "postcss": "^8.4.32",

@@ -14,7 +14,12 @@ export default defineConfig({
     }),
     istanbul({
       include: "src/**/*.{ts,tsx}",
-      exclude: ["node_modules", "cypress", "src/interfaces/**", "src/types/**"],
+      exclude: [
+        "node_modules", 
+        "cypress", 
+        "src/interfaces/**", 
+        "src/types/**"
+      ],
       cypress: true,
       requireEnv: true,
     }),

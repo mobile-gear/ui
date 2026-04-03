@@ -77,7 +77,7 @@ describe("Home", () => {
 
   it("renders category section", () => {
     renderWith();
-    expect(screen.getByTestId("category-title")).toBeInTheDocument();
+    expect(screen.getByTestId("category-heading")).toBeInTheDocument();
     expect(screen.getByTestId("smartphone-category")).toBeInTheDocument();
     expect(screen.getByTestId("accessories-category")).toBeInTheDocument();
     expect(screen.getByTestId("tablets-category")).toBeInTheDocument();
