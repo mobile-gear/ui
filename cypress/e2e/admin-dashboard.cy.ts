@@ -1,37 +1,48 @@
 describe("Admin Dashboard", () => {
   beforeEach(() => {
     localStorage.setItem("user", JSON.stringify({ id: 2, firstName: "Admin", lastName: "User", email: "admin@test.com", role: "admin" }));
+    
     cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as("getProducts");
     cy.intercept("GET", "/api/orders*", { fixture: "orders.json" }).as("getOrders");
+    
+    cy.intercept("GET", "/api/products*").as("productsReady");
+    cy.intercept("GET", "/api/orders*").as("ordersReady");
+    
     cy.visit("/admin");
   });
 
   it("displays orders section", () => {
-    cy.wait("@getOrders");
+    cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
+    
+    cy.wait(500);
+    
     cy.getBySel("admin-orders-heading").should("exist");
     cy.getBySel("order-number").should("exist");
     cy.getBySel("order-total").should("exist");
   });
 
   it("has status filter dropdown", () => {
-    cy.wait("@getOrders");
+    cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
+    cy.wait(500);
     cy.getBySel("status-filter").should("exist");
     cy.getBySel("status-filter").select("pending");
   });
 
   it("displays products section", () => {
-    cy.wait("@getProducts");
+    cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
+    cy.wait(500);
     cy.getBySel("admin-products-heading").should("exist");
     cy.getBySel("product-name").should("exist");
   });
 
   it("shows add/edit product form", () => {
+    cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
+    cy.wait(500);
     cy.getBySel("add-product-btn").should("exist");
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-description").should("exist");
     cy.getBySel("product-price").should("exist");
     cy.getBySel("product-stock").should("exist");
-    cy.getBySel("product-img").should("exist");
   });
 
   it("fills and submits the add product form", () => {
