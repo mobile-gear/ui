@@ -123,7 +123,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload.orders;
+        state.orders = action.payload.orders || [];
       })
       .addCase(fetchUserOrders.rejected, (state, action) => {
         state.isLoading = false;
@@ -135,7 +135,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchAllOrders.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload.orders;
+        state.orders = action.payload.orders || [];
         state.pagination = action.payload.pagination;
       })
       .addCase(fetchAllOrders.rejected, (state, action) => {
