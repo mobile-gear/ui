@@ -15,6 +15,14 @@ export default defineConfig({
     setupFiles: ["./cypress/support/unit-setup.ts"],
     include: ["cypress/unit/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["**/node_modules/**", "**/dist/**"],
+    logHeapUsage: false,
+    isolate: false,
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        isolate: false,
+      },
+    },
     coverage: {
       provider: "istanbul",
       reporter: ["json"],
