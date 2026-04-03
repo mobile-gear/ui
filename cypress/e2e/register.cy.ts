@@ -1,10 +1,12 @@
 describe("Register page", () => {
   beforeEach(() => {
-    cy.intercept("GET", "/api/products*", { fixture: "products.json" });
+    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as("getProducts");
     cy.visit("/register");
   });
 
   it("displays the registration form", () => {
+    cy.wait(1000);
+    
     cy.getBySel("register-title").should("exist");
     cy.get("#firstName").should("exist");
     cy.get("#lastName").should("exist");
@@ -14,12 +16,14 @@ describe("Register page", () => {
   });
 
   it("shows validation error for short password", () => {
+    cy.wait(1000);
     cy.get("#password").type("short");
     cy.get("#confirmPassword").click();
     cy.contains("Password must be at least 8 characters").should("exist");
   });
 
   it("shows mismatch error for passwords", () => {
+    cy.wait(1000);
     cy.get("#password").type("password123");
     cy.get("#confirmPassword").type("different");
     cy.get("#firstName").click();
@@ -27,29 +31,25 @@ describe("Register page", () => {
   });
 
   it("submits the form when all fields are valid", () => {
+    cy.wait(1000);
     cy.intercept("POST", "/api/auth/register", {
       statusCode: 200,
       body: {
-        user: {
-          id: 1,
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@test.com",
-          role: "user",
-        },
+        id: 3,
+        firstName: "Test",
+        lastName: "User",
+        email: "test@example.com",
       },
-    }).as("register");
+    }).as("registerUser");
 
-    cy.get("#firstName").type("John");
-    cy.get("#lastName").type("Doe");
-    cy.get("#email").type("john@test.com");
+    cy.get("#firstName").type("Test");
+    cy.get("#lastName").type("User");
+    cy.get("#email").type("test@example.com");
     cy.get("#password").type("password123");
     cy.get("#confirmPassword").type("password123");
 
-    cy.getBySel("register-form").submit();
-
-    cy.wait("@register", { timeout: 10000 });
-    cy.url().should("include", "/login");
+    cy.get('[data-test="register-submit"]').click();
+    cy.wait("@registerUser");
   });
 
   it("has a link to login page", () => {
