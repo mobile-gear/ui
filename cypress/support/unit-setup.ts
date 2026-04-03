@@ -13,17 +13,3 @@ global.IntersectionObserver = class IntersectionObserver {
   disconnect() {}
   takeRecords(): IntersectionObserverEntry[] { return []; }
 };
-
-const originalConsoleError = console.error;
-console.error = (...args) => {
-  const message = args[0];
-  if (
-    typeof message === 'string' && 
-    (message.includes('ERR_REQUIRE_ESM') || 
-     message.includes('html-encoding-sniffer') ||
-     message.includes('@exodus/bytes'))
-  ) {
-    return;
-  }
-  originalConsoleError(...args);
-};
