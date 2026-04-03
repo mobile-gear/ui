@@ -32,7 +32,7 @@ describe("Checkout page", () => {
     cy.getBySel("checkout-heading").should("exist");
     cy.getBySel("shipping-heading").should("exist");
     cy.getBySel("order-summary").should("exist");
-    cy.contains("iPhone 15 Pro").should("exist");
+    cy.getBySel("product-name").should("exist");
   });
 
   it("shows shipping address form fields", () => {

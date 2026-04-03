@@ -17,35 +17,40 @@ describe("shippingAddressSchema", () => {
   });
 
   it("rejects missing street", async () => {
-    const { street: _, ...data } = validAddress;
+    const { street, ...data } = validAddress;
+    void street;
     await expect(shippingAddressSchema.validate(data)).rejects.toThrow(
       "Street address is required",
     );
   });
 
   it("rejects missing city", async () => {
-    const { city: _, ...data } = validAddress;
+    const { city, ...data } = validAddress;
+    void city;
     await expect(shippingAddressSchema.validate(data)).rejects.toThrow(
       "City is required",
     );
   });
 
   it("rejects missing state", async () => {
-    const { state: _, ...data } = validAddress;
+    const { state, ...data } = validAddress;
+    void state;
     await expect(shippingAddressSchema.validate(data)).rejects.toThrow(
       "State is required",
     );
   });
 
   it("rejects missing zipCode", async () => {
-    const { zipCode: _, ...data } = validAddress;
+    const { zipCode, ...data } = validAddress;
+    void zipCode;
     await expect(shippingAddressSchema.validate(data)).rejects.toThrow(
       "ZIP code is required",
     );
   });
 
   it("rejects missing country", async () => {
-    const { country: _, ...data } = validAddress;
+    const { country, ...data } = validAddress;
+    void country;
     await expect(shippingAddressSchema.validate(data)).rejects.toThrow(
       "Country is required",
     );

@@ -17,7 +17,7 @@ const renderRoute = (authState: AuthState, allowedRoles: string[]) =>
     <Provider store={createStore(authState)}>
       <MemoryRouter>
         <PrivateRoute allowedRoles={allowedRoles}>
-          <div>Protected Content</div>
+          <div data-test="protected-content">Protected Content</div>
         </PrivateRoute>
       </MemoryRouter>
     </Provider>,
@@ -33,7 +33,7 @@ describe("PrivateRoute", () => {
       { user: { id: 1, firstName: "John", lastName: "Doe", email: "a@b.com", role: "admin" }, isAuthenticated: true, isLoading: false, error: null },
       ["admin"],
     );
-    expect(screen.getByText("Protected Content")).toBeInTheDocument();
+    expect(screen.getByTestId("protected-content")).toBeInTheDocument();
   });
 
   it("redirects when not authenticated", () => {
@@ -41,7 +41,7 @@ describe("PrivateRoute", () => {
       { user: null, isAuthenticated: false, isLoading: false, error: null },
       ["user"],
     );
-    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("protected-content")).not.toBeInTheDocument();
   });
 
   it("redirects when role not allowed", () => {
@@ -49,7 +49,7 @@ describe("PrivateRoute", () => {
       { user: { id: 1, firstName: "John", lastName: "Doe", email: "a@b.com", role: "user" }, isAuthenticated: true, isLoading: false, error: null },
       ["admin"],
     );
-    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("protected-content")).not.toBeInTheDocument();
   });
 
   it("renders nothing when loading", () => {

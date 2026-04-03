@@ -26,23 +26,25 @@ const mockOrders = [
 ];
 
 describe("OrderList", () => {
-  it("renders order rows", () => {
+  it("renders order rows", async () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
     );
-    expect(screen.getByText("#1")).toBeInTheDocument();
-    expect(screen.getByText("#2")).toBeInTheDocument();
-    expect(screen.getByText("$39.98")).toBeInTheDocument();
+    const orderIds = await screen.findAllByTestId("order-id");
+    expect(orderIds[0]).toHaveTextContent("#1");
+    expect(orderIds[1]).toHaveTextContent("#2");
+    const orderTotals = await screen.findAllByTestId("order-total");
+    expect(orderTotals[0]).toHaveTextContent("$39.98");
   });
 
   it("renders column headers", () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
     );
-    expect(screen.getByText(/Order ID/)).toBeInTheDocument();
-    expect(screen.getByText(/Date/)).toBeInTheDocument();
-    expect(screen.getByText(/Status/)).toBeInTheDocument();
-    expect(screen.getByText(/Total/)).toBeInTheDocument();
+    expect(screen.getByTestId("th-id")).toBeInTheDocument();
+    expect(screen.getByTestId("th-createdAt")).toBeInTheDocument();
+    expect(screen.getByTestId("th-status")).toBeInTheDocument();
+    expect(screen.getByTestId("sort-total")).toBeInTheDocument();
   });
 
   it("calls onSort when column header is clicked", () => {
@@ -50,16 +52,16 @@ describe("OrderList", () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={onSort} />,
     );
-    fireEvent.click(screen.getByText(/Order ID/));
+    fireEvent.click(screen.getByTestId("th-id"));
     expect(onSort).toHaveBeenCalledWith("id");
   });
 
-  it("calls onStatusChange when select changes", () => {
+  it("calls onStatusChange when select changes", async () => {
     const onStatusChange = vi.fn();
     render(
       <OrderList orders={mockOrders} onStatusChange={onStatusChange} onSort={vi.fn()} />,
     );
-    const selects = screen.getAllByRole("combobox");
+    const selects = await screen.findAllByTestId("order-select");
     fireEvent.change(selects[0], { target: { value: "shipped" } });
     expect(onStatusChange).toHaveBeenCalledWith(1, "shipped");
   });
@@ -68,13 +70,51 @@ describe("OrderList", () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} sortBy="total" sortOrder="asc" />,
     );
-    expect(screen.getByText(/Total/)).toBeInTheDocument();
+    expect(screen.getByTestId("sort-total")).toBeInTheDocument();
   });
 
   it("shows desc sort icon", () => {
     render(
       <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} sortBy="total" sortOrder="desc" />,
     );
-    expect(screen.getByText(/Total/)).toBeInTheDocument();
+    expect(screen.getByTestId("sort-total")).toBeInTheDocument();
+  });
+
+  it("applies fallback style for unknown status", () => {
+    const unknownStatusOrder = {
+      ...mockOrders[0],
+      id: 3,
+      status: "unknown" as "pending",
+    };
+    render(
+      <OrderList orders={[unknownStatusOrder]} onStatusChange={vi.fn()} onSort={vi.fn()} />,
+    );
+    expect(screen.getByTestId("order-status-unknown")).toHaveTextContent("unknown");
+  });
+
+  it("applies correct style for each known status", () => {
+    const statuses = ["delivered", "processing", "shipped", "cancelled", "pending"] as const;
+    const orders = statuses.map((status, i) => ({
+      ...mockOrders[0],
+      id: i + 10,
+      status,
+    }));
+    render(
+      <OrderList orders={orders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
+    );
+    statuses.forEach((s) => expect(screen.getByTestId(`order-status-${s}`)).toHaveTextContent(s));
+  });
+
+  it("calls onSort for different columns", () => {
+    const onSort = vi.fn();
+    render(
+      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={onSort} />,
+    );
+    fireEvent.click(screen.getByTestId("th-createdAt"));
+    expect(onSort).toHaveBeenCalledWith("createdAt");
+    fireEvent.click(screen.getByTestId("th-status"));
+    expect(onSort).toHaveBeenCalledWith("status");
+    fireEvent.click(screen.getByTestId("sort-total"));
+    expect(onSort).toHaveBeenCalledWith("total");
   });
 });

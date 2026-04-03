@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
@@ -23,35 +23,38 @@ const renderWith = (props: { products: typeof mockProducts; error: string | null
 };
 
 describe("ProductList", () => {
-  it("renders product cards", () => {
+  it("renders product cards", async () => {
     renderWith({ products: mockProducts, error: null, loading: false });
-    expect(screen.getByText("Phone Case")).toBeInTheDocument();
-    expect(screen.getByText("Charger")).toBeInTheDocument();
+    const names = await screen.findAllByTestId("product-name");
+    expect(names[0]).toHaveTextContent("Phone Case");
+    expect(names[1]).toHaveTextContent("Charger");
   });
 
   it("shows spinner when loading", () => {
     renderWith({ products: [], error: null, loading: true });
-    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByTestId("spinner")).toBeInTheDocument();
   });
 
   it("shows error message", () => {
     renderWith({ products: [], error: "Something went wrong", loading: false });
-    expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+    expect(screen.getByTestId("product-list-error")).toHaveTextContent("Something went wrong");
   });
 
   it("shows empty message when no products", () => {
     renderWith({ products: [], error: null, loading: false });
-    expect(screen.getByText("No products found.")).toBeInTheDocument();
+    expect(screen.getByTestId("product-list-empty")).toBeInTheDocument();
   });
 
-  it("dispatches addToCart on button click", () => {
+  it("dispatches addToCart on button click", async () => {
     renderWith({ products: mockProducts, error: null, loading: false });
-    fireEvent.click(screen.getAllByText("Add to cart")[0]);
+    const buttons = await screen.findAllByTestId("add-to-cart");
+    fireEvent.click(buttons[0]);
   });
 
-  it("renders prices", () => {
+  it("renders prices", async () => {
     renderWith({ products: mockProducts, error: null, loading: false });
-    expect(screen.getByText("$19.99")).toBeInTheDocument();
-    expect(screen.getByText("$29.99")).toBeInTheDocument();
+    const prices = await screen.findAllByTestId("product-price");
+    expect(prices[0]).toHaveTextContent("$19.99");
+    expect(prices[1]).toHaveTextContent("$29.99");
   });
 });

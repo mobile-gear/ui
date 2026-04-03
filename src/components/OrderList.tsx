@@ -40,12 +40,13 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, s
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-[#252535]">
-      <table className="min-w-full">
+      <table data-test="order-table" className="min-w-full">
         <thead>
           <tr className="bg-[#1E1E2C] border-b border-[#252535]">
             {columns.map((col) => (
               <th
                 key={col.field}
+                data-test={col.field === "total" ? "sort-total" : `th-${col.field}`}
                 onClick={() => onSort(col.field)}
                 className="py-3 px-4 text-left font-body text-xs text-[#7A7A8C] uppercase tracking-wider cursor-pointer hover:text-[#F0EEFF] transition-colors select-none"
               >
@@ -59,21 +60,22 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, s
         </thead>
         <tbody className="bg-[#13131C] divide-y divide-[#252535]">
           {orders.map((order) => (
-            <tr key={order.id} className="hover:bg-[#1E1E2C] transition-colors">
-              <td className="py-3 px-4 font-body text-sm text-[#F0EEFF]">#{order.id}</td>
+            <tr key={order.id} data-test="order-row" className="hover:bg-[#1E1E2C] transition-colors">
+              <td data-test="order-id" className="py-3 px-4 font-body text-sm text-[#F0EEFF]">#{order.id}</td>
               <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">
                 {new Date(order.createdAt).toLocaleDateString()}
               </td>
               <td className="py-3 px-4">
-                <span className={`text-xs font-body font-semibold border rounded-full px-2.5 py-0.5 ${statusStyle[order.status] || statusStyle.pending}`}>
+                <span data-test={`order-status-${order.status.toLowerCase()}`} className={`text-xs font-body font-semibold border rounded-full px-2.5 py-0.5 ${statusStyle[order.status] || statusStyle.pending}`}>
                   {order.status}
                 </span>
               </td>
-              <td className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm">
+              <td data-test="order-total" className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm">
                 ${order.total.toFixed(2)}
               </td>
               <td className="py-3 px-4">
                 <select
+                  data-test="order-select"
                   value={order.status}
                   onChange={(e) => onStatusChange(order.id, e.target.value as Order["status"])}
                   className="bg-[#1E1E2C] border border-[#252535] text-[#9B9BAD] rounded-lg px-2 py-1.5 font-body text-xs focus:outline-none focus:border-[#FF4500] transition-colors"

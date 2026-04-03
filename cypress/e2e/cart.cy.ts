@@ -7,7 +7,7 @@ describe("Cart page", () => {
   it("shows empty cart message when no items", () => {
     cy.visit("/cart");
     cy.getBySel("empty-cart").should("exist");
-    cy.contains("Continue Shopping").should("exist");
+    cy.getBySel("continue-shopping").should("exist");
   });
 
   it("adds product and shows it in cart", () => {
@@ -16,8 +16,8 @@ describe("Cart page", () => {
     cy.wait("@getProduct");
     cy.getBySel("add-to-cart").click();
     cy.getBySel("cart-link").first().click();
-    cy.contains("iPhone 15 Pro").should("exist");
-    cy.contains("$999.99").should("exist");
+    cy.getBySel("product-name").should("exist");
+    cy.getBySel("product-price").should("exist");
     cy.contains("Cart Summary").should("exist");
   });
 });

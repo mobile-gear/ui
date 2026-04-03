@@ -5,7 +5,7 @@ describe("Register page", () => {
   });
 
   it("displays the registration form", () => {
-    cy.contains("Create account").should("exist");
+    cy.getBySel("register-title").should("exist");
     cy.get("#firstName").should("exist");
     cy.get("#lastName").should("exist");
     cy.get("#email").should("exist");

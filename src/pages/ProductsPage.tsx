@@ -142,7 +142,7 @@ const ProductsPage: React.FC = () => {
       sortOrder: nextSortOrder,
       page: nextPage,
     }));
-  }, [dispatch, location.search]);
+  }, [dispatch, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     dispatch(fetchProducts());

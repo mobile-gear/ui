@@ -81,7 +81,7 @@ const CheckoutSuccess: React.FC = () => {
           <h2 data-test="payment-error" className="text-2xl font-bold text-gray-800 mb-4">
             Payment Error
           </h2>
-          <p className="text-gray-600 mb-8">{error}</p>
+          <p data-test="error-message" className="text-gray-600 mb-8">{error}</p>
           <button
             data-test="return-to-cart"
             onClick={() => navigate("/cart")}

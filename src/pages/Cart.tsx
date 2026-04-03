@@ -40,6 +40,7 @@ const Cart: React.FC = () => {
           <p data-test="empty-cart" className="text-xl text-gray-600 mb-4">Your cart is empty</p>
           <Link
             to="/products"
+            data-test="continue-shopping"
             className="bg-blue-600 text-white hover:text-white px-6 py-3 rounded hover:bg-blue-700"
           >
             Continue Shopping
@@ -51,6 +52,7 @@ const Cart: React.FC = () => {
             {items.map((item) => (
               <div
                 key={item.id}
+                data-test={`cart-item`}
                 className="flex items-center bg-white rounded-lg shadow-md p-4"
               >
                 <img
@@ -60,12 +62,13 @@ const Cart: React.FC = () => {
                 />
 
                 <div className="flex-grow">
-                  <h3 className="text-lg font-semibold">{item.name}</h3>
-                  <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                  <h3 data-test="product-name" className="text-lg font-semibold">{item.name}</h3>
+                  <p data-test="product-price" className="text-gray-600">${item.price.toFixed(2)}</p>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <button
+                    data-test={`quantity-decrement`}
                     onClick={() =>
                       handleUpdateQuantity(item.id, item.quantity - 1)
                     }
@@ -73,8 +76,9 @@ const Cart: React.FC = () => {
                   >
                     -
                   </button>
-                  <span>{item.quantity}</span>
+                  <span data-test="cart-item-qty">{item.quantity}</span>
                   <button
+                    data-test={`quantity-increment`}
                     onClick={() =>
                       handleUpdateQuantity(item.id, item.quantity + 1)
                     }
@@ -83,6 +87,7 @@ const Cart: React.FC = () => {
                     +
                   </button>
                   <button
+                    data-test={`remove-item`}
                     onClick={() => handleRemoveItem(item.id)}
                     className="text-red-500 hover:text-red-700"
                   >
@@ -94,16 +99,16 @@ const Cart: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Cart Summary</h2>
+            <h2 data-test="cart-summary-title" className="text-2xl font-bold mb-4">Cart Summary</h2>
 
             <div className="flex justify-between mb-2">
               <span>Total Items:</span>
-              <span>{totalItems}</span>
+              <span data-test="cart-total-items">{totalItems}</span>
             </div>
 
             <div className="flex justify-between mb-4 font-bold">
               <span>Total Price:</span>
-              <span>${totalPrice.toFixed(2)}</span>
+              <span data-test="cart-total">${totalPrice.toFixed(2)}</span>
             </div>
 
             <button
@@ -115,6 +120,7 @@ const Cart: React.FC = () => {
             </button>
 
             <button
+              data-test="clear-cart-btn"
               onClick={() => dispatch(clearCart())}
               className="w-full mt-2 bg-red-500 text-white py-3 rounded hover:bg-red-600"
             >

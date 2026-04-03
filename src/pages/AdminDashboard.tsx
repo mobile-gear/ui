@@ -44,7 +44,9 @@ const AdminDashboard: React.FC = () => {
   const handleStatusChange = async (orderId: number, newStatus: Order["status"]) => {
     try {
       await dispatch(updateOrderStatus({ orderId, status: newStatus })).unwrap();
-    } catch {}
+    } catch {
+      console.error("Failed to update order status");
+    }
   };
 
   const handleCreateProduct = (e: React.FormEvent) => {

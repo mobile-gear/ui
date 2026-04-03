@@ -17,15 +17,16 @@ const ProductList = memo(({ products, error, loading }: ProductListProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   if (loading) return <Spinner />;
-  if (error) return <p className="text-center text-[#FF4500] text-sm mt-8">{error}</p>;
+  if (error) return <p data-test="product-list-error" className="text-center text-[#FF4500] text-sm mt-8">{error}</p>;
   if (products.length === 0)
-    return <p className="text-center text-[#7A7A8C] font-body mt-12">No products found.</p>;
+    return <p data-test="product-list-empty" className="text-center text-[#7A7A8C] font-body mt-12">No products found.</p>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div data-test="product-list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {products.map((product, i) => (
         <motion.div
           key={product.id}
+          data-test="product-card"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: i * 0.04 }}
@@ -41,6 +42,7 @@ const ProductList = memo(({ products, error, loading }: ProductListProps) => {
           <div className="p-4 flex flex-col flex-1">
             <Link
               to={`/products/${product.id}`}
+              data-test="product-name"
               className="font-body font-medium text-[#F0EEFF] hover:text-[#FF4500] transition-colors line-clamp-1"
             >
               {product.name}
@@ -58,7 +60,7 @@ const ProductList = memo(({ products, error, loading }: ProductListProps) => {
               {product.description}
             </p>
             <div className="mt-4 flex items-center justify-between">
-              <span className="font-display font-bold text-[#FF4500] text-lg">
+              <span data-test="product-price" className="font-display font-bold text-[#FF4500] text-lg">
                 ${product.price.toFixed(2)}
               </span>
               <button

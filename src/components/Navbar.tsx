@@ -36,6 +36,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center px-6 h-16">
         <Link
           to="/"
+          data-test="brand-link"
           className="font-display font-bold text-xl tracking-tight text-[#F0EEFF] hover:text-[#FF4500] transition-colors"
         >
           Mobile<span className="text-[#FF4500]">Gear</span>
@@ -44,6 +45,7 @@ const Navbar = () => {
         <div className="flex items-center gap-7">
           <Link
             to="/products"
+            data-test="products-link"
             className="text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
           >
             Products
@@ -69,6 +71,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <button
+                data-test="user-name"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center gap-1.5 text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
               >
@@ -85,10 +88,12 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
+                    data-test="nav-dropdown"
                     className="absolute right-0 mt-3 w-44 bg-[#1E1E2C] border border-[#252535] rounded-xl shadow-xl py-1 z-50 overflow-hidden"
                   >
                     <Link
                       to="/orders"
+                      data-test="my-orders-link"
                       className="block px-4 py-2.5 text-sm text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#252535] font-body transition-colors"
                       onClick={() => setIsDropdownOpen(false)}
                     >
@@ -97,6 +102,7 @@ const Navbar = () => {
                     {user?.role === "admin" && (
                       <Link
                         to="/admin/orders"
+                        data-test="dashboard-link"
                         className="block px-4 py-2.5 text-sm text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#252535] font-body transition-colors"
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -104,6 +110,7 @@ const Navbar = () => {
                       </Link>
                     )}
                     <button
+                      data-test="logout-link"
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2.5 text-sm text-[#FF4500] hover:bg-[#252535] font-body transition-colors"
                     >
@@ -117,12 +124,14 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
               <Link
                 to="/login"
+                data-test="login-link"
                 className="text-[#7A7A8C] hover:text-[#F0EEFF] font-body text-sm font-medium transition-colors"
               >
                 Login
               </Link>
               <Link
                 to="/register"
+                data-test="register-link"
                 className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-body text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
               >
                 Register

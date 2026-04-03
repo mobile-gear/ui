@@ -30,10 +30,10 @@ const FeaturedProducts = () => {
   );
 
   if (loading) return <Spinner />;
-  if (error) return <p>{error}</p>;
+  if (error) return <p data-test="featured-error">{error}</p>;
 
   return (
-    <div className="relative">
+    <div data-test="featured-products" className="relative">
       <Carousel
         responsive={responsive}
         infinite={true}
@@ -55,6 +55,7 @@ const FeaturedProducts = () => {
             >
               <div className="relative overflow-hidden group">
                 <img
+                  data-test="featured-img"
                   src={product.img || "/placeholder.jpg"}
                   alt={product.name}
                   className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
@@ -62,6 +63,7 @@ const FeaturedProducts = () => {
                 <div className="absolute inset-0 bg-[#09090F]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <Link
                     to={`/products/${product.id}`}
+                    data-test="featured-link"
                     className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-xs tracking-widest uppercase px-5 py-2.5 rounded-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
                   >
                     View Details
@@ -69,10 +71,10 @@ const FeaturedProducts = () => {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-body font-medium text-[#F0EEFF] text-sm mb-2 line-clamp-2">
+                <h3 data-test="featured-product" className="font-body font-medium text-[#F0EEFF] text-sm mb-2 line-clamp-2">
                   {product.name}
                 </h3>
-                <p className="font-display font-bold text-[#FF4500] text-xl">
+                <p data-test="featured-price" className="font-display font-bold text-[#FF4500] text-xl">
                   ${product.price.toFixed(2)}
                 </p>
               </div>

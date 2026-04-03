@@ -8,48 +8,52 @@ const mockProducts = [
 ];
 
 describe("Admin ProductList", () => {
-  it("renders product rows", () => {
+  it("renders product rows", async () => {
     render(<ProductList products={mockProducts} onDelete={vi.fn()} />);
-    expect(screen.getByText("Phone")).toBeInTheDocument();
-    expect(screen.getByText("Tablet")).toBeInTheDocument();
-    expect(screen.getByText("$999.00")).toBeInTheDocument();
+    const names = await screen.findAllByTestId("product-name");
+    expect(names[0]).toHaveTextContent("Phone");
+    expect(names[1]).toHaveTextContent("Tablet");
+    const prices = await screen.findAllByTestId("product-price");
+    expect(prices[0]).toHaveTextContent("$999.00");
   });
 
   it("renders column headers", () => {
     render(<ProductList products={mockProducts} onDelete={vi.fn()} />);
-    expect(screen.getByText("ID")).toBeInTheDocument();
-    expect(screen.getByText("Name")).toBeInTheDocument();
-    expect(screen.getByText("Category")).toBeInTheDocument();
-    expect(screen.getByText("Price")).toBeInTheDocument();
-    expect(screen.getByText("Stock")).toBeInTheDocument();
+    expect(screen.getByTestId("th-id")).toBeInTheDocument();
+    expect(screen.getByTestId("th-name")).toBeInTheDocument();
+    expect(screen.getByTestId("th-category")).toBeInTheDocument();
+    expect(screen.getByTestId("th-price")).toBeInTheDocument();
+    expect(screen.getByTestId("th-stock")).toBeInTheDocument();
   });
 
-  it("calls onDelete when delete button clicked", () => {
+  it("calls onDelete when delete button clicked", async () => {
     const onDelete = vi.fn();
     render(<ProductList products={mockProducts} onDelete={onDelete} />);
-    fireEvent.click(screen.getAllByText("Delete")[0]);
+    const deleteButtons = await screen.findAllByTestId("delete-product");
+    fireEvent.click(deleteButtons[0]);
     expect(onDelete).toHaveBeenCalledWith(1);
   });
 
   it("calls onSort when sortable header clicked", () => {
     const onSort = vi.fn();
     render(<ProductList products={mockProducts} onDelete={vi.fn()} onSort={onSort} />);
-    fireEvent.click(screen.getByText("Name"));
+    fireEvent.click(screen.getByTestId("th-name"));
     expect(onSort).toHaveBeenCalledWith("name");
   });
 
   it("shows sort icons for active sort", () => {
     render(<ProductList products={mockProducts} onDelete={vi.fn()} onSort={vi.fn()} sortBy="price" sortOrder="asc" />);
-    expect(screen.getByText("Price")).toBeInTheDocument();
+    expect(screen.getByTestId("th-price")).toBeInTheDocument();
   });
 
   it("shows desc sort icon", () => {
     render(<ProductList products={mockProducts} onDelete={vi.fn()} onSort={vi.fn()} sortBy="price" sortOrder="desc" />);
-    expect(screen.getByText("Price")).toBeInTheDocument();
+    expect(screen.getByTestId("th-price")).toBeInTheDocument();
   });
 
-  it("renders without onSort", () => {
+  it("renders without onSort", async () => {
     render(<ProductList products={mockProducts} onDelete={vi.fn()} />);
-    expect(screen.getByText("Phone")).toBeInTheDocument();
+    const names = await screen.findAllByTestId("product-name");
+    expect(names[0]).toHaveTextContent("Phone");
   });
 });

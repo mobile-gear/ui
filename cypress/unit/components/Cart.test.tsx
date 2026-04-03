@@ -41,19 +41,19 @@ const renderWith = (cartItems: CartItem[] = [], user: User | null = null) =>
 describe("Cart", () => {
   it("shows empty cart message when no items", () => {
     renderWith();
-    expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
-    expect(screen.getByText("Continue Shopping")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-cart")).toBeInTheDocument();
+    expect(screen.getByTestId("continue-shopping")).toBeInTheDocument();
   });
 
   it("renders cart items with name and price", () => {
     renderWith([cartItem]);
-    expect(screen.getByText("Phone")).toBeInTheDocument();
-    expect(screen.getByText("$999.00")).toBeInTheDocument();
+    expect(screen.getByTestId("product-name")).toBeInTheDocument();
+    expect(screen.getByTestId("product-price")).toBeInTheDocument();
   });
 
   it("shows total price", () => {
     renderWith([cartItem]);
-    expect(screen.getByText("$1998.00")).toBeInTheDocument();
+    expect(screen.getByTestId("cart-total")).toBeInTheDocument();
   });
 
   it("removes item when Remove is clicked", () => {
@@ -63,7 +63,7 @@ describe("Cart", () => {
         <MemoryRouter><Cart /></MemoryRouter>
       </Provider>,
     );
-    fireEvent.click(screen.getByText("Remove"));
+    fireEvent.click(screen.getByTestId("remove-item"));
     expect(store.getState().cart.items).toHaveLength(0);
   });
 
@@ -74,7 +74,7 @@ describe("Cart", () => {
         <MemoryRouter><Cart /></MemoryRouter>
       </Provider>,
     );
-    fireEvent.click(screen.getByText("+"));
+    fireEvent.click(screen.getByTestId("quantity-increment"));
     expect(store.getState().cart.items[0].quantity).toBe(3);
   });
 
@@ -85,7 +85,7 @@ describe("Cart", () => {
         <MemoryRouter><Cart /></MemoryRouter>
       </Provider>,
     );
-    fireEvent.click(screen.getByText("-"));
+    fireEvent.click(screen.getByTestId("quantity-decrement"));
     expect(store.getState().cart.items[0].quantity).toBe(1);
   });
 
@@ -96,19 +96,19 @@ describe("Cart", () => {
         <MemoryRouter><Cart /></MemoryRouter>
       </Provider>,
     );
-    fireEvent.click(screen.getByText("Clear Cart"));
+    fireEvent.click(screen.getByTestId("clear-cart-btn"));
     expect(store.getState().cart.items).toHaveLength(0);
   });
 
   it("navigates to /login on checkout when not logged in", () => {
     renderWith([cartItem], null);
-    fireEvent.click(screen.getByText("Proceed to Checkout"));
+    fireEvent.click(screen.getByTestId("checkout-btn"));
     expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 
   it("navigates to /checkout on checkout when logged in", () => {
     renderWith([cartItem], { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" as const });
-    fireEvent.click(screen.getByText("Proceed to Checkout"));
+    fireEvent.click(screen.getByTestId("checkout-btn"));
     expect(mockNavigate).toHaveBeenCalledWith("/checkout");
   });
 });

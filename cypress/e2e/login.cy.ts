@@ -5,7 +5,7 @@ describe("Login page", () => {
   });
 
   it("displays the login form", () => {
-    cy.contains("Welcome back").should("exist");
+    cy.getBySel("login-title").should("exist");
     cy.getBySel("login-email").should("exist");
     cy.getBySel("login-password").should("exist");
     cy.getBySel("login-submit").should("exist");
@@ -15,13 +15,13 @@ describe("Login page", () => {
     cy.getBySel("login-email").click();
     cy.getBySel("login-password").click();
     cy.getBySel("login-email").click();
-    cy.contains("Email is required").should("exist");
+    cy.getBySel("email-required-error").should("exist");
   });
 
   it("shows invalid email error", () => {
     cy.getBySel("login-email").type("notanemail");
     cy.getBySel("login-password").click();
-    cy.contains("Invalid email address").should("exist");
+    cy.getBySel("invalid-email-error").should("exist");
   });
 
   it("submits and redirects on successful login", () => {
@@ -36,7 +36,7 @@ describe("Login page", () => {
   });
 
   it("has a link to register page", () => {
-    cy.contains("Register here").click();
+    cy.getBySel("register-link").click();
     cy.url().should("include", "/register");
   });
 });

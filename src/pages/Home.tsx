@@ -50,13 +50,14 @@ const Home: React.FC = () => {
           className="relative container mx-auto px-6 pt-28 pb-32 text-center"
         >
           <motion.div variants={rise}>
-            <span className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-8">
+            <span data-test="hero-tagline" className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-8">
               Premium Mobile Tech
             </span>
           </motion.div>
 
           <motion.h1
             variants={rise}
+            data-test="hero-heading"
             className="font-bold text-[#F0EEFF] leading-[1.05] mb-6"
             style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontFamily: "'Big Shoulders Display', sans-serif", scaleX: 1.25 }}
           >
@@ -78,10 +79,10 @@ const Home: React.FC = () => {
                 variants={rise}
                 className="flex flex-col items-center gap-2"
               >
-                <p className="text-[#F0EEFF] font-display font-bold text-2xl">
+                <p data-test="welcome-message" className="text-[#F0EEFF] font-display font-bold text-2xl">
                   Welcome back, {user.firstName}.
                 </p>
-                <p className="text-[#7A7A8C] font-body text-sm">
+                <p data-test="ready-message" className="text-[#7A7A8C] font-body text-sm">
                   {user.role === "admin"
                     ? "You have full store access."
                     : "Ready to find something new?"}
@@ -89,6 +90,7 @@ const Home: React.FC = () => {
                 <motion.div variants={rise} className="mt-4">
                   <Link
                     to="/products"
+                    data-test="shop-now-btn"
                     className="inline-block bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-xl transition-colors"
                   >
                     Shop Now
@@ -124,6 +126,7 @@ const Home: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            data-test="featured-heading"
             className="font-bold text-[#F0EEFF] text-3xl mb-10"
             style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
@@ -143,7 +146,7 @@ const Home: React.FC = () => {
             className="font-bold text-[#F0EEFF] text-3xl mb-10"
             style={{ fontFamily: "'Big Shoulders Display', sans-serif" }}
           >
-            <span data-test="category-heading">Shop by Category</span>
+            <span data-test="category-title">Shop by Category</span>
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -157,6 +160,7 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={`/products?category=${item.category}`}
+                  data-test={`category-${item.category}`}
                   className="group relative overflow-hidden rounded-2xl border border-[#252535] hover:border-[#FF4500]/40 transition-all duration-300 block"
                 >
                   <div className="relative h-52 overflow-hidden">
@@ -168,7 +172,7 @@ const Home: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#09090F] via-[#09090F]/40 to-transparent" />
                   </div>
                   <div className="p-6 bg-[#13131C] group-hover:bg-[#1E1E2C] transition-colors">
-                    <h3 className="font-display font-bold text-[#F0EEFF] text-xl group-hover:text-[#FF4500] transition-colors">
+                    <h3 data-test={`${item.category}-category`} className="font-display font-bold text-[#F0EEFF] text-xl group-hover:text-[#FF4500] transition-colors">
                       {item.name}
                     </h3>
                     <p className="text-[#7A7A8C] font-body text-sm mt-1">

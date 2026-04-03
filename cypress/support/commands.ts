@@ -1,11 +1,12 @@
-Cypress.Commands.add("getBySel", (selector: string, ...args: unknown[]) => {
-  return cy.get(`[data-test="${selector}"]`, ...args);
+Cypress.Commands.add("getBySel", (selector: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>) => {
+  return cy.get(`[data-test="${selector}"]`, options);
 });
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      getBySel(selector: string, ...args: unknown[]): Chainable<JQuery<HTMLElement>>;
+      getBySel(selector: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

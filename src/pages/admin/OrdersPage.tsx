@@ -30,7 +30,9 @@ const OrdersPage: React.FC = () => {
   const handleStatusChange = async (orderId: number, newStatus: Order["status"]) => {
     try {
       await dispatch(updateOrderStatus({ orderId, status: newStatus })).unwrap();
-    } catch {}
+    } catch {
+      console.error("Failed to update order status");
+    }
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,7 +52,7 @@ const OrdersPage: React.FC = () => {
   if (error)
     return (
       <AdminLayout>
-        <p className="text-center text-[#FF4500] font-body mt-8">{error}</p>
+        <p data-test="orders-error" className="text-center text-[#FF4500] font-body mt-8">{error}</p>
       </AdminLayout>
     );
 
@@ -60,6 +62,7 @@ const OrdersPage: React.FC = () => {
         <h1 data-test="orders-heading" className="font-display font-bold text-[#F0EEFF] text-2xl">Orders</h1>
         <div className="flex items-center gap-3 flex-wrap">
           <input
+            data-test="min-total-input"
             type="number"
             name="minTotal"
             value={filters.minTotal || ""}
@@ -69,6 +72,7 @@ const OrdersPage: React.FC = () => {
           />
           <span className="text-[#3A3A4A] font-body text-sm">–</span>
           <input
+            data-test="max-total-input"
             type="number"
             name="maxTotal"
             value={filters.maxTotal || ""}

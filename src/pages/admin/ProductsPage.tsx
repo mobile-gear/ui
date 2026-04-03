@@ -42,7 +42,9 @@ const ProductsPage: React.FC = () => {
     try {
       await dispatch(createProduct(newProduct)).unwrap();
       setNewProduct({ name: "", description: "", price: 0, category: CATEGORIES[0].value, img: "", stock: 0 });
-    } catch {}
+    } catch {
+      console.error("Failed to create product");
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -70,7 +72,7 @@ const ProductsPage: React.FC = () => {
   if (error)
     return (
       <AdminLayout>
-        <p className="text-center text-[#FF4500] font-body mt-8">{error}</p>
+        <p data-test="admin-products-error" className="text-center text-[#FF4500] font-body mt-8">{error}</p>
       </AdminLayout>
     );
 
@@ -79,13 +81,13 @@ const ProductsPage: React.FC = () => {
       <h1 data-test="admin-products-heading" className="font-display font-bold text-[#F0EEFF] text-2xl mb-8">Products</h1>
 
       {deleteError && (
-        <div className="mb-4 bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF6B47] font-body text-sm rounded-lg px-4 py-3">
+        <div data-test="delete-error" className="mb-4 bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF6B47] font-body text-sm rounded-lg px-4 py-3">
           {deleteError}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mb-8 bg-[#13131C] border border-[#252535] rounded-2xl p-6">
-        <h2 className="font-display font-bold text-[#F0EEFF] text-lg mb-5">Add New Product</h2>
+      <form data-test="add-product-form" onSubmit={handleSubmit} className="mb-8 bg-[#13131C] border border-[#252535] rounded-2xl p-6">
+        <h2 data-test="add-product-title" className="font-display font-bold text-[#F0EEFF] text-lg mb-5">Add New Product</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className={labelClass}>Name</label>
@@ -99,22 +101,22 @@ const ProductsPage: React.FC = () => {
           </div>
           <div>
             <label className={labelClass}>Price</label>
-            <input type="number" name="price" value={newProduct.price || ""} onChange={handleInputChange} className={inputClass} required />
+            <input data-test="new-product-price" type="number" name="price" value={newProduct.price || ""} onChange={handleInputChange} className={inputClass} required />
           </div>
           <div>
             <label className={labelClass}>Stock</label>
-            <input type="number" name="stock" value={newProduct.stock || ""} onChange={handleInputChange} className={inputClass} required />
+            <input data-test="new-product-stock" type="number" name="stock" value={newProduct.stock || ""} onChange={handleInputChange} className={inputClass} required />
           </div>
           <div>
             <label className={labelClass}>Image URL</label>
-            <input type="text" name="img" value={newProduct.img} onChange={handleInputChange} className={inputClass} />
+            <input data-test="new-product-img" type="text" name="img" value={newProduct.img} onChange={handleInputChange} className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Description</label>
-            <textarea name="description" value={newProduct.description} onChange={handleInputChange} className={inputClass + " resize-none"} rows={3} required />
+            <textarea data-test="new-product-description" name="description" value={newProduct.description} onChange={handleInputChange} className={inputClass + " resize-none"} rows={3} required />
           </div>
         </div>
-        <button type="submit" className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase px-6 py-3 rounded-lg transition-colors">
+        <button data-test="add-product-btn" type="submit" className="bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase px-6 py-3 rounded-lg transition-colors">
           Add Product
         </button>
       </form>
@@ -122,14 +124,14 @@ const ProductsPage: React.FC = () => {
       <div className="mb-6 flex gap-4">
         <div className="flex-1">
           <label className={labelClass}>Category</label>
-          <select name="category" value={filters.category || ""} onChange={handleFilterChange} className={inputClass + " appearance-none"}>
+          <select data-test="filter-category" name="category" value={filters.category || ""} onChange={handleFilterChange} className={inputClass + " appearance-none"}>
             <option value="" className="bg-[#13131C]">All Categories</option>
             {CATEGORIES.map((c) => <option key={c.value} value={c.value} className="bg-[#13131C]">{c.label}</option>)}
           </select>
         </div>
         <div className="flex-1">
           <label className={labelClass}>Stock Status</label>
-          <select name="outOfStock" value={filters.outOfStock?.toString() || ""} onChange={handleFilterChange} className={inputClass + " appearance-none"}>
+          <select data-test="filter-stock" name="outOfStock" value={filters.outOfStock?.toString() || ""} onChange={handleFilterChange} className={inputClass + " appearance-none"}>
             <option value="" className="bg-[#13131C]">All Products</option>
             <option value="yes" className="bg-[#13131C]">Out of Stock</option>
             <option value="no" className="bg-[#13131C]">In Stock</option>

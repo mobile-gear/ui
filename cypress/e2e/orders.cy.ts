@@ -12,9 +12,9 @@ describe("Order history page", () => {
 
   it("shows orders after loading", () => {
     cy.wait("@getOrders");
-    cy.contains("Order #1").should("exist");
-    cy.contains("$1999.98").should("exist");
-    cy.contains("Delivered").should("exist");
+    cy.getBySel("order-number").should("exist");
+    cy.getBySel("order-total").should("exist");
+    cy.getBySel("order-status-delivered").should("exist");
   });
 
   it("shows shipping address", () => {

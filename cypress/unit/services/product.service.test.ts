@@ -40,7 +40,8 @@ describe("productService", () => {
 
   describe("create", () => {
     it("creates a product", async () => {
-      const { id: _, ...newProduct } = mockProduct;
+      const { id, ...newProduct } = mockProduct;
+      void id;
       mockedAxios.post.mockResolvedValue({ data: mockProduct });
 
       const result = await productService.create(newProduct);

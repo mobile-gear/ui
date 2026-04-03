@@ -15,15 +15,15 @@ describe("Admin pages", () => {
     });
 
     it("shows the admin nav", () => {
-      cy.contains("Admin").should("exist");
+      cy.getBySel("admin-badge").should("exist");
       cy.getBySel("admin-nav-orders").should("exist");
       cy.getBySel("admin-nav-products").should("exist");
     });
 
     it("shows order list after loading", () => {
       cy.wait("@getOrders");
-      cy.contains("#1").should("exist");
-      cy.contains("$1999.98").should("exist");
+      cy.getBySel("order-number-short").should("exist");
+      cy.getBySel("order-total").should("exist");
     });
 
     it("has status filter", () => {
@@ -41,7 +41,7 @@ describe("Admin pages", () => {
     });
 
     it("shows add product form", () => {
-      cy.contains("Add New Product").should("exist");
+      cy.getBySel("add-new-product-btn").should("exist");
       cy.getBySel("new-product-name").should("exist");
       cy.getBySel("new-product-category").should("exist");
       cy.get('input[name="price"]').should("exist");
@@ -50,7 +50,7 @@ describe("Admin pages", () => {
 
     it("shows product table", () => {
       cy.contains("iPhone 15 Pro").should("exist");
-      cy.contains("Delete").should("exist");
+      cy.getBySel("delete-product-btn").should("exist");
     });
   });
 });

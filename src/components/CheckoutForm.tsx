@@ -42,10 +42,11 @@ const CheckoutForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      {error && <div className="mt-4 text-red-500 text-sm">{error}</div>}
+    <form data-test="checkout-form" onSubmit={handleSubmit}>
+      <PaymentElement data-test="payment-element" />
+      {error && <div data-test="payment-error" className="mt-4 text-red-500 text-sm">{error}</div>}
       <button
+        data-test="pay-now-btn"
         type="submit"
         disabled={!stripe || isProcessing || !shippingAddress}
         className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -53,7 +54,7 @@ const CheckoutForm: React.FC = () => {
         {isProcessing ? "Processing..." : "Pay now"}
       </button>
       {!shippingAddress && (
-        <p className="mt-2 text-sm text-gray-600">
+        <p data-test="shipping-address-warning" className="mt-2 text-sm text-gray-600">
           Please fill in your shipping address before proceeding with payment.
         </p>
       )}

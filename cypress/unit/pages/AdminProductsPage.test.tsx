@@ -52,8 +52,8 @@ describe("Admin ProductsPage", () => {
 
   it("renders the add product form", () => {
     renderWith();
-    expect(screen.getByText("Add New Product")).toBeInTheDocument();
-    expect(screen.getByText("Add Product")).toBeInTheDocument();
+    expect(screen.getByTestId("add-product-title")).toBeInTheDocument();
+    expect(screen.getByTestId("add-product-btn")).toBeInTheDocument();
   });
 
   it("shows error state after fetch failure", async () => {
@@ -77,7 +77,7 @@ describe("Admin ProductsPage", () => {
     fireEvent.change(document.querySelector("input[name='stock']")!, { target: { value: "5" } });
     fireEvent.change(document.querySelector("textarea[name='description']")!, { target: { value: "A tablet" } });
 
-    fireEvent.submit(screen.getByText("Add Product").closest("form")!);
+    fireEvent.submit(screen.getByTestId("add-product-btn").closest("form")!);
 
     await waitFor(() => {
       expect(mockedService.create).toHaveBeenCalled();

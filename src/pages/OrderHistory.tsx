@@ -25,7 +25,7 @@ const OrderHistory: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0D0D14] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#FF4500]" />
+        <div data-test="loading-spinner" className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#FF4500]" />
       </div>
     );
   }
@@ -33,7 +33,7 @@ const OrderHistory: React.FC = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-[#0D0D14] flex items-center justify-center">
-        <p className="text-red-400 font-body">{error}</p>
+        <p data-test="orders-error" className="text-red-400 font-body">{error}</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ const OrderHistory: React.FC = () => {
 
         {orders.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-[#7A7A8C] font-body">No orders yet.</p>
+            <p data-test="empty-orders" className="text-[#7A7A8C] font-body">No orders yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -58,18 +58,19 @@ const OrderHistory: React.FC = () => {
               return (
                 <div
                   key={order.id}
+                  data-test={`order-card`}
                   className="bg-[#13131C] border border-[#252535] rounded-xl p-6"
                 >
                   <div className="flex justify-between items-start mb-5">
                     <div>
-                      <p className="text-[#F0EEFF] font-body font-semibold">
+                      <p data-test="order-number" className="text-[#F0EEFF] font-body font-semibold">
                         Order #{order.id}
                       </p>
                       <p className="text-[#7A7A8C] font-body text-sm mt-0.5">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-body font-medium ${statusClass}`}>
+                    <span data-test={`order-status-${order.status.toLowerCase()}`} className={`px-3 py-1 rounded-full text-xs font-body font-medium ${statusClass}`}>
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </span>
                   </div>
@@ -82,7 +83,7 @@ const OrderHistory: React.FC = () => {
                         </h3>
                         <div className="space-y-2">
                           {order.items.map((item, index) => (
-                            <div key={index} className="flex justify-between items-center">
+                            <div key={index} data-test={`order-item`} className="flex justify-between items-center">
                               <span className="text-[#9B9BAD] font-body text-sm">
                                 {item.product?.name || `Product #${item.productId}`}{" "}
                                 <span className="text-[#7A7A8C]">x {item.quantity}</span>
@@ -99,7 +100,7 @@ const OrderHistory: React.FC = () => {
                         <h3 className="text-[#FF4500] font-body text-xs font-semibold uppercase tracking-widest mb-3">
                           Shipping Address
                         </h3>
-                        <div className="text-[#9B9BAD] font-body text-sm space-y-0.5">
+                        <div data-test="shipping-address" className="text-[#9B9BAD] font-body text-sm space-y-0.5">
                           <p>{order.shippingAddress?.street}</p>
                           <p>
                             {order.shippingAddress?.city},{" "}
@@ -116,7 +117,7 @@ const OrderHistory: React.FC = () => {
                     <span className="text-[#7A7A8C] font-body text-sm font-medium uppercase tracking-widest">
                       Total
                     </span>
-                    <span className="text-[#F0EEFF] font-body text-lg font-bold">
+                    <span data-test="order-total" className="text-[#F0EEFF] font-body text-lg font-bold">
                       ${order.total.toFixed?.(2)}
                     </span>
                   </div>

@@ -42,60 +42,60 @@ describe("Navbar", () => {
 
   it("renders brand link", () => {
     renderWith();
-    expect(screen.getByText("Gear")).toBeInTheDocument();
+    expect(screen.getByTestId("brand-link")).toBeInTheDocument();
   });
 
   it("shows Login and Register when not authenticated", () => {
     renderWith();
-    expect(screen.getByText("Login")).toBeInTheDocument();
-    expect(screen.getByText("Register")).toBeInTheDocument();
+    expect(screen.getByTestId("login-link")).toBeInTheDocument();
+    expect(screen.getByTestId("register-link")).toBeInTheDocument();
   });
 
   it("shows user name when authenticated", () => {
     renderWith(user);
-    expect(screen.getByText("John")).toBeInTheDocument();
+    expect(screen.getByTestId("user-name")).toBeInTheDocument();
   });
 
   it("shows cart badge when items in cart", () => {
     renderWith(null, [{ id: 1, name: "P", description: "", img: "", price: 10, category: "", stock: 5, quantity: 1 }]);
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByTestId("cart-badge")).toBeInTheDocument();
   });
 
   it("does not show cart badge when cart is empty", () => {
     renderWith();
-    expect(screen.queryByText("0")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("cart-empty")).not.toBeInTheDocument();
   });
 
   it("opens dropdown on user name click", () => {
     renderWith(user);
-    fireEvent.click(screen.getByText("John"));
-    expect(screen.getByText("My Orders")).toBeInTheDocument();
-    expect(screen.getByText("Logout")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("user-name"));
+    expect(screen.getByTestId("my-orders-link")).toBeInTheDocument();
+    expect(screen.getByTestId("logout-link")).toBeInTheDocument();
   });
 
   it("shows Dashboard link for admin", () => {
     renderWith(admin);
-    fireEvent.click(screen.getByText("John"));
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("user-name"));
+    expect(screen.getByTestId("dashboard-link")).toBeInTheDocument();
   });
 
   it("does not show Dashboard link for regular user", () => {
     renderWith(user);
-    fireEvent.click(screen.getByText("John"));
-    expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("user-name"));
+    expect(screen.queryByTestId("dashboard-link")).not.toBeInTheDocument();
   });
 
   it("toggles dropdown on repeated click", () => {
     renderWith(user);
-    fireEvent.click(screen.getByText("John"));
-    expect(screen.getByText("My Orders")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("John"));
+    fireEvent.click(screen.getByTestId("user-name"));
+    expect(screen.getByTestId("my-orders-link")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("user-name"));
   });
 
   it("handles logout", () => {
     renderWith(user);
-    fireEvent.click(screen.getByText("John"));
-    fireEvent.click(screen.getByText("Logout"));
+    fireEvent.click(screen.getByTestId("user-name"));
+    fireEvent.click(screen.getByTestId("logout-link"));
     expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 });

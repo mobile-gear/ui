@@ -38,7 +38,7 @@ describe("Products page - filters and interactions", () => {
 
   it("navigates to product detail on click", () => {
     cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" });
-    cy.contains("iPhone 15 Pro").click();
+    cy.getBySel("product-name").click();
     cy.url().should("include", "/products/1");
   });
 

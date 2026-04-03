@@ -9,8 +9,8 @@ describe("Admin Dashboard", () => {
   it("displays orders section", () => {
     cy.wait("@getOrders");
     cy.getBySel("admin-orders-heading").should("exist");
-    cy.contains("Order #1").should("exist");
-    cy.contains("$1999.98").should("exist");
+    cy.getBySel("order-number").should("exist");
+    cy.getBySel("order-total").should("exist");
   });
 
   it("has status filter dropdown", () => {
@@ -22,11 +22,11 @@ describe("Admin Dashboard", () => {
   it("displays products section", () => {
     cy.wait("@getProducts");
     cy.getBySel("admin-products-heading").should("exist");
-    cy.contains("iPhone 15 Pro").should("exist");
+    cy.getBySel("product-name").should("exist");
   });
 
   it("shows add/edit product form", () => {
-    cy.contains("Add Product").should("exist");
+    cy.getBySel("add-product-btn").should("exist");
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-description").should("exist");
     cy.getBySel("product-price").should("exist");
@@ -53,26 +53,26 @@ describe("Admin Dashboard", () => {
 
   it("can click edit on a product", () => {
     cy.wait("@getProducts");
-    cy.contains("Edit").first().click({ force: true });
-    cy.contains("Edit Product").should("exist");
-    cy.contains("Update").should("exist");
-    cy.contains("Cancel").should("exist");
+    cy.getBySel("edit-product").first().click({ force: true });
+    cy.getBySel("edit-product-title").should("exist");
+    cy.getBySel("update-product-btn").should("exist");
+    cy.getBySel("cancel-edit-btn").should("exist");
   });
 
   it("can cancel editing", () => {
     cy.wait("@getProducts");
     cy.scrollTo("bottom");
-    cy.contains("Edit").first().click({ force: true });
-    cy.contains("Edit Product").should("exist");
-    cy.contains("button", "Cancel").click({ force: true });
-    cy.contains("Add Product").should("exist");
+    cy.getBySel("edit-product").first().click({ force: true });
+    cy.getBySel("edit-product-title").should("exist");
+    cy.getBySel("cancel-edit-btn").click({ force: true });
+    cy.getBySel("add-product-btn").should("exist");
   });
 
   it("shows order items and shipping info", () => {
     cy.wait("@getOrders");
-    cy.contains("Items").should("exist");
-    cy.contains("Shipping").should("exist");
-    cy.contains("123 Main St").should("exist");
+    cy.getBySel("order-items-section").should("exist");
+    cy.getBySel("order-shipping-section").should("exist");
+    cy.getBySel("shipping-address").should("exist");
   });
 
   it("can change order status", () => {

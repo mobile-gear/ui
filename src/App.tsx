@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <div className="min-h-screen bg-gray-100">
+      <div data-test="app-container" className="min-h-screen bg-gray-100">
         <Navbar />
         <AppRoutes />
       </div>

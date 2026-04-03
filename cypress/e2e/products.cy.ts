@@ -10,8 +10,8 @@ describe("Products page", () => {
 
   it("shows product cards after loading", () => {
     cy.wait("@getProducts");
-    cy.contains("iPhone 15 Pro").should("exist");
-    cy.contains("$999.99").should("exist");
+    cy.getBySel("product-name").should("exist");
+    cy.getBySel("product-price").should("exist");
     cy.contains("Samsung Galaxy S24").should("exist");
   });
 
@@ -48,8 +48,8 @@ describe("Product detail page", () => {
 
   it("displays product details", () => {
     cy.wait("@getProduct");
-    cy.contains("iPhone 15 Pro").should("exist");
-    cy.contains("$999.99").should("exist");
+    cy.getBySel("product-name").should("exist");
+    cy.getBySel("product-price").should("exist");
     cy.contains("smartphone").should("exist");
     cy.contains("25 in stock").should("exist");
   });

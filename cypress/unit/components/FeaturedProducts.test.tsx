@@ -41,38 +41,40 @@ const renderWith = (overrides = {}) =>
   );
 
 describe("FeaturedProducts", () => {
-  it("renders product names", () => {
+  it("renders product names", async () => {
     renderWith();
-    expect(screen.getByText("Phone")).toBeInTheDocument();
-    expect(screen.getByText("Tablet")).toBeInTheDocument();
+    const names = await screen.findAllByTestId("featured-product");
+    expect(names[0]).toHaveTextContent("Phone");
+    expect(names[1]).toHaveTextContent("Tablet");
   });
 
-  it("renders product prices", () => {
+  it("renders product prices", async () => {
     renderWith();
-    expect(screen.getByText("$999.00")).toBeInTheDocument();
-    expect(screen.getByText("$599.00")).toBeInTheDocument();
+    const prices = await screen.findAllByTestId("featured-price");
+    expect(prices[0]).toHaveTextContent("$999.00");
+    expect(prices[1]).toHaveTextContent("$599.00");
   });
 
-  it("renders product images", () => {
+  it("renders product images", async () => {
     renderWith();
-    const imgs = screen.getAllByRole("img");
+    const imgs = await screen.findAllByTestId("featured-img");
     expect(imgs).toHaveLength(2);
     expect(imgs[0]).toHaveAttribute("alt", "Phone");
   });
 
-  it("renders View Details links", () => {
+  it("renders View Details links", async () => {
     renderWith();
-    const links = screen.getAllByText("View Details");
+    const links = await screen.findAllByTestId("featured-link");
     expect(links).toHaveLength(2);
   });
 
   it("shows spinner when loading", () => {
     renderWith({ loading: true });
-    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByTestId("spinner")).toBeInTheDocument();
   });
 
   it("shows error message", () => {
     renderWith({ error: "Failed to load" });
-    expect(screen.getByText("Failed to load")).toBeInTheDocument();
+    expect(screen.getByTestId("featured-error")).toHaveTextContent("Failed to load");
   });
 });

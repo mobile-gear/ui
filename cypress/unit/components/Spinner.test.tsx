@@ -5,11 +5,11 @@ import Spinner from "@/components/Spinner";
 describe("Spinner", () => {
   it("renders a loading indicator", () => {
     render(<Spinner />);
-    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByTestId("spinner")).toBeInTheDocument();
   });
 
   it("contains accessible loading text", () => {
     render(<Spinner />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByTestId("spinner-text")).toHaveTextContent("Loading...");
   });
 });

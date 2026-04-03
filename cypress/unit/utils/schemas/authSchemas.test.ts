@@ -42,14 +42,16 @@ describe("registerSchema", () => {
   });
 
   it("rejects missing firstName", async () => {
-    const { firstName: _, ...data } = validData;
+    const { firstName, ...data } = validData;
+    void firstName;
     await expect(registerSchema.validate(data)).rejects.toThrow(
       "First name is required",
     );
   });
 
   it("rejects missing lastName", async () => {
-    const { lastName: _, ...data } = validData;
+    const { lastName, ...data } = validData;
+    void lastName;
     await expect(registerSchema.validate(data)).rejects.toThrow(
       "Last name is required",
     );
@@ -68,7 +70,8 @@ describe("registerSchema", () => {
   });
 
   it("rejects missing confirmPassword", async () => {
-    const { confirmPassword: _, ...data } = validData;
+    const { confirmPassword, ...data } = validData;
+    void confirmPassword;
     await expect(registerSchema.validate(data)).rejects.toThrow(
       "Please confirm your password",
     );
