@@ -26,6 +26,7 @@ jobs:
     - name: Run all tests with coverage
       env:
         NODE_OPTIONS: "--experimental-vm-modules"
+        VITE_API_URL: "/api"
       run: npm run coverage
 
     - name: Check coverage threshold
