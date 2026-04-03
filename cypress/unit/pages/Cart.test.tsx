@@ -18,14 +18,32 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-const createStore = (cartItems: CartItem[], user: { id: number; firstName: string; lastName: string; email: string; role: "user" | "admin" } | null = null) =>
+const createStore = (
+  cartItems: CartItem[],
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: "user" | "admin";
+  } | null = null,
+) =>
   configureStore({
     reducer: { cart: cartReducer, auth: authReducer },
     preloadedState: {
-      cart: { 
-        items: cartItems, 
-        totalItems: cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0, 
-        totalPrice: cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) : 0 
+      cart: {
+        items: cartItems,
+        totalItems:
+          cartItems.length > 0
+            ? cartItems.reduce((sum, item) => sum + item.quantity, 0)
+            : 0,
+        totalPrice:
+          cartItems.length > 0
+            ? cartItems.reduce(
+                (sum, item) => sum + item.price * item.quantity,
+                0,
+              )
+            : 0,
       },
       auth: { user, isAuthenticated: !!user, isLoading: false, error: null },
     },
@@ -37,7 +55,7 @@ const renderWithProviders = (store: ReturnType<typeof createStore>) =>
       <MemoryRouter>
         <Cart />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
   );
 
 describe("Cart - Branch Coverage", () => {
@@ -48,7 +66,7 @@ describe("Cart - Branch Coverage", () => {
   it("renders empty cart state when items.length === 0", () => {
     const store = createStore([]);
     renderWithProviders(store);
-    
+
     expect(screen.getByTestId("empty-cart")).toBeInTheDocument();
     expect(screen.getByTestId("continue-shopping")).toBeInTheDocument();
   });
@@ -66,9 +84,11 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     expect(screen.getByTestId("cart-item")).toBeInTheDocument();
-    expect(screen.getByTestId("product-name")).toHaveTextContent("Test Product");
+    expect(screen.getByTestId("product-name")).toHaveTextContent(
+      "Test Product",
+    );
     expect(screen.getByTestId("cart-item-qty")).toHaveTextContent("2");
   });
 
@@ -85,10 +105,10 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     const decrementBtn = screen.getByTestId("quantity-decrement");
     fireEvent.click(decrementBtn);
-    
+
     expect(screen.getByTestId("cart-item")).toBeInTheDocument();
   });
 
@@ -105,10 +125,10 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     const decrementBtn = screen.getByTestId("quantity-decrement");
     fireEvent.click(decrementBtn);
-    
+
     expect(screen.getByTestId("cart-item")).toBeInTheDocument();
   });
 
@@ -125,10 +145,10 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     const checkoutBtn = screen.getByTestId("checkout-btn");
     fireEvent.click(checkoutBtn);
-    
+
     expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 
@@ -152,10 +172,10 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem], mockUser);
     renderWithProviders(store);
-    
+
     const checkoutBtn = screen.getByTestId("checkout-btn");
     fireEvent.click(checkoutBtn);
-    
+
     expect(mockNavigate).toHaveBeenCalledWith("/checkout");
   });
 
@@ -172,7 +192,7 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     expect(screen.getByTestId("clear-cart-btn")).toBeInTheDocument();
   });
 
@@ -189,7 +209,7 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     expect(screen.getByTestId("remove-item")).toBeInTheDocument();
   });
 
@@ -206,10 +226,10 @@ describe("Cart - Branch Coverage", () => {
     };
     const store = createStore([mockItem]);
     renderWithProviders(store);
-    
+
     const incrementBtn = screen.getByTestId("quantity-increment");
     fireEvent.click(incrementBtn);
-    
+
     expect(screen.getByTestId("cart-item")).toBeInTheDocument();
   });
 });

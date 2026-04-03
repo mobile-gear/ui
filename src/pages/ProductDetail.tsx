@@ -27,15 +27,35 @@ const ProductDetail: React.FC = () => {
 
   if (loading) return <Spinner />;
   if (error)
-    return <p data-test="product-error" className="text-center text-[#FF4500] font-body mt-12">{error}</p>;
+    return (
+      <p
+        data-test="product-error"
+        className="text-center text-[#FF4500] font-body mt-12"
+      >
+        {error}
+      </p>
+    );
   if (!selectedProduct)
-    return <p data-test="product-not-found" className="text-center text-[#7A7A8C] font-body mt-12">Product not found.</p>;
+    return (
+      <p
+        data-test="product-not-found"
+        className="text-center text-[#7A7A8C] font-body mt-12"
+      >
+        Product not found.
+      </p>
+    );
 
   const stockStatus =
     selectedProduct.stock > 10
-      ? { label: `${selectedProduct.stock} in stock`, color: "text-emerald-400" }
+      ? {
+          label: `${selectedProduct.stock} in stock`,
+          color: "text-emerald-400",
+        }
       : selectedProduct.stock > 0
-        ? { label: `Only ${selectedProduct.stock} left`, color: "text-amber-400" }
+        ? {
+            label: `Only ${selectedProduct.stock} left`,
+            color: "text-amber-400",
+          }
         : { label: "Out of stock", color: "text-[#FF4500]" };
 
   return (
@@ -57,10 +77,16 @@ const ProductDetail: React.FC = () => {
 
           <div className="flex flex-col justify-center gap-5">
             <div>
-              <span data-test="product-category" className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-3">
+              <span
+                data-test="product-category"
+                className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-3"
+              >
                 {selectedProduct.category}
               </span>
-              <h1 data-test="product-name" className="font-display font-bold text-[#F0EEFF] text-3xl leading-tight">
+              <h1
+                data-test="product-name"
+                className="font-display font-bold text-[#F0EEFF] text-3xl leading-tight"
+              >
                 {selectedProduct.name}
               </h1>
             </div>
@@ -70,18 +96,27 @@ const ProductDetail: React.FC = () => {
             </p>
 
             <div className="flex items-baseline gap-3">
-              <span data-test="product-price" className="font-display font-bold text-[#FF4500] text-4xl">
+              <span
+                data-test="product-price"
+                className="font-display font-bold text-[#FF4500] text-4xl"
+              >
                 ${selectedProduct.price.toFixed(2)}
               </span>
             </div>
 
-            <p data-test="stock-status" className={`font-body text-sm font-medium ${stockStatus.color}`}>
+            <p
+              data-test="stock-status"
+              className={`font-body text-sm font-medium ${stockStatus.color}`}
+            >
               {stockStatus.label}
             </p>
 
             {selectedProduct.stock > 0 && (
               <div className="flex items-center gap-3">
-                <label htmlFor="quantity" className="text-[#7A7A8C] font-body text-sm">
+                <label
+                  htmlFor="quantity"
+                  className="text-[#7A7A8C] font-body text-sm"
+                >
                   Quantity
                 </label>
                 <div className="flex items-center bg-[#13131C] border border-[#252535] rounded-lg overflow-hidden">
@@ -100,13 +135,17 @@ const ProductDetail: React.FC = () => {
                     min="1"
                     max={selectedProduct.stock}
                     value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) =>
+                      setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                    }
                     className="w-12 text-center bg-transparent text-[#F0EEFF] font-body text-sm focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <button
                     data-test="qty-increment"
                     type="button"
-                    onClick={() => setQuantity((q) => Math.min(selectedProduct.stock, q + 1))}
+                    onClick={() =>
+                      setQuantity((q) => Math.min(selectedProduct.stock, q + 1))
+                    }
                     className="px-3 py-2 text-[#9B9BAD] hover:text-[#F0EEFF] hover:bg-[#1E1E2C] transition-colors font-body text-lg"
                   >
                     +

@@ -11,11 +11,31 @@ vi.mock("@/components/Spinner", () => ({
 }));
 
 const mockProducts = [
-  { id: 1, name: "Phone Case", description: "Protective case", img: "/case.jpg", price: 19.99, category: "accessories", stock: 50 },
-  { id: 2, name: "Charger", description: "Fast charger", img: "/charger.jpg", price: 29.99, category: "accessories", stock: 30 },
+  {
+    id: 1,
+    name: "Phone Case",
+    description: "Protective case",
+    img: "/case.jpg",
+    price: 19.99,
+    category: "accessories",
+    stock: 50,
+  },
+  {
+    id: 2,
+    name: "Charger",
+    description: "Fast charger",
+    img: "/charger.jpg",
+    price: 29.99,
+    category: "accessories",
+    stock: 30,
+  },
 ];
 
-const renderWith = (props: { products: typeof mockProducts; error: string | null; loading: boolean }) => {
+const renderWith = (props: {
+  products: typeof mockProducts;
+  error: string | null;
+  loading: boolean;
+}) => {
   const store = configureStore({
     reducer: { cart: cartReducer },
   });
@@ -47,7 +67,9 @@ describe("ProductList - Branch Coverage", () => {
 
   it("shows error message", () => {
     renderWith({ products: [], error: "Something went wrong", loading: false });
-    expect(screen.getByTestId("product-list-error")).toHaveTextContent("Something went wrong");
+    expect(screen.getByTestId("product-list-error")).toHaveTextContent(
+      "Something went wrong",
+    );
   });
 
   it("shows empty message when no products", () => {
@@ -90,7 +112,9 @@ describe("ProductList - Branch Coverage", () => {
 
   it("shows error with custom message", () => {
     renderWith({ products: [], error: "Network timeout", loading: false });
-    expect(screen.getByTestId("product-list-error")).toHaveTextContent("Network timeout");
+    expect(screen.getByTestId("product-list-error")).toHaveTextContent(
+      "Network timeout",
+    );
   });
 
   it("shows empty state with no products", () => {

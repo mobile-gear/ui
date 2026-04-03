@@ -26,7 +26,9 @@ export const createPaymentIntent = createAsyncThunk(
       return await checkoutService.createPaymentIntent(cartItems);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        return rejectWithValue(error.response?.data?.message || "Failed to create payment intent");
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to create payment intent",
+        );
       }
       return rejectWithValue("Failed to create payment intent");
     }

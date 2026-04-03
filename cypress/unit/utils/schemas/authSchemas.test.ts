@@ -59,13 +59,20 @@ describe("registerSchema", () => {
 
   it("rejects a short password", async () => {
     await expect(
-      registerSchema.validate({ ...validData, password: "short", confirmPassword: "short" }),
+      registerSchema.validate({
+        ...validData,
+        password: "short",
+        confirmPassword: "short",
+      }),
     ).rejects.toThrow("Password must be at least 8 characters");
   });
 
   it("rejects mismatched passwords", async () => {
     await expect(
-      registerSchema.validate({ ...validData, confirmPassword: "different123" }),
+      registerSchema.validate({
+        ...validData,
+        confirmPassword: "different123",
+      }),
     ).rejects.toThrow("Passwords must match");
   });
 

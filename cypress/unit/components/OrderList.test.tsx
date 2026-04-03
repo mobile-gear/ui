@@ -10,7 +10,13 @@ const mockOrders = [
     total: 39.98,
     paymentIntentId: "pi_123",
     status: "pending" as const,
-    shippingAddress: { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" },
+    shippingAddress: {
+      street: "123 Main",
+      city: "NY",
+      state: "NY",
+      zipCode: "10001",
+      country: "US",
+    },
     createdAt: "2025-01-15T10:00:00Z",
   },
   {
@@ -20,7 +26,13 @@ const mockOrders = [
     total: 9.99,
     paymentIntentId: "pi_456",
     status: "delivered" as const,
-    shippingAddress: { street: "456 Oak", city: "LA", state: "CA", zipCode: "90001", country: "US" },
+    shippingAddress: {
+      street: "456 Oak",
+      city: "LA",
+      state: "CA",
+      zipCode: "90001",
+      country: "US",
+    },
     createdAt: "2025-02-20T14:00:00Z",
   },
 ];
@@ -28,7 +40,11 @@ const mockOrders = [
 describe("OrderList", () => {
   it("renders order rows", async () => {
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={vi.fn()}
+      />,
     );
     const orderIds = await screen.findAllByTestId("order-number-short");
     expect(orderIds[0]).toHaveTextContent("#1");
@@ -39,7 +55,11 @@ describe("OrderList", () => {
 
   it("renders column headers", () => {
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={vi.fn()}
+      />,
     );
     expect(screen.getByTestId("th-id")).toBeInTheDocument();
     expect(screen.getByTestId("th-createdAt")).toBeInTheDocument();
@@ -50,7 +70,11 @@ describe("OrderList", () => {
   it("calls onSort when column header is clicked", () => {
     const onSort = vi.fn();
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={onSort} />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={onSort}
+      />,
     );
     fireEvent.click(screen.getByTestId("th-id"));
     expect(onSort).toHaveBeenCalledWith("id");
@@ -59,7 +83,11 @@ describe("OrderList", () => {
   it("calls onStatusChange when select changes", async () => {
     const onStatusChange = vi.fn();
     render(
-      <OrderList orders={mockOrders} onStatusChange={onStatusChange} onSort={vi.fn()} />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={onStatusChange}
+        onSort={vi.fn()}
+      />,
     );
     const selects = await screen.findAllByTestId("order-select");
     fireEvent.change(selects[0], { target: { value: "shipped" } });
@@ -68,14 +96,26 @@ describe("OrderList", () => {
 
   it("shows sort icons for active sort", () => {
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} sortBy="total" sortOrder="asc" />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={vi.fn()}
+        sortBy="total"
+        sortOrder="asc"
+      />,
     );
     expect(screen.getByTestId("sort-total")).toBeInTheDocument();
   });
 
   it("shows desc sort icon", () => {
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={vi.fn()} sortBy="total" sortOrder="desc" />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={vi.fn()}
+        sortBy="total"
+        sortOrder="desc"
+      />,
     );
     expect(screen.getByTestId("sort-total")).toBeInTheDocument();
   });
@@ -87,13 +127,25 @@ describe("OrderList", () => {
       status: "unknown" as "pending",
     };
     render(
-      <OrderList orders={[unknownStatusOrder]} onStatusChange={vi.fn()} onSort={vi.fn()} />,
+      <OrderList
+        orders={[unknownStatusOrder]}
+        onStatusChange={vi.fn()}
+        onSort={vi.fn()}
+      />,
     );
-    expect(screen.getByTestId("order-status-unknown")).toHaveTextContent("unknown");
+    expect(screen.getByTestId("order-status-unknown")).toHaveTextContent(
+      "unknown",
+    );
   });
 
   it("applies correct style for each known status", () => {
-    const statuses = ["delivered", "processing", "shipped", "cancelled", "pending"] as const;
+    const statuses = [
+      "delivered",
+      "processing",
+      "shipped",
+      "cancelled",
+      "pending",
+    ] as const;
     const orders = statuses.map((status, i) => ({
       ...mockOrders[0],
       id: i + 10,
@@ -102,13 +154,19 @@ describe("OrderList", () => {
     render(
       <OrderList orders={orders} onStatusChange={vi.fn()} onSort={vi.fn()} />,
     );
-    statuses.forEach((s) => expect(screen.getByTestId(`order-status-${s}`)).toHaveTextContent(s));
+    statuses.forEach((s) =>
+      expect(screen.getByTestId(`order-status-${s}`)).toHaveTextContent(s),
+    );
   });
 
   it("calls onSort for different columns", () => {
     const onSort = vi.fn();
     render(
-      <OrderList orders={mockOrders} onStatusChange={vi.fn()} onSort={onSort} />,
+      <OrderList
+        orders={mockOrders}
+        onStatusChange={vi.fn()}
+        onSort={onSort}
+      />,
     );
     fireEvent.click(screen.getByTestId("th-createdAt"));
     expect(onSort).toHaveBeenCalledWith("createdAt");

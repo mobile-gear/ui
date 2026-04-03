@@ -17,7 +17,13 @@ const mockOrder = {
   total: 39.98,
   paymentIntentId: "pi_123",
   status: "pending" as const,
-  shippingAddress: { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" },
+  shippingAddress: {
+    street: "123 Main",
+    city: "NY",
+    state: "NY",
+    zipCode: "10001",
+    country: "US",
+  },
   createdAt: "2025-01-15T10:00:00Z",
 };
 
@@ -28,7 +34,10 @@ const defaultFilters = {
   sortOrder: "desc" as const,
 };
 
-const mockResponse = { orders: [mockOrder], pagination: { page: 1, limit: 10, total: 1, totalPages: 1 } };
+const mockResponse = {
+  orders: [mockOrder],
+  pagination: { page: 1, limit: 10, total: 1, totalPages: 1 },
+};
 
 const createStore = (overrides: Record<string, unknown> = {}) =>
   configureStore({
@@ -58,11 +67,15 @@ describe("Admin OrdersPage", () => {
         </MemoryRouter>
       </Provider>,
     );
-    expect(await screen.findByRole("heading", { name: "Orders" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Orders" }),
+    ).toBeInTheDocument();
   });
 
   it("shows error message when fetch fails", async () => {
-    mockedService.getAll.mockRejectedValue({ response: { data: { message: "Server error" } } });
+    mockedService.getAll.mockRejectedValue({
+      response: { data: { message: "Server error" } },
+    });
     render(
       <Provider store={createStore()}>
         <MemoryRouter initialEntries={["/admin/orders"]}>
@@ -70,7 +83,9 @@ describe("Admin OrdersPage", () => {
         </MemoryRouter>
       </Provider>,
     );
-    expect(await screen.findByText("An unknown error occurred")).toBeInTheDocument();
+    expect(
+      await screen.findByText("An unknown error occurred"),
+    ).toBeInTheDocument();
   });
 
   it("renders order list with order data", async () => {
@@ -104,7 +119,9 @@ describe("Admin OrdersPage", () => {
 
   it("clears status filter when empty value selected", async () => {
     mockedService.getAll.mockResolvedValue(mockResponse);
-    const store = createStore({ filters: { ...defaultFilters, status: "shipped" } });
+    const store = createStore({
+      filters: { ...defaultFilters, status: "shipped" },
+    });
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/admin/orders"]}>
@@ -168,7 +185,9 @@ describe("Admin OrdersPage", () => {
 
   it("toggles to desc when clicking same column", async () => {
     mockedService.getAll.mockResolvedValue(mockResponse);
-    const store = createStore({ filters: { ...defaultFilters, sortBy: "total", sortOrder: "asc" } });
+    const store = createStore({
+      filters: { ...defaultFilters, sortBy: "total", sortOrder: "asc" },
+    });
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/admin/orders"]}>

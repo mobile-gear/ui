@@ -15,7 +15,7 @@ export default defineConfig({
     setupFiles: ["./cypress/support/unit-setup.ts"],
     include: ["cypress/unit/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["**/node_modules/**", "**/dist/**"],
-    pool: 'forks',
+    pool: "forks",
     maxWorkers: 1,
     coverage: {
       provider: "istanbul",
@@ -23,7 +23,13 @@ export default defineConfig({
       reportsDirectory: "coverage/unit",
       all: true,
       include: ["src/**/*.{ts,tsx}"],
-      exclude: ["src/**/*.d.ts", "src/main.tsx", "src/vite-env.d.ts", "src/interfaces/**", "src/types/**"],
+      exclude: [
+        "src/**/*.d.ts",
+        "src/main.tsx",
+        "src/vite-env.d.ts",
+        "src/interfaces/**",
+        "src/types/**",
+      ],
       reportOnFailure: true,
     },
   },

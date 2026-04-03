@@ -13,11 +13,32 @@ const mockedService = vi.mocked(orderService, true);
 const mockOrder = {
   id: 1,
   userId: 1,
-  items: [{ productId: 1, quantity: 2, price: 19.99, product: { id: 1, name: "Phone", description: "", img: "", price: 19.99, category: "smartphone", stock: 10 } }],
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 19.99,
+      product: {
+        id: 1,
+        name: "Phone",
+        description: "",
+        img: "",
+        price: 19.99,
+        category: "smartphone",
+        stock: 10,
+      },
+    },
+  ],
   total: 39.98,
   paymentIntentId: "pi_123",
   status: "delivered" as const,
-  shippingAddress: { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" },
+  shippingAddress: {
+    street: "123 Main",
+    city: "NY",
+    state: "NY",
+    zipCode: "10001",
+    country: "US",
+  },
   createdAt: "2025-01-15T10:00:00Z",
 };
 
@@ -66,7 +87,9 @@ describe("OrderHistory", () => {
         </MemoryRouter>
       </Provider>,
     );
-    expect(await screen.findByText("Failed to fetch orders")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Failed to fetch orders"),
+    ).toBeInTheDocument();
   });
 
   it("shows empty state when no orders", async () => {
@@ -136,7 +159,9 @@ describe("OrderHistory", () => {
       ...mockOrder,
       items: [{ productId: 5, quantity: 1, price: 9.99 }],
     };
-    mockedService.getUserOrders.mockResolvedValue({ orders: [orderWithoutProductName] });
+    mockedService.getUserOrders.mockResolvedValue({
+      orders: [orderWithoutProductName],
+    });
     render(
       <Provider store={createStore()}>
         <MemoryRouter>
@@ -149,8 +174,14 @@ describe("OrderHistory", () => {
 
   it("applies correct status styles for different statuses", async () => {
     const pendingOrder = { ...mockOrder, id: 2, status: "pending" as const };
-    const cancelledOrder = { ...mockOrder, id: 3, status: "cancelled" as const };
-    mockedService.getUserOrders.mockResolvedValue({ orders: [mockOrder, pendingOrder, cancelledOrder] });
+    const cancelledOrder = {
+      ...mockOrder,
+      id: 3,
+      status: "cancelled" as const,
+    };
+    mockedService.getUserOrders.mockResolvedValue({
+      orders: [mockOrder, pendingOrder, cancelledOrder],
+    });
     render(
       <Provider store={createStore()}>
         <MemoryRouter>
@@ -164,7 +195,11 @@ describe("OrderHistory", () => {
   });
 
   it("uses fallback style for unknown status", async () => {
-    const unknownOrder = { ...mockOrder, id: 4, status: "unknown" as "pending" };
+    const unknownOrder = {
+      ...mockOrder,
+      id: 4,
+      status: "unknown" as "pending",
+    };
     mockedService.getUserOrders.mockResolvedValue({ orders: [unknownOrder] });
     render(
       <Provider store={createStore()}>

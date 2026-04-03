@@ -26,14 +26,16 @@ const Pagination: React.FC<PaginationProps> = ({
 
   if (totalPages <= 1) return null;
 
-  const baseBtn =
-    "px-3 py-1.5 rounded-lg font-body text-sm transition-colors";
+  const baseBtn = "px-3 py-1.5 rounded-lg font-body text-sm transition-colors";
   const activeBtn = `${baseBtn} bg-[#FF4500] text-white`;
   const normalBtn = `${baseBtn} bg-[#1E1E2C] border border-[#252535] text-[#9B9BAD] hover:border-[#FF4500]/40 hover:text-[#F0EEFF]`;
   const disabledBtn = `${baseBtn} bg-[#13131C] border border-[#252535] text-[#3A3A4A] cursor-not-allowed`;
 
   return (
-    <div data-test="pagination" className="flex justify-center items-center gap-1.5 mt-10">
+    <div
+      data-test="pagination"
+      className="flex justify-center items-center gap-1.5 mt-10"
+    >
       <button
         data-test="pagination-first"
         onClick={() => onPageChange(1)}
@@ -66,7 +68,11 @@ const Pagination: React.FC<PaginationProps> = ({
         data-test="pagination-next"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages || Boolean(isNextDisabled)}
-        className={currentPage === totalPages || Boolean(isNextDisabled) ? disabledBtn : normalBtn}
+        className={
+          currentPage === totalPages || Boolean(isNextDisabled)
+            ? disabledBtn
+            : normalBtn
+        }
       >
         Next
       </button>
@@ -74,7 +80,11 @@ const Pagination: React.FC<PaginationProps> = ({
         data-test="pagination-last"
         onClick={() => onPageChange(totalPages)}
         disabled={currentPage === totalPages || Boolean(isNextDisabled)}
-        className={currentPage === totalPages || Boolean(isNextDisabled) ? disabledBtn : normalBtn}
+        className={
+          currentPage === totalPages || Boolean(isNextDisabled)
+            ? disabledBtn
+            : normalBtn
+        }
       >
         Last
       </button>

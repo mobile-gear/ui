@@ -19,36 +19,61 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
-const address = { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" };
-const cartItem: CartItem = { 
-  id: 1, 
-  name: "Phone", 
-  description: "A smartphone", 
-  category: "smartphones", 
+const address = {
+  street: "123 Main",
+  city: "NY",
+  state: "NY",
+  zipCode: "10001",
+  country: "US",
+};
+const cartItem: CartItem = {
+  id: 1,
+  name: "Phone",
+  description: "A smartphone",
+  category: "smartphones",
   stock: 10,
-  price: 999, 
-  img: "/img.jpg", 
-  quantity: 2 
+  price: 999,
+  img: "/img.jpg",
+  quantity: 2,
 };
 
-const createStore = (shippingAddress = address as ReturnType<typeof checkoutReducer>["shippingAddress"], items = [cartItem]) =>
+const createStore = (
+  shippingAddress = address as ReturnType<
+    typeof checkoutReducer
+  >["shippingAddress"],
+  items = [cartItem],
+) =>
   configureStore({
-    reducer: { cart: cartReducer, checkout: checkoutReducer, orders: orderReducer },
+    reducer: {
+      cart: cartReducer,
+      checkout: checkoutReducer,
+      orders: orderReducer,
+    },
     preloadedState: {
-      cart: { items, totalItems: items.length, totalPrice: items.reduce((s, i) => s + i.price * i.quantity, 0) },
-      checkout: { isLoading: false, error: null, clientSecret: null, shippingAddress, success: false },
-      orders: { 
-        orders: [], 
-        currentOrder: null, 
-        isLoading: false, 
-        error: null, 
-        pagination: null, 
-        filters: { 
-          page: 1, 
-          limit: 10, 
-          sortBy: "createdAt" as OrderFilters["sortBy"], 
-          sortOrder: "desc" as const 
-        } 
+      cart: {
+        items,
+        totalItems: items.length,
+        totalPrice: items.reduce((s, i) => s + i.price * i.quantity, 0),
+      },
+      checkout: {
+        isLoading: false,
+        error: null,
+        clientSecret: null,
+        shippingAddress,
+        success: false,
+      },
+      orders: {
+        orders: [],
+        currentOrder: null,
+        isLoading: false,
+        error: null,
+        pagination: null,
+        filters: {
+          page: 1,
+          limit: 10,
+          sortBy: "createdAt" as OrderFilters["sortBy"],
+          sortOrder: "desc" as const,
+        },
       },
     },
   });
@@ -60,13 +85,20 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  Object.defineProperty(window, "location", { value: originalLocation, writable: true });
+  Object.defineProperty(window, "location", {
+    value: originalLocation,
+    writable: true,
+  });
   vi.restoreAllMocks();
 });
 
 const setSearch = (search: string) => {
   delete (window as unknown as Record<string, unknown>).location;
-  (window as unknown as Record<string, unknown>).location = { ...originalLocation, search, origin: "http://localhost:3000" };
+  (window as unknown as Record<string, unknown>).location = {
+    ...originalLocation,
+    search,
+    origin: "http://localhost:3000",
+  };
 };
 
 describe("CheckoutSuccess", () => {
@@ -75,13 +107,21 @@ describe("CheckoutSuccess", () => {
   it("shows success on valid payment", async () => {
     setSearch("?payment_intent=pi_123&redirect_status=succeeded");
     mockedOrderService.create.mockResolvedValue({
-      id: 1, userId: 1, items: [{ productId: 1, quantity: 2, price: 999 }],
-      total: 1998, paymentIntentId: "pi_123", status: "delivered", shippingAddress: address, createdAt: "",
+      id: 1,
+      userId: 1,
+      items: [{ productId: 1, quantity: 2, price: 999 }],
+      total: 1998,
+      paymentIntentId: "pi_123",
+      status: "delivered",
+      shippingAddress: address,
+      createdAt: "",
     });
 
     render(
       <Provider store={createStore()}>
-        <MemoryRouter><CheckoutSuccess /></MemoryRouter>
+        <MemoryRouter>
+          <CheckoutSuccess />
+        </MemoryRouter>
       </Provider>,
     );
 
@@ -93,11 +133,15 @@ describe("CheckoutSuccess", () => {
 
     render(
       <Provider store={createStore()}>
-        <MemoryRouter><CheckoutSuccess /></MemoryRouter>
+        <MemoryRouter>
+          <CheckoutSuccess />
+        </MemoryRouter>
       </Provider>,
     );
 
-    expect(await screen.findByText("Payment verification failed")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Payment verification failed"),
+    ).toBeInTheDocument();
   });
 
   it("shows error when redirect_status is not succeeded", async () => {
@@ -105,11 +149,15 @@ describe("CheckoutSuccess", () => {
 
     render(
       <Provider store={createStore()}>
-        <MemoryRouter><CheckoutSuccess /></MemoryRouter>
+        <MemoryRouter>
+          <CheckoutSuccess />
+        </MemoryRouter>
       </Provider>,
     );
 
-    expect(await screen.findByText("Payment verification failed")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Payment verification failed"),
+    ).toBeInTheDocument();
   });
 
   it("shows error when shipping address is missing", async () => {
@@ -117,11 +165,15 @@ describe("CheckoutSuccess", () => {
 
     render(
       <Provider store={createStore(null)}>
-        <MemoryRouter><CheckoutSuccess /></MemoryRouter>
+        <MemoryRouter>
+          <CheckoutSuccess />
+        </MemoryRouter>
       </Provider>,
     );
 
-    expect(await screen.findByText("Shipping address not found")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Shipping address not found"),
+    ).toBeInTheDocument();
   });
 
   it("shows error when order creation fails", async () => {
@@ -130,10 +182,16 @@ describe("CheckoutSuccess", () => {
 
     render(
       <Provider store={createStore()}>
-        <MemoryRouter><CheckoutSuccess /></MemoryRouter>
+        <MemoryRouter>
+          <CheckoutSuccess />
+        </MemoryRouter>
       </Provider>,
     );
 
-    expect(await screen.findByText("Failed to create your order. Please contact support.")).toBeInTheDocument();
+    expect(
+      await screen.findByText(
+        "Failed to create your order. Please contact support.",
+      ),
+    ).toBeInTheDocument();
   });
 });

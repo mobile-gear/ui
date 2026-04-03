@@ -25,13 +25,21 @@ const columns: Column[] = [
   { key: "actions", label: "Actions", sortable: false },
 ];
 
-const ProductList: React.FC<ProductListProps> = ({ products, onDelete, onSort, sortBy, sortOrder }) => {
+const ProductList: React.FC<ProductListProps> = ({
+  products,
+  onDelete,
+  onSort,
+  sortBy,
+  sortOrder,
+}) => {
   const getSortIcon = (field: string) => {
     if (!onSort) return null;
     if (sortBy !== field) return <BiSort className="h-4 w-4 text-[#3A3A4A]" />;
-    return sortOrder === "asc"
-      ? <BiSortUp className="h-4 w-4 text-[#FF4500]" />
-      : <BiSortDown className="h-4 w-4 text-[#FF4500]" />;
+    return sortOrder === "asc" ? (
+      <BiSortUp className="h-4 w-4 text-[#FF4500]" />
+    ) : (
+      <BiSortDown className="h-4 w-4 text-[#FF4500]" />
+    );
   };
 
   return (
@@ -56,12 +64,32 @@ const ProductList: React.FC<ProductListProps> = ({ products, onDelete, onSort, s
         </thead>
         <tbody className="bg-[#13131C] divide-y divide-[#252535]">
           {products.map((product) => (
-            <tr key={product.id} data-test={`product-row-${product.id}`} className="hover:bg-[#1E1E2C] transition-colors">
-              <td className="py-3 px-4 font-body text-sm text-[#7A7A8C]">{product.id}</td>
-              <td data-test="product-name" className="py-3 px-4 font-body text-sm text-[#F0EEFF] max-w-[12rem] truncate">{product.name}</td>
-              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD] capitalize">{product.category}</td>
-              <td data-test="product-price" className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm">${product.price.toFixed(2)}</td>
-              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">{product.stock}</td>
+            <tr
+              key={product.id}
+              data-test={`product-row-${product.id}`}
+              className="hover:bg-[#1E1E2C] transition-colors"
+            >
+              <td className="py-3 px-4 font-body text-sm text-[#7A7A8C]">
+                {product.id}
+              </td>
+              <td
+                data-test="product-name"
+                className="py-3 px-4 font-body text-sm text-[#F0EEFF] max-w-[12rem] truncate"
+              >
+                {product.name}
+              </td>
+              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD] capitalize">
+                {product.category}
+              </td>
+              <td
+                data-test="product-price"
+                className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm"
+              >
+                ${product.price.toFixed(2)}
+              </td>
+              <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">
+                {product.stock}
+              </td>
               <td className="py-3 px-4">
                 <button
                   data-test="delete-product"

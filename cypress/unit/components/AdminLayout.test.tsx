@@ -9,7 +9,7 @@ const renderWith = (route = "/admin/orders") =>
       <AdminLayout>
         <div data-test="child-content">Child Content</div>
       </AdminLayout>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe("AdminLayout - Branch Coverage", () => {
@@ -36,11 +36,11 @@ describe("AdminLayout - Branch Coverage", () => {
 
     expect(screen.getByTestId("admin-nav-orders")).toHaveAttribute(
       "href",
-      "/admin/orders"
+      "/admin/orders",
     );
     expect(screen.getByTestId("admin-nav-products")).toHaveAttribute(
       "href",
-      "/admin/products"
+      "/admin/products",
     );
   });
 
@@ -112,7 +112,7 @@ describe("AdminLayout - Branch Coverage", () => {
     renderWith();
 
     const badge = screen.getByTestId("admin-badge");
-    
+
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("Admin");
     expect(badge.className).toMatch(/text-\[#7A7A8C\]|font-body|text-xs/);
@@ -132,7 +132,7 @@ describe("AdminLayout - Branch Coverage", () => {
         <AdminLayout>
           <></>
         </AdminLayout>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByTestId("admin-badge")).toBeInTheDocument();

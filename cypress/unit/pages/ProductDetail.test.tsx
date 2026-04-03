@@ -27,7 +27,13 @@ const baseProduct: Product = {
   stock: 15,
 };
 
-const createStore = (overrides: Partial<{ loading: boolean; error: string | null; selectedProduct: Product | null }> = {}) =>
+const createStore = (
+  overrides: Partial<{
+    loading: boolean;
+    error: string | null;
+    selectedProduct: Product | null;
+  }> = {},
+) =>
   configureStore({
     reducer: { products: productReducer, cart: cartReducer },
     preloadedState: {

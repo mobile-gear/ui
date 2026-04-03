@@ -12,7 +12,13 @@ const mockOrder = {
   total: 39.98,
   paymentIntentId: "pi_123",
   status: "pending" as const,
-  shippingAddress: { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" },
+  shippingAddress: {
+    street: "123 Main",
+    city: "NY",
+    state: "NY",
+    zipCode: "10001",
+    country: "US",
+  },
   createdAt: "2025-01-01T00:00:00Z",
 };
 
@@ -68,7 +74,12 @@ describe("orderService", () => {
       };
       mockedAxios.get.mockResolvedValue(response);
 
-      const filters = { page: 1, limit: 10, sortBy: "createdAt" as const, sortOrder: "desc" as const };
+      const filters = {
+        page: 1,
+        limit: 10,
+        sortBy: "createdAt" as const,
+        sortOrder: "desc" as const,
+      };
       const result = await orderService.getAll(filters);
 
       expect(mockedAxios.get).toHaveBeenCalledWith(

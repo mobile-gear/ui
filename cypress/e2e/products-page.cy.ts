@@ -1,6 +1,8 @@
 describe("Products page - filters and interactions", () => {
   beforeEach(() => {
-    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as("getProducts");
+    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as(
+      "getProducts",
+    );
     cy.visit("/products");
     cy.wait("@getProducts");
   });
@@ -54,7 +56,9 @@ describe("Products page - filters and interactions", () => {
 describe("Product detail - interactions", () => {
   beforeEach(() => {
     cy.intercept("GET", "/api/products*", { fixture: "products.json" });
-    cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" }).as("getProduct");
+    cy.intercept("GET", "/api/products/1", {
+      fixture: "product-detail.json",
+    }).as("getProduct");
     cy.visit("/products/1");
     cy.wait("@getProduct");
   });

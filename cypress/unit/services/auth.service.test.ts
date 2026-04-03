@@ -12,10 +12,23 @@ describe("authService", () => {
 
   describe("login", () => {
     it("posts credentials and returns auth response", async () => {
-      const response = { data: { user: { id: 1, firstName: "John", lastName: "Doe", email: "john@test.com", role: "user" as const } } };
+      const response = {
+        data: {
+          user: {
+            id: 1,
+            firstName: "John",
+            lastName: "Doe",
+            email: "john@test.com",
+            role: "user" as const,
+          },
+        },
+      };
       mockedAxios.post.mockResolvedValue(response);
 
-      const result = await authService.login({ email: "john@test.com", password: "pass123" });
+      const result = await authService.login({
+        email: "john@test.com",
+        password: "pass123",
+      });
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         expect.stringContaining("/auth/login"),
@@ -28,8 +41,15 @@ describe("authService", () => {
 
   describe("register", () => {
     it("posts user data and returns auth response", async () => {
-      const userData = { firstName: "Jane", lastName: "Doe", email: "jane@test.com", password: "pass123" };
-      const response = { data: { user: { id: 2, ...userData, role: "user" as const } } };
+      const userData = {
+        firstName: "Jane",
+        lastName: "Doe",
+        email: "jane@test.com",
+        password: "pass123",
+      };
+      const response = {
+        data: { user: { id: 2, ...userData, role: "user" as const } },
+      };
       mockedAxios.post.mockResolvedValue(response);
 
       const result = await authService.register(userData);
@@ -45,7 +65,13 @@ describe("authService", () => {
 
   describe("getProfile", () => {
     it("fetches and returns user profile", async () => {
-      const user = { id: 1, firstName: "John", lastName: "Doe", email: "john@test.com", role: "user" as const };
+      const user = {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@test.com",
+        role: "user" as const,
+      };
       mockedAxios.get.mockResolvedValue({ data: user });
 
       const result = await authService.getProfile();

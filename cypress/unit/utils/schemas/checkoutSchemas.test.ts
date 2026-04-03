@@ -11,9 +11,9 @@ describe("shippingAddressSchema", () => {
   };
 
   it("validates a correct address", async () => {
-    await expect(
-      shippingAddressSchema.validate(validAddress),
-    ).resolves.toEqual(validAddress);
+    await expect(shippingAddressSchema.validate(validAddress)).resolves.toEqual(
+      validAddress,
+    );
   });
 
   it("rejects missing street", async () => {

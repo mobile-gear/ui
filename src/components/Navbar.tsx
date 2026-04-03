@@ -10,14 +10,19 @@ import { motion, AnimatePresence } from "framer-motion";
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth,
+  );
   const { items } = useSelector((state: RootState) => state.cart);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
@@ -51,7 +56,11 @@ const Navbar = () => {
             Products
           </Link>
 
-          <Link to="/cart" data-test="cart-link" className="relative text-[#7A7A8C] hover:text-[#F0EEFF] transition-colors">
+          <Link
+            to="/cart"
+            data-test="cart-link"
+            className="relative text-[#7A7A8C] hover:text-[#F0EEFF] transition-colors"
+          >
             <BsCart3 className="text-xl" />
             <AnimatePresence>
               {items.length > 0 && (

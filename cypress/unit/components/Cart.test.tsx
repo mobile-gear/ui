@@ -14,7 +14,16 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
-const cartItem: CartItem = { id: 1, name: "Phone", description: "", img: "/img.jpg", price: 999, category: "", stock: 10, quantity: 2 };
+const cartItem: CartItem = {
+  id: 1,
+  name: "Phone",
+  description: "",
+  img: "/img.jpg",
+  price: 999,
+  category: "",
+  stock: 10,
+  quantity: 2,
+};
 
 const createStore = (cartItems: CartItem[] = [], user: User | null = null) =>
   configureStore({
@@ -60,7 +69,9 @@ describe("Cart", () => {
     const store = createStore([cartItem]);
     render(
       <Provider store={store}>
-        <MemoryRouter><Cart /></MemoryRouter>
+        <MemoryRouter>
+          <Cart />
+        </MemoryRouter>
       </Provider>,
     );
     fireEvent.click(screen.getByTestId("remove-item"));
@@ -71,7 +82,9 @@ describe("Cart", () => {
     const store = createStore([cartItem]);
     render(
       <Provider store={store}>
-        <MemoryRouter><Cart /></MemoryRouter>
+        <MemoryRouter>
+          <Cart />
+        </MemoryRouter>
       </Provider>,
     );
     fireEvent.click(screen.getByTestId("quantity-increment"));
@@ -82,7 +95,9 @@ describe("Cart", () => {
     const store = createStore([cartItem]);
     render(
       <Provider store={store}>
-        <MemoryRouter><Cart /></MemoryRouter>
+        <MemoryRouter>
+          <Cart />
+        </MemoryRouter>
       </Provider>,
     );
     fireEvent.click(screen.getByTestId("quantity-decrement"));
@@ -93,7 +108,9 @@ describe("Cart", () => {
     const store = createStore([cartItem]);
     render(
       <Provider store={store}>
-        <MemoryRouter><Cart /></MemoryRouter>
+        <MemoryRouter>
+          <Cart />
+        </MemoryRouter>
       </Provider>,
     );
     fireEvent.click(screen.getByTestId("clear-cart-btn"));
@@ -107,7 +124,13 @@ describe("Cart", () => {
   });
 
   it("navigates to /checkout on checkout when logged in", () => {
-    renderWith([cartItem], { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" as const });
+    renderWith([cartItem], {
+      id: 1,
+      firstName: "John",
+      lastName: "Doe",
+      email: "j@e.com",
+      role: "user" as const,
+    });
     fireEvent.click(screen.getByTestId("checkout-btn"));
     expect(mockNavigate).toHaveBeenCalledWith("/checkout");
   });

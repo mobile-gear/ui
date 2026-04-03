@@ -32,7 +32,9 @@ vi.mock("@/pages/Checkout", () => ({
 }));
 
 vi.mock("@/pages/CheckoutSuccess", () => ({
-  default: () => <div data-test="checkout-success-page">Checkout Success Page</div>,
+  default: () => (
+    <div data-test="checkout-success-page">Checkout Success Page</div>
+  ),
 }));
 
 vi.mock("@/pages/OrderHistory", () => ({
@@ -48,7 +50,9 @@ vi.mock("@/pages/admin/ProductsPage", () => ({
 }));
 
 vi.mock("@/pages/AdminDashboard", () => ({
-  default: () => <div data-test="admin-dashboard-page">Admin Dashboard Page</div>,
+  default: () => (
+    <div data-test="admin-dashboard-page">Admin Dashboard Page</div>
+  ),
 }));
 
 const privateRouteSpy = vi.fn();
@@ -74,7 +78,7 @@ const renderWithRoute = (route: string) =>
   render(
     <MemoryRouter initialEntries={[route]}>
       <AppRoutes />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe("AppRoutes", () => {

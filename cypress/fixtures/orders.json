@@ -4,24 +4,62 @@
       "id": 1,
       "userId": 1,
       "items": [
-        { "productId": 1, "quantity": 2, "price": 999.99, "product": { "id": 1, "name": "iPhone 15 Pro", "description": "Latest Apple smartphone", "img": "/placeholder.jpg", "price": 999.99, "category": "smartphone", "stock": 25 } }
+        {
+          "productId": 1,
+          "quantity": 2,
+          "price": 999.99,
+          "product": {
+            "id": 1,
+            "name": "iPhone 15 Pro",
+            "description": "Latest Apple smartphone",
+            "img": "/placeholder.jpg",
+            "price": 999.99,
+            "category": "smartphone",
+            "stock": 25
+          }
+        }
       ],
       "total": 1999.98,
       "paymentIntentId": "pi_test_123",
       "status": "delivered",
-      "shippingAddress": { "street": "123 Main St", "city": "Springfield", "state": "IL", "zipCode": "62704", "country": "US" },
+      "shippingAddress": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "IL",
+        "zipCode": "62704",
+        "country": "US"
+      },
       "createdAt": "2025-03-15T10:00:00Z"
     },
     {
       "id": 2,
       "userId": 1,
       "items": [
-        { "productId": 3, "quantity": 1, "price": 29.99, "product": { "id": 3, "name": "USB-C Charger", "description": "65W GaN charger", "img": "/placeholder.jpg", "price": 29.99, "category": "accessories", "stock": 100 } }
+        {
+          "productId": 3,
+          "quantity": 1,
+          "price": 29.99,
+          "product": {
+            "id": 3,
+            "name": "USB-C Charger",
+            "description": "65W GaN charger",
+            "img": "/placeholder.jpg",
+            "price": 29.99,
+            "category": "accessories",
+            "stock": 100
+          }
+        }
       ],
       "total": 29.99,
       "paymentIntentId": "pi_test_456",
       "status": "pending",
-      "shippingAddress": { "street": "456 Oak Ave", "city": "Chicago", "state": "IL", "zipCode": "60601", "country": "US" },
+      "shippingAddress": {
+        "street": "456 Oak Ave",
+        "city": "Chicago",
+        "state": "IL",
+        "zipCode": "60601",
+        "country": "US"
+      },
       "createdAt": "2025-03-20T14:30:00Z"
     }
   ],

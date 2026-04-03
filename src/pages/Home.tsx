@@ -14,12 +14,24 @@ const stagger = {
 
 const rise = {
   hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
 };
 
 const categories = [
-  { name: "Smartphones", category: "smartphone", image: "/categories/smartphones.jpg" },
-  { name: "Accessories", category: "accessories", image: "/categories/accessories.jpg" },
+  {
+    name: "Smartphones",
+    category: "smartphone",
+    image: "/categories/smartphones.jpg",
+  },
+  {
+    name: "Accessories",
+    category: "accessories",
+    image: "/categories/accessories.jpg",
+  },
   { name: "Tablets", category: "tablets", image: "/categories/tablets.jpg" },
 ];
 
@@ -50,7 +62,10 @@ const Home: React.FC = () => {
           className="relative container mx-auto px-6 pt-28 pb-32 text-center"
         >
           <motion.div variants={rise}>
-            <span data-test="hero-tagline" className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-8">
+            <span
+              data-test="hero-tagline"
+              className="inline-block bg-[#FF4500]/10 border border-[#FF4500]/20 text-[#FF4500] text-xs font-body font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-8"
+            >
               Premium Mobile Tech
             </span>
           </motion.div>
@@ -59,17 +74,28 @@ const Home: React.FC = () => {
             variants={rise}
             data-test="hero-heading"
             className="font-bold text-[#F0EEFF] leading-[1.05] mb-6"
-            style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", fontFamily: "'Big Shoulders Display', sans-serif", scaleX: 1.25 }}
+            style={{
+              fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
+              fontFamily: "'Big Shoulders Display', sans-serif",
+              scaleX: 1.25,
+            }}
           >
             The gear you need.
-            <span data-test="hero-subtitle" className="text-[#FF4500]" style={{ display: "block", marginTop: "0.5rem" }}>The signal you send.</span>
+            <span
+              data-test="hero-subtitle"
+              className="text-[#FF4500]"
+              style={{ display: "block", marginTop: "0.5rem" }}
+            >
+              The signal you send.
+            </span>
           </motion.h1>
 
           <motion.p
             variants={rise}
             className="text-[#7A7A8C] font-body text-lg max-w-xl mx-auto mb-10"
           >
-            Smartphones, tablets, and accessories curated for those who demand more.
+            Smartphones, tablets, and accessories curated for those who demand
+            more.
           </motion.p>
 
           <AnimatePresence mode="wait">
@@ -79,10 +105,16 @@ const Home: React.FC = () => {
                 variants={rise}
                 className="flex flex-col items-center gap-2"
               >
-                <p data-test="welcome-message" className="text-[#F0EEFF] font-display font-bold text-2xl">
+                <p
+                  data-test="welcome-message"
+                  className="text-[#F0EEFF] font-display font-bold text-2xl"
+                >
                   Welcome back, {user.firstName}.
                 </p>
-                <p data-test="ready-message" className="text-[#7A7A8C] font-body text-sm">
+                <p
+                  data-test="ready-message"
+                  className="text-[#7A7A8C] font-body text-sm"
+                >
                   {user.role === "admin"
                     ? "You have full store access."
                     : "Ready to find something new?"}
@@ -98,7 +130,11 @@ const Home: React.FC = () => {
                 </motion.div>
               </motion.div>
             ) : (
-              <motion.div key="guest" variants={rise} className="flex justify-center gap-4">
+              <motion.div
+                key="guest"
+                variants={rise}
+                className="flex justify-center gap-4"
+              >
                 <Link
                   to="/register"
                   data-test="get-started-btn"
@@ -172,7 +208,10 @@ const Home: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#09090F] via-[#09090F]/40 to-transparent" />
                   </div>
                   <div className="p-6 bg-[#13131C] group-hover:bg-[#1E1E2C] transition-colors">
-                    <h3 data-test={`${item.category}-category`} className="font-display font-bold text-[#F0EEFF] text-xl group-hover:text-[#FF4500] transition-colors">
+                    <h3
+                      data-test={`${item.category}-category`}
+                      className="font-display font-bold text-[#F0EEFF] text-xl group-hover:text-[#FF4500] transition-colors"
+                    >
                       {item.name}
                     </h3>
                     <p className="text-[#7A7A8C] font-body text-sm mt-1">

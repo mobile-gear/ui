@@ -29,7 +29,15 @@ describe("Register page", () => {
   it("submits the form when all fields are valid", () => {
     cy.intercept("POST", "/api/auth/register", {
       statusCode: 200,
-      body: { user: { id: 1, firstName: "John", lastName: "Doe", email: "john@test.com", role: "user" } },
+      body: {
+        user: {
+          id: 1,
+          firstName: "John",
+          lastName: "Doe",
+          email: "john@test.com",
+          role: "user",
+        },
+      },
     }).as("register");
 
     cy.get("#firstName").type("John");

@@ -26,7 +26,9 @@ export const registerUser = createAsyncThunk(
       return await authService.register(userData);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data.message || "Registration failed");
+        return rejectWithValue(
+          error.response?.data.message || "Registration failed",
+        );
       }
       return rejectWithValue("An unknown error occurred");
     }

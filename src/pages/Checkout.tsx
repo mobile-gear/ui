@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RootState, AppDispatch } from "../store";
-import { createPaymentIntent, setShippingAddress } from "../store/slices/checkoutSlice";
+import {
+  createPaymentIntent,
+  setShippingAddress,
+} from "../store/slices/checkoutSlice";
 import CheckoutForm from "../components/CheckoutForm";
 import { shippingAddressSchema } from "../utils/schemas/checkoutSchemas";
 
@@ -30,7 +33,10 @@ const Checkout: React.FC = () => {
       navigate("/cart");
       return;
     }
-    const cartItems = items.map((item) => ({ productId: item.id, quantity: item.quantity }));
+    const cartItems = items.map((item) => ({
+      productId: item.id,
+      quantity: item.quantity,
+    }));
     dispatch(createPaymentIntent(cartItems));
   }, [dispatch, items, navigate]);
 
@@ -67,10 +73,20 @@ const Checkout: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
-        <h1 data-test="checkout-heading" className="text-3xl font-display font-bold text-gray-900">Checkout</h1>
+        <h1
+          data-test="checkout-heading"
+          className="text-3xl font-display font-bold text-gray-900"
+        >
+          Checkout
+        </h1>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <h2 data-test="shipping-heading" className="text-lg font-display font-bold text-gray-900 mb-6">Shipping Address</h2>
+          <h2
+            data-test="shipping-heading"
+            className="text-lg font-display font-bold text-gray-900 mb-6"
+          >
+            Shipping Address
+          </h2>
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="street" className={labelClass}>
@@ -181,7 +197,9 @@ const Checkout: React.FC = () => {
 
         {clientSecret && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-lg font-display font-bold text-gray-900 mb-6">Payment</h2>
+            <h2 className="text-lg font-display font-bold text-gray-900 mb-6">
+              Payment
+            </h2>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm />
             </Elements>
@@ -189,14 +207,25 @@ const Checkout: React.FC = () => {
         )}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <h2 data-test="order-summary" className="text-lg font-display font-bold text-gray-900 mb-4">Order Summary</h2>
+          <h2
+            data-test="order-summary"
+            className="text-lg font-display font-bold text-gray-900 mb-4"
+          >
+            Order Summary
+          </h2>
           <div className="divide-y divide-gray-100">
             {items.map((item) => (
-              <div key={item.id} className="flex justify-between py-3 text-sm text-gray-700">
+              <div
+                key={item.id}
+                className="flex justify-between py-3 text-sm text-gray-700"
+              >
                 <span data-test="product-name">
-                  {item.name} <span className="text-gray-400">× {item.quantity}</span>
+                  {item.name}{" "}
+                  <span className="text-gray-400">× {item.quantity}</span>
                 </span>
-                <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-medium">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </span>
               </div>
             ))}
           </div>

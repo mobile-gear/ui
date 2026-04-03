@@ -17,7 +17,8 @@ const CATEGORIES = [
 
 const inputClass =
   "w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-2.5 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors placeholder-[#3A3A4A]";
-const labelClass = "block text-xs font-medium text-[#7A7A8C] mb-1.5 font-body uppercase tracking-wider";
+const labelClass =
+  "block text-xs font-medium text-[#7A7A8C] mb-1.5 font-body uppercase tracking-wider";
 
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,8 +36,12 @@ const ProductsPage: React.FC = () => {
     return Math.max(1, Math.floor(n));
   };
 
-  const [draftCategory, setDraftCategory] = useState<string>(filters.category || "");
-  const [draftSearchTerm, setDraftSearchTerm] = useState<string>(filters.searchTerm || "");
+  const [draftCategory, setDraftCategory] = useState<string>(
+    filters.category || "",
+  );
+  const [draftSearchTerm, setDraftSearchTerm] = useState<string>(
+    filters.searchTerm || "",
+  );
   const [draftMinPrice, setDraftMinPrice] = useState<string>(
     filters.minPrice !== undefined ? String(filters.minPrice) : "",
   );
@@ -106,13 +111,21 @@ const ProductsPage: React.FC = () => {
     const nextSortBy = sortByParam || undefined;
     const sortOrderParam = params.get("sortOrder") || "";
     const nextSortOrder =
-      sortOrderParam === "asc" || sortOrderParam === "desc" ? sortOrderParam : undefined;
+      sortOrderParam === "asc" || sortOrderParam === "desc"
+        ? sortOrderParam
+        : undefined;
     const nextPage = parsePageParam(params);
 
     if (!params.get("page")) {
       params.set("page", String(nextPage));
       const nextSearch = buildSearchFromParams(params);
-      navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
+      navigate(
+        {
+          pathname: location.pathname,
+          search: nextSearch ? `?${nextSearch}` : "",
+        },
+        { replace: true },
+      );
     }
 
     const hasChanges =
@@ -133,15 +146,17 @@ const ProductsPage: React.FC = () => {
 
     if (!hasChanges) return;
 
-    dispatch(updateFilters({
-      category: nextCategory,
-      searchTerm: nextSearchTerm,
-      minPrice: nextMinPrice,
-      maxPrice: nextMaxPrice,
-      sortBy: nextSortBy,
-      sortOrder: nextSortOrder,
-      page: nextPage,
-    }));
+    dispatch(
+      updateFilters({
+        category: nextCategory,
+        searchTerm: nextSearchTerm,
+        minPrice: nextMinPrice,
+        maxPrice: nextMaxPrice,
+        sortBy: nextSortBy,
+        sortOrder: nextSortOrder,
+        page: nextPage,
+      }),
+    );
   }, [dispatch, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -155,20 +170,30 @@ const ProductsPage: React.FC = () => {
       return Number.isFinite(n) ? n : undefined;
     };
 
-    dispatch(updateFilters({
-      category: draftCategory || undefined,
-      searchTerm: draftSearchTerm || undefined,
-      minPrice: parseDraftNumber(draftMinPrice),
-      maxPrice: parseDraftNumber(draftMaxPrice),
-      sortBy: draftSortBy || undefined,
-      sortOrder: draftSortOrder || undefined,
-      page: 1,
-    }));
+    dispatch(
+      updateFilters({
+        category: draftCategory || undefined,
+        searchTerm: draftSearchTerm || undefined,
+        minPrice: parseDraftNumber(draftMinPrice),
+        maxPrice: parseDraftNumber(draftMaxPrice),
+        sortBy: draftSortBy || undefined,
+        sortOrder: draftSortOrder || undefined,
+        page: 1,
+      }),
+    );
 
     const nextSearch = buildSearchFromDraft();
-    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
+    const currentSearch = buildSearchFromParams(
+      new URLSearchParams(location.search),
+    );
     if (nextSearch === currentSearch) return;
-    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -180,9 +205,17 @@ const ProductsPage: React.FC = () => {
     else params.delete("category");
     params.set("page", "1");
     const nextSearch = buildSearchFromParams(params);
-    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
+    const currentSearch = buildSearchFromParams(
+      new URLSearchParams(location.search),
+    );
     if (nextSearch === currentSearch) return;
-    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const handleSort = (field: string) => {
@@ -195,16 +228,28 @@ const ProductsPage: React.FC = () => {
     const nextSortBy = newOrder ? field : undefined;
     setDraftSortBy(nextSortBy || "");
     setDraftSortOrder(newOrder || "");
-    dispatch(updateFilters({ sortBy: nextSortBy, sortOrder: newOrder, page: 1 }));
+    dispatch(
+      updateFilters({ sortBy: nextSortBy, sortOrder: newOrder, page: 1 }),
+    );
 
     const params = new URLSearchParams(location.search);
-    if (nextSortBy) params.set("sortBy", nextSortBy); else params.delete("sortBy");
-    if (newOrder) params.set("sortOrder", newOrder); else params.delete("sortOrder");
+    if (nextSortBy) params.set("sortBy", nextSortBy);
+    else params.delete("sortBy");
+    if (newOrder) params.set("sortOrder", newOrder);
+    else params.delete("sortOrder");
     params.set("page", "1");
     const nextSearch = buildSearchFromParams(params);
-    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
+    const currentSearch = buildSearchFromParams(
+      new URLSearchParams(location.search),
+    );
     if (nextSearch === currentSearch) return;
-    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const handlePageChange = (page: number) => {
@@ -212,32 +257,57 @@ const ProductsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     params.set("page", String(page));
     const nextSearch = buildSearchFromParams(params);
-    const currentSearch = buildSearchFromParams(new URLSearchParams(location.search));
+    const currentSearch = buildSearchFromParams(
+      new URLSearchParams(location.search),
+    );
     if (nextSearch === currentSearch) return;
-    navigate({ pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" }, { replace: true });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true },
+    );
   };
 
   const getSortIcon = (field: string) => {
     if (draftSortBy !== field) return <BiSort className="h-4 w-4" />;
-    return draftSortOrder === "asc" ? <BiSortUp className="h-4 w-4" /> : <BiSortDown className="h-4 w-4" />;
+    return draftSortOrder === "asc" ? (
+      <BiSortUp className="h-4 w-4" />
+    ) : (
+      <BiSortDown className="h-4 w-4" />
+    );
   };
 
   const totalCount = pagination
-    ? ((pagination as unknown as { count?: number }).count ?? pagination.total ?? 0)
+    ? ((pagination as unknown as { count?: number }).count ??
+      pagination.total ??
+      0)
     : 0;
   const derivedTotalPages = pagination
-    ? totalCount > 0 ? Math.ceil(totalCount / 10) : pagination.totalPages
+    ? totalCount > 0
+      ? Math.ceil(totalCount / 10)
+      : pagination.totalPages
     : 1;
-  const isNextDisabled = totalCount > 0 ? (filters.page || 1) * 10 >= totalCount : false;
+  const isNextDisabled =
+    totalCount > 0 ? (filters.page || 1) * 10 >= totalCount : false;
 
   return (
     <div className="min-h-screen bg-[#09090F]">
       <div className="container mx-auto px-6 py-10">
-        <h1 data-test="products-heading" className="font-display font-bold text-[#F0EEFF] text-3xl mb-8">Products</h1>
+        <h1
+          data-test="products-heading"
+          className="font-display font-bold text-[#F0EEFF] text-3xl mb-8"
+        >
+          Products
+        </h1>
 
         <form
           className="mb-8 bg-[#13131C] border border-[#252535] rounded-2xl p-6 space-y-5"
-          onSubmit={(e) => { e.preventDefault(); applyDraftFilters(); }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            applyDraftFilters();
+          }}
         >
           <div className="flex gap-3 items-end">
             <div className="flex-1">
@@ -265,7 +335,9 @@ const ProductsPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label htmlFor="category" className={labelClass}>Category</label>
+              <label htmlFor="category" className={labelClass}>
+                Category
+              </label>
               <select
                 data-test="category-filter"
                 id="category"
@@ -274,14 +346,20 @@ const ProductsPage: React.FC = () => {
                 className={inputClass + " appearance-none"}
               >
                 {CATEGORIES.map((cat) => (
-                  <option key={cat.value} value={cat.value} className="bg-[#13131C]">
+                  <option
+                    key={cat.value}
+                    value={cat.value}
+                    className="bg-[#13131C]"
+                  >
                     {cat.label}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label htmlFor="minPrice" className={labelClass}>Min. Price</label>
+              <label htmlFor="minPrice" className={labelClass}>
+                Min. Price
+              </label>
               <input
                 data-test="min-price"
                 type="number"
@@ -295,7 +373,9 @@ const ProductsPage: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="maxPrice" className={labelClass}>Max. Price</label>
+              <label htmlFor="maxPrice" className={labelClass}>
+                Max. Price
+              </label>
               <input
                 data-test="max-price"
                 type="number"

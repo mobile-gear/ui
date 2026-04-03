@@ -33,11 +33,18 @@ const Cart: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 data-test="cart-heading" className="text-3xl font-bold mb-8 text-black">Your Cart</h1>
+      <h1
+        data-test="cart-heading"
+        className="text-3xl font-bold mb-8 text-black"
+      >
+        Your Cart
+      </h1>
 
       {items.length === 0 ? (
         <div className="text-center">
-          <p data-test="empty-cart" className="text-xl text-gray-600 mb-4">Your cart is empty</p>
+          <p data-test="empty-cart" className="text-xl text-gray-600 mb-4">
+            Your cart is empty
+          </p>
           <Link
             to="/products"
             data-test="continue-shopping"
@@ -62,8 +69,15 @@ const Cart: React.FC = () => {
                 />
 
                 <div className="flex-grow">
-                  <h3 data-test="product-name" className="text-lg font-semibold">{item.name}</h3>
-                  <p data-test="product-price" className="text-gray-600">${item.price.toFixed(2)}</p>
+                  <h3
+                    data-test="product-name"
+                    className="text-lg font-semibold"
+                  >
+                    {item.name}
+                  </h3>
+                  <p data-test="product-price" className="text-gray-600">
+                    ${item.price.toFixed(2)}
+                  </p>
                 </div>
 
                 <div className="flex items-center space-x-4">
@@ -99,7 +113,12 @@ const Cart: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 data-test="cart-summary-title" className="text-2xl font-bold mb-4">Cart Summary</h2>
+            <h2
+              data-test="cart-summary-title"
+              className="text-2xl font-bold mb-4"
+            >
+              Cart Summary
+            </h2>
 
             <div className="flex justify-between mb-2">
               <span>Total Items:</span>

@@ -1,19 +1,32 @@
 describe("Admin Dashboard", () => {
   beforeEach(() => {
-    localStorage.setItem("user", JSON.stringify({ id: 2, firstName: "Admin", lastName: "User", email: "admin@test.com", role: "admin" }));
-    
-    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as("getProducts");
-    cy.intercept("GET", "/api/orders*", { fixture: "orders.json" }).as("getOrders");
-    
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: 2,
+        firstName: "Admin",
+        lastName: "User",
+        email: "admin@test.com",
+        role: "admin",
+      }),
+    );
+
+    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as(
+      "getProducts",
+    );
+    cy.intercept("GET", "/api/orders*", { fixture: "orders.json" }).as(
+      "getOrders",
+    );
+
     cy.intercept("GET", "/api/products*").as("productsReady");
     cy.intercept("GET", "/api/orders*").as("ordersReady");
-    
+
     cy.visit("/admin");
   });
 
   it("displays orders section", () => {
     cy.wait(["@getOrders", "@getProducts"], { timeout: 10000 });
-    
+
     cy.getBySel("admin-orders-heading").should("exist");
     cy.getBySel("order-number").should("exist");
     cy.getBySel("order-total").should("exist");
@@ -43,7 +56,15 @@ describe("Admin Dashboard", () => {
   it("fills and submits the add product form", () => {
     cy.intercept("POST", "/api/products", {
       statusCode: 200,
-      body: { id: 5, name: "New Phone", description: "A new phone", price: 499, category: "smartphone", stock: 20, img: "/new.jpg" },
+      body: {
+        id: 5,
+        name: "New Phone",
+        description: "A new phone",
+        price: 499,
+        category: "smartphone",
+        stock: 20,
+        img: "/new.jpg",
+      },
     }).as("createProduct");
 
     cy.getBySel("product-name").type("New Phone");

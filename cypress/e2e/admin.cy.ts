@@ -1,8 +1,19 @@
 describe("Admin pages", () => {
   beforeEach(() => {
-    localStorage.setItem("user", JSON.stringify({ id: 2, firstName: "Admin", lastName: "User", email: "admin@test.com", role: "admin" }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: 2,
+        firstName: "Admin",
+        lastName: "User",
+        email: "admin@test.com",
+        role: "admin",
+      }),
+    );
     cy.intercept("GET", "/api/products*", { fixture: "products.json" });
-    cy.intercept("GET", "/api/orders*", { fixture: "orders.json" }).as("getOrders");
+    cy.intercept("GET", "/api/orders*", { fixture: "orders.json" }).as(
+      "getOrders",
+    );
   });
 
   describe("Admin orders page", () => {

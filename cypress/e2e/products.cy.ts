@@ -1,6 +1,8 @@
 describe("Products page", () => {
   beforeEach(() => {
-    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as("getProducts");
+    cy.intercept("GET", "/api/products*", { fixture: "products.json" }).as(
+      "getProducts",
+    );
     cy.visit("/products");
   });
 
@@ -42,7 +44,9 @@ describe("Products page", () => {
 describe("Product detail page", () => {
   beforeEach(() => {
     cy.intercept("GET", "/api/products*", { fixture: "products.json" });
-    cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" }).as("getProduct");
+    cy.intercept("GET", "/api/products/1", {
+      fixture: "product-detail.json",
+    }).as("getProduct");
     cy.visit("/products/1");
   });
 

@@ -14,14 +14,28 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
-const user: User = { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" };
+const user: User = {
+  id: 1,
+  firstName: "John",
+  lastName: "Doe",
+  email: "j@e.com",
+  role: "user",
+};
 const admin: User = { ...user, role: "admin" };
 
-const createStore = (authUser: User | null = null, cartItems: CartItem[] = []) =>
+const createStore = (
+  authUser: User | null = null,
+  cartItems: CartItem[] = [],
+) =>
   configureStore({
     reducer: { auth: authReducer, cart: cartReducer },
     preloadedState: {
-      auth: { user: authUser, isAuthenticated: !!authUser, isLoading: false, error: null },
+      auth: {
+        user: authUser,
+        isAuthenticated: !!authUser,
+        isLoading: false,
+        error: null,
+      },
       cart: { items: cartItems, totalItems: cartItems.length, totalPrice: 0 },
     },
   });
@@ -57,7 +71,18 @@ describe("Navbar", () => {
   });
 
   it("shows cart badge when items in cart", () => {
-    renderWith(null, [{ id: 1, name: "P", description: "", img: "", price: 10, category: "", stock: 5, quantity: 1 }]);
+    renderWith(null, [
+      {
+        id: 1,
+        name: "P",
+        description: "",
+        img: "",
+        price: 10,
+        category: "",
+        stock: 5,
+        quantity: 1,
+      },
+    ]);
     expect(screen.getByTestId("cart-badge")).toBeInTheDocument();
   });
 

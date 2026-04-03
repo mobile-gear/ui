@@ -30,7 +30,18 @@ describe("PrivateRoute", () => {
 
   it("renders children when authenticated with correct role", () => {
     renderRoute(
-      { user: { id: 1, firstName: "John", lastName: "Doe", email: "a@b.com", role: "admin" }, isAuthenticated: true, isLoading: false, error: null },
+      {
+        user: {
+          id: 1,
+          firstName: "John",
+          lastName: "Doe",
+          email: "a@b.com",
+          role: "admin",
+        },
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      },
       ["admin"],
     );
     expect(screen.getByTestId("protected-content")).toBeInTheDocument();
@@ -46,7 +57,18 @@ describe("PrivateRoute", () => {
 
   it("redirects when role not allowed", () => {
     renderRoute(
-      { user: { id: 1, firstName: "John", lastName: "Doe", email: "a@b.com", role: "user" }, isAuthenticated: true, isLoading: false, error: null },
+      {
+        user: {
+          id: 1,
+          firstName: "John",
+          lastName: "Doe",
+          email: "a@b.com",
+          role: "user",
+        },
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      },
       ["admin"],
     );
     expect(screen.queryByTestId("protected-content")).not.toBeInTheDocument();

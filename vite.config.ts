@@ -1,25 +1,29 @@
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import istanbul from "vite-plugin-istanbul";
 import path from "path";
 
-const isProduction = process.env.NODE_ENV === "production";
+function removeDataTestAttrs(): Plugin {
+  return {
+    name: "remove-data-test",
+    enforce: "pre",
+    apply: "build",
+    transform(code, id) {
+      if (!id.endsWith(".tsx") && !id.endsWith(".jsx")) return;
+      const result = code.replace(/\s+data-test=\{?"[^"]*"\}?/g, "");
+      if (result === code) return;
+      return { code: result, map: null };
+    },
+  };
+}
 
 export default defineConfig({
   plugins: [
-    react({
-      plugins: isProduction
-        ? [["@swc/plugin-react-remove-properties", { properties: ["^data-test$"] }]]
-        : [],
-    }),
+    react(),
+    removeDataTestAttrs(),
     istanbul({
       include: "src/**/*.{ts,tsx}",
-      exclude: [
-        "node_modules", 
-        "cypress", 
-        "src/interfaces/**", 
-        "src/types/**"
-      ],
+      exclude: ["node_modules", "cypress", "src/interfaces/**", "src/types/**"],
       cypress: true,
       requireEnv: true,
     }),

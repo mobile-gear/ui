@@ -5,7 +5,15 @@ import { productService } from "@/services/product.service";
 vi.mock("axios");
 const mockedAxios = vi.mocked(axios, true);
 
-const mockProduct = { id: 1, name: "Phone", description: "A phone", img: "img.jpg", price: 999, category: "smartphone", stock: 10 };
+const mockProduct = {
+  id: 1,
+  name: "Phone",
+  description: "A phone",
+  img: "img.jpg",
+  price: 999,
+  category: "smartphone",
+  stock: 10,
+};
 
 describe("productService", () => {
   beforeEach(() => {
@@ -14,10 +22,18 @@ describe("productService", () => {
 
   describe("getAll", () => {
     it("fetches products with filters", async () => {
-      const response = { data: { products: [mockProduct], pagination: { page: 1, limit: 20, total: 1, totalPages: 1 } } };
+      const response = {
+        data: {
+          products: [mockProduct],
+          pagination: { page: 1, limit: 20, total: 1, totalPages: 1 },
+        },
+      };
       mockedAxios.get.mockResolvedValue(response);
 
-      const result = await productService.getAll({ searchTerm: "phone", page: 1 });
+      const result = await productService.getAll({
+        searchTerm: "phone",
+        page: 1,
+      });
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
         expect.stringContaining("/products"),
@@ -33,7 +49,9 @@ describe("productService", () => {
 
       const result = await productService.getById(1);
 
-      expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringContaining("/products/1"));
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect.stringContaining("/products/1"),
+      );
       expect(result).toEqual(mockProduct);
     });
   });
@@ -58,7 +76,9 @@ describe("productService", () => {
   describe("update", () => {
     it("updates a product", async () => {
       const updates = { name: "Updated Phone" };
-      mockedAxios.put.mockResolvedValue({ data: { ...mockProduct, ...updates } });
+      mockedAxios.put.mockResolvedValue({
+        data: { ...mockProduct, ...updates },
+      });
 
       const result = await productService.update(1, updates);
 

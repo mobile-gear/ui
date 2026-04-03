@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import authReducer, { registerUser, loginUser, logoutUser, clearAuth } from "@/store/slices/authSlice";
+import authReducer, {
+  registerUser,
+  loginUser,
+  logoutUser,
+  clearAuth,
+} from "@/store/slices/authSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { authService } from "@/services/auth.service";
 import { AxiosError, AxiosHeaders } from "axios";
@@ -18,7 +23,13 @@ const makeAxiosError = (message: string) =>
     config: { headers: new AxiosHeaders() },
   });
 
-const mockUser = { id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" as const };
+const mockUser = {
+  id: 1,
+  firstName: "John",
+  lastName: "Doe",
+  email: "j@e.com",
+  role: "user" as const,
+};
 
 describe("authSlice branches", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -36,7 +47,14 @@ describe("authSlice branches", () => {
     it("sets user on success", async () => {
       mockedService.register.mockResolvedValue({ user: mockUser });
       const store = createStore();
-      await store.dispatch(registerUser({ firstName: "John", lastName: "Doe", email: "j@e.com", password: "pass" }));
+      await store.dispatch(
+        registerUser({
+          firstName: "John",
+          lastName: "Doe",
+          email: "j@e.com",
+          password: "pass",
+        }),
+      );
       expect(store.getState().auth.user).toEqual(mockUser);
       expect(store.getState().auth.isAuthenticated).toBe(true);
     });
@@ -44,7 +62,14 @@ describe("authSlice branches", () => {
     it("handles AxiosError", async () => {
       mockedService.register.mockRejectedValue(makeAxiosError("Email taken"));
       const store = createStore();
-      await store.dispatch(registerUser({ firstName: "J", lastName: "D", email: "j@e.com", password: "p" }));
+      await store.dispatch(
+        registerUser({
+          firstName: "J",
+          lastName: "D",
+          email: "j@e.com",
+          password: "p",
+        }),
+      );
       expect(store.getState().auth.error).toBe("Email taken");
       expect(store.getState().auth.isAuthenticated).toBe(false);
     });
@@ -52,15 +77,33 @@ describe("authSlice branches", () => {
     it("handles non-Axios error", async () => {
       mockedService.register.mockRejectedValue(new Error("network"));
       const store = createStore();
-      await store.dispatch(registerUser({ firstName: "J", lastName: "D", email: "j@e.com", password: "p" }));
+      await store.dispatch(
+        registerUser({
+          firstName: "J",
+          lastName: "D",
+          email: "j@e.com",
+          password: "p",
+        }),
+      );
       expect(store.getState().auth.error).toBe("An unknown error occurred");
     });
 
     it("sets pending state", async () => {
       let resolve: (v: unknown) => void;
-      mockedService.register.mockReturnValue(new Promise((r) => { resolve = r; }));
+      mockedService.register.mockReturnValue(
+        new Promise((r) => {
+          resolve = r;
+        }),
+      );
       const store = createStore();
-      const p = store.dispatch(registerUser({ firstName: "J", lastName: "D", email: "j@e.com", password: "p" }));
+      const p = store.dispatch(
+        registerUser({
+          firstName: "J",
+          lastName: "D",
+          email: "j@e.com",
+          password: "p",
+        }),
+      );
       expect(store.getState().auth.isLoading).toBe(true);
       resolve!({ user: mockUser });
       await p;
@@ -76,7 +119,9 @@ describe("authSlice branches", () => {
     });
 
     it("handles AxiosError", async () => {
-      mockedService.login.mockRejectedValue(makeAxiosError("Invalid credentials"));
+      mockedService.login.mockRejectedValue(
+        makeAxiosError("Invalid credentials"),
+      );
       const store = createStore();
       await store.dispatch(loginUser({ email: "j@e.com", password: "wrong" }));
       expect(store.getState().auth.error).toBe("Invalid credentials");

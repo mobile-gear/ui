@@ -30,12 +30,21 @@ const statusStyle: Record<string, string> = {
   pending: "bg-[#252535] text-[#9B9BAD] border-[#252535]",
 };
 
-const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, sortBy, sortOrder }) => {
+const OrderList: React.FC<OrderListProps> = ({
+  orders,
+  onStatusChange,
+  onSort,
+  sortBy,
+  sortOrder,
+}) => {
   const renderSortIcon = (field: string) => {
-    if (sortBy !== field) return <FaSort className="inline ml-1 text-[#3A3A4A]" />;
-    return sortOrder === "asc"
-      ? <FaSortUp className="inline ml-1 text-[#FF4500]" />
-      : <FaSortDown className="inline ml-1 text-[#FF4500]" />;
+    if (sortBy !== field)
+      return <FaSort className="inline ml-1 text-[#3A3A4A]" />;
+    return sortOrder === "asc" ? (
+      <FaSortUp className="inline ml-1 text-[#FF4500]" />
+    ) : (
+      <FaSortDown className="inline ml-1 text-[#FF4500]" />
+    );
   };
 
   return (
@@ -46,7 +55,9 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, s
             {columns.map((col) => (
               <th
                 key={col.field}
-                data-test={col.field === "total" ? "sort-total" : `th-${col.field}`}
+                data-test={
+                  col.field === "total" ? "sort-total" : `th-${col.field}`
+                }
                 onClick={() => onSort(col.field)}
                 className="py-3 px-4 text-left font-body text-xs text-[#7A7A8C] uppercase tracking-wider cursor-pointer hover:text-[#F0EEFF] transition-colors select-none"
               >
@@ -60,24 +71,41 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onStatusChange, onSort, s
         </thead>
         <tbody className="bg-[#13131C] divide-y divide-[#252535]">
           {orders.map((order) => (
-            <tr key={order.id} data-test="order-row" className="hover:bg-[#1E1E2C] transition-colors">
-              <td data-test="order-number-short" className="py-3 px-4 font-body text-sm text-[#F0EEFF]">#{order.id}</td>
+            <tr
+              key={order.id}
+              data-test="order-row"
+              className="hover:bg-[#1E1E2C] transition-colors"
+            >
+              <td
+                data-test="order-number-short"
+                className="py-3 px-4 font-body text-sm text-[#F0EEFF]"
+              >
+                #{order.id}
+              </td>
               <td className="py-3 px-4 font-body text-sm text-[#9B9BAD]">
                 {new Date(order.createdAt).toLocaleDateString()}
               </td>
               <td className="py-3 px-4">
-                <span data-test={`order-status-${order.status.toLowerCase()}`} className={`text-xs font-body font-semibold border rounded-full px-2.5 py-0.5 ${statusStyle[order.status] || statusStyle.pending}`}>
+                <span
+                  data-test={`order-status-${order.status.toLowerCase()}`}
+                  className={`text-xs font-body font-semibold border rounded-full px-2.5 py-0.5 ${statusStyle[order.status] || statusStyle.pending}`}
+                >
                   {order.status}
                 </span>
               </td>
-              <td data-test="order-total" className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm">
+              <td
+                data-test="order-total"
+                className="py-3 px-4 font-display font-bold text-[#FF4500] text-sm"
+              >
                 ${order.total.toFixed(2)}
               </td>
               <td className="py-3 px-4">
                 <select
                   data-test="order-select"
                   value={order.status}
-                  onChange={(e) => onStatusChange(order.id, e.target.value as Order["status"])}
+                  onChange={(e) =>
+                    onStatusChange(order.id, e.target.value as Order["status"])
+                  }
                   className="bg-[#1E1E2C] border border-[#252535] text-[#9B9BAD] rounded-lg px-2 py-1.5 font-body text-xs focus:outline-none focus:border-[#FF4500] transition-colors"
                 >
                   <option value="pending">Pending</option>

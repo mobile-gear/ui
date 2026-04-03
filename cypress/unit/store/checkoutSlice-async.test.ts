@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import checkoutReducer, { createPaymentIntent } from "@/store/slices/checkoutSlice";
+import checkoutReducer, {
+  createPaymentIntent,
+} from "@/store/slices/checkoutSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { checkoutService } from "@/services/checkout.service";
 import { AxiosError, AxiosHeaders } from "axios";
@@ -7,13 +9,16 @@ import { AxiosError, AxiosHeaders } from "axios";
 vi.mock("@/services/checkout.service");
 const mockedService = vi.mocked(checkoutService, true);
 
-const createStore = () => configureStore({ reducer: { checkout: checkoutReducer } });
+const createStore = () =>
+  configureStore({ reducer: { checkout: checkoutReducer } });
 
 describe("checkoutSlice async", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("sets clientSecret on createPaymentIntent success", async () => {
-    mockedService.createPaymentIntent.mockResolvedValue({ clientSecret: "cs_123" });
+    mockedService.createPaymentIntent.mockResolvedValue({
+      clientSecret: "cs_123",
+    });
     const store = createStore();
     await store.dispatch(createPaymentIntent([{ productId: 1, quantity: 2 }]));
     const state = store.getState().checkout;
@@ -24,9 +29,15 @@ describe("checkoutSlice async", () => {
 
   it("sets loading during pending", async () => {
     let resolvePromise: (v: { clientSecret: string }) => void;
-    mockedService.createPaymentIntent.mockReturnValue(new Promise((r) => { resolvePromise = r; }));
+    mockedService.createPaymentIntent.mockReturnValue(
+      new Promise((r) => {
+        resolvePromise = r;
+      }),
+    );
     const store = createStore();
-    const promise = store.dispatch(createPaymentIntent([{ productId: 1, quantity: 1 }]));
+    const promise = store.dispatch(
+      createPaymentIntent([{ productId: 1, quantity: 1 }]),
+    );
     expect(store.getState().checkout.isLoading).toBe(true);
     resolvePromise!({ clientSecret: "cs" });
     await promise;
@@ -51,6 +62,8 @@ describe("checkoutSlice async", () => {
     mockedService.createPaymentIntent.mockRejectedValue(new Error("network"));
     const store = createStore();
     await store.dispatch(createPaymentIntent([{ productId: 1, quantity: 1 }]));
-    expect(store.getState().checkout.error).toBe("Failed to create payment intent");
+    expect(store.getState().checkout.error).toBe(
+      "Failed to create payment intent",
+    );
   });
 });

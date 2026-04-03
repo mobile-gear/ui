@@ -8,8 +8,12 @@ global.IntersectionObserver = class IntersectionObserver {
   readonly rootMargin = "";
   readonly thresholds: readonly number[] = [];
   constructor(private cb: IntersectionObserverCallback) {}
-  observe() { this.cb([], this as unknown as IntersectionObserver); }
+  observe() {
+    this.cb([], this as unknown as IntersectionObserver);
+  }
   unobserve() {}
   disconnect() {}
-  takeRecords(): IntersectionObserverEntry[] { return []; }
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
 };

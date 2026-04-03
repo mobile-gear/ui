@@ -34,15 +34,25 @@ const Login: React.FC = () => {
         className="w-full max-w-md"
       >
         <div className="mb-10">
-          <Link to="/" className="font-display text-2xl font-bold text-[#FF4500] tracking-tight">
+          <Link
+            to="/"
+            className="font-display text-2xl font-bold text-[#FF4500] tracking-tight"
+          >
             Mobile Gear
           </Link>
-          <h1 data-test="login-title" className="mt-6 font-display text-4xl font-bold text-[#F0EEFF] leading-tight">
+          <h1
+            data-test="login-title"
+            className="mt-6 font-display text-4xl font-bold text-[#F0EEFF] leading-tight"
+          >
             Welcome back
           </h1>
           <p className="mt-2 text-[#7A7A8C] font-body">
             Don&apos;t have an account?{" "}
-            <Link to="/register" data-test="register-link" className="text-[#FF4500] hover:text-[#FF6B47] transition-colors">
+            <Link
+              to="/register"
+              data-test="register-link"
+              className="text-[#FF4500] hover:text-[#FF6B47] transition-colors"
+            >
               Register here
             </Link>
           </p>
@@ -50,7 +60,10 @@ const Login: React.FC = () => {
 
         <form onSubmit={formik.handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-[#9B9BAD] mb-2 font-body">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-[#9B9BAD] mb-2 font-body"
+            >
               Email address
             </label>
             <input
@@ -66,12 +79,20 @@ const Login: React.FC = () => {
               placeholder="you@example.com"
             />
             {formik.touched.email && formik.errors.email && (
-              <p data-test="email-required-error" className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors.email}</p>
+              <p
+                data-test="email-required-error"
+                className="mt-1.5 text-xs text-[#FF4500] font-body"
+              >
+                {formik.errors.email}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-[#9B9BAD] mb-2 font-body">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-[#9B9BAD] mb-2 font-body"
+            >
               Password
             </label>
             <input
@@ -87,7 +108,12 @@ const Login: React.FC = () => {
               placeholder="••••••••"
             />
             {formik.touched.password && formik.errors.password && (
-              <p data-test="password-required-error" className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors.password}</p>
+              <p
+                data-test="password-required-error"
+                className="mt-1.5 text-xs text-[#FF4500] font-body"
+              >
+                {formik.errors.password}
+              </p>
             )}
           </div>
 

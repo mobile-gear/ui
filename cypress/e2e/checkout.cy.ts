@@ -4,7 +4,16 @@ describe("Checkout page", () => {
       if (err.message.includes("Stripe")) return false;
       return true;
     });
-    localStorage.setItem("user", JSON.stringify({ id: 1, firstName: "John", lastName: "Doe", email: "john@test.com", role: "user" }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@test.com",
+        role: "user",
+      }),
+    );
     cy.intercept("GET", "/api/products*", { fixture: "products.json" });
     cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" });
     cy.intercept("POST", "/api/checkout/create-payment-intent", {

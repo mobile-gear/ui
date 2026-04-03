@@ -25,7 +25,9 @@ describe("Login page", () => {
   });
 
   it("submits and redirects on successful login", () => {
-    cy.intercept("POST", "/api/auth/login", { fixture: "user.json" }).as("login");
+    cy.intercept("POST", "/api/auth/login", { fixture: "user.json" }).as(
+      "login",
+    );
 
     cy.getBySel("login-email").type("john@test.com");
     cy.getBySel("login-password").type("password123");

@@ -12,8 +12,23 @@ import AppRoutes from "@/routes/index";
 
 vi.mock("@/services/product.service", () => ({
   productService: {
-    getAll: vi.fn().mockResolvedValue({ products: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 } }),
-    getById: vi.fn().mockResolvedValue({ id: 1, name: "Phone", description: "", img: "", price: 999, category: "smartphone", stock: 10 }),
+    getAll: vi
+      .fn()
+      .mockResolvedValue({
+        products: [],
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+      }),
+    getById: vi
+      .fn()
+      .mockResolvedValue({
+        id: 1,
+        name: "Phone",
+        description: "",
+        img: "",
+        price: 999,
+        category: "smartphone",
+        stock: 10,
+      }),
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
@@ -21,7 +36,9 @@ vi.mock("@/services/product.service", () => ({
 }));
 
 vi.mock("react-multi-carousel", () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 vi.mock("react-multi-carousel/lib/styles.css", () => ({}));
 
@@ -67,7 +84,9 @@ describe("AppRoutes", () => {
         </MemoryRouter>
       </Provider>,
     );
-    expect(screen.getByRole("heading", { name: "Create account" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Create account" }),
+    ).toBeInTheDocument();
   });
 
   it("redirects unauthenticated user from /cart to /login", () => {

@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Product, ProductFilters, PaginationData } from "../../interfaces/product";
+import {
+  Product,
+  ProductFilters,
+  PaginationData,
+} from "../../interfaces/product";
 import { productService } from "../../services/product.service";
 
 interface ProductState {
@@ -48,8 +52,13 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async ({ id, product }: { id: number; product: Partial<Omit<Product, "id">> }) =>
-    productService.update(id, product),
+  async ({
+    id,
+    product,
+  }: {
+    id: number;
+    product: Partial<Omit<Product, "id">>;
+  }) => productService.update(id, product),
 );
 
 export const deleteProduct = createAsyncThunk(
@@ -116,9 +125,12 @@ const productSlice = createSlice({
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.products.findIndex((p) => p.id === action.payload.id);
+        const index = state.products.findIndex(
+          (p) => p.id === action.payload.id,
+        );
         if (index !== -1) state.products[index] = action.payload;
-        if (state.selectedProduct?.id === action.payload.id) state.selectedProduct = action.payload;
+        if (state.selectedProduct?.id === action.payload.id)
+          state.selectedProduct = action.payload;
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
@@ -132,7 +144,8 @@ const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products = state.products.filter((p) => p.id !== action.payload);
-        if (state.selectedProduct?.id === action.payload) state.selectedProduct = null;
+        if (state.selectedProduct?.id === action.payload)
+          state.selectedProduct = null;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;

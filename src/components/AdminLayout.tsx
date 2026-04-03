@@ -20,7 +20,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <nav className="bg-[#13131C] border-b border-[#252535]">
         <div className="container mx-auto px-6">
           <div className="flex items-center gap-2 h-14">
-            <span data-test="admin-badge" className="text-[#7A7A8C] font-body text-xs uppercase tracking-widest mr-4">
+            <span
+              data-test="admin-badge"
+              className="text-[#7A7A8C] font-body text-xs uppercase tracking-widest mr-4"
+            >
               Admin
             </span>
 

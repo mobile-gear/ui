@@ -1,7 +1,16 @@
 describe("Cart page", () => {
   beforeEach(() => {
     cy.intercept("GET", "/api/products*", { fixture: "products.json" });
-    localStorage.setItem("user", JSON.stringify({ id: 1, firstName: "John", lastName: "Doe", email: "john@test.com", role: "user" }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@test.com",
+        role: "user",
+      }),
+    );
   });
 
   it("shows empty cart message when no items", () => {
@@ -11,7 +20,9 @@ describe("Cart page", () => {
   });
 
   it("adds product and shows it in cart", () => {
-    cy.intercept("GET", "/api/products/1", { fixture: "product-detail.json" }).as("getProduct");
+    cy.intercept("GET", "/api/products/1", {
+      fixture: "product-detail.json",
+    }).as("getProduct");
     cy.visit("/products/1");
     cy.wait("@getProduct");
     cy.getBySel("add-to-cart").click();

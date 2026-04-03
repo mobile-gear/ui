@@ -44,7 +44,9 @@ export const createOrder = createAsyncThunk(
       return await orderService.create(orderData);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data?.message || "Failed to create order");
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to create order",
+        );
       }
       return rejectWithValue("Failed to create order");
     }
@@ -58,7 +60,9 @@ export const fetchUserOrders = createAsyncThunk(
       return await orderService.getUserOrders();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data?.message || "Failed to fetch orders");
+        return rejectWithValue(
+          error.response?.data?.message || "Failed to fetch orders",
+        );
       }
       return rejectWithValue("Failed to fetch orders");
     }
@@ -73,7 +77,9 @@ export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
       return await orderService.getAll(state.orders.filters);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data.message || "Failed to fetch orders");
+        return rejectWithValue(
+          error.response?.data.message || "Failed to fetch orders",
+        );
       }
       return rejectWithValue("An unknown error occurred");
     }
@@ -82,12 +88,17 @@ export const fetchAllOrders = createAsyncThunk<OrdersResponse>(
 
 export const updateOrderStatus = createAsyncThunk(
   "orders/updateOrderStatus",
-  async ({ orderId, status }: { orderId: number; status: Order["status"] }, { rejectWithValue }) => {
+  async (
+    { orderId, status }: { orderId: number; status: Order["status"] },
+    { rejectWithValue },
+  ) => {
     try {
       return await orderService.updateStatus(orderId, status);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data.message || "Failed to update order status");
+        return rejectWithValue(
+          error.response?.data.message || "Failed to update order status",
+        );
       }
       return rejectWithValue("An unknown error occurred");
     }
@@ -148,7 +159,9 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.orders.findIndex((order) => order.id === action.payload.id);
+        const index = state.orders.findIndex(
+          (order) => order.id === action.payload.id,
+        );
         if (index !== -1) state.orders[index] = action.payload;
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {

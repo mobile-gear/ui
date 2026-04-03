@@ -13,13 +13,23 @@ vi.mock("@/services/product.service");
 const mockedService = vi.mocked(productService, true);
 
 vi.mock("react-multi-carousel", () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock("react-multi-carousel/lib/styles.css", () => ({}));
 
 const mockProducts = [
-  { id: 1, name: "Phone", description: "A phone", img: "/img.jpg", price: 999, category: "smartphone", stock: 10 },
+  {
+    id: 1,
+    name: "Phone",
+    description: "A phone",
+    img: "/img.jpg",
+    price: 999,
+    category: "smartphone",
+    stock: 10,
+  },
 ];
 
 const createStore = (user: User | null = null) =>
@@ -39,7 +49,10 @@ const createStore = (user: User | null = null) =>
   });
 
 const renderWith = (user: User | null = null) => {
-  mockedService.getAll.mockResolvedValue({ products: mockProducts, pagination: { page: 1, limit: 20, total: 1, totalPages: 1 } });
+  mockedService.getAll.mockResolvedValue({
+    products: mockProducts,
+    pagination: { page: 1, limit: 20, total: 1, totalPages: 1 },
+  });
   return render(
     <Provider store={createStore(user)}>
       <MemoryRouter>
@@ -57,14 +70,26 @@ describe("Home", () => {
   });
 
   it("shows welcome message for authenticated user", () => {
-    renderWith({ id: 1, firstName: "John", lastName: "Doe", email: "j@e.com", role: "user" });
+    renderWith({
+      id: 1,
+      firstName: "John",
+      lastName: "Doe",
+      email: "j@e.com",
+      role: "user",
+    });
     expect(screen.getByTestId("welcome-message")).toBeInTheDocument();
     expect(screen.getByTestId("ready-message")).toBeInTheDocument();
     expect(screen.getByTestId("shop-now-btn")).toBeInTheDocument();
   });
 
   it("shows admin message for admin user", () => {
-    renderWith({ id: 1, firstName: "Admin", lastName: "User", email: "a@e.com", role: "admin" });
+    renderWith({
+      id: 1,
+      firstName: "Admin",
+      lastName: "User",
+      email: "a@e.com",
+      role: "admin",
+    });
     expect(screen.getByTestId("welcome-message")).toBeInTheDocument();
     expect(screen.getByTestId("ready-message")).toBeInTheDocument();
     expect(screen.getByTestId("shop-now-btn")).toBeInTheDocument();

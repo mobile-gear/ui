@@ -47,9 +47,26 @@ const Register: React.FC = () => {
   }> = [
     { id: "firstName", label: "First name", type: "text", placeholder: "John" },
     { id: "lastName", label: "Last name", type: "text", placeholder: "Doe" },
-    { id: "email", label: "Email address", type: "email", placeholder: "you@example.com", autoComplete: "email" },
-    { id: "password", label: "Password", type: "password", placeholder: "Min. 8 characters", autoComplete: "new-password" },
-    { id: "confirmPassword", label: "Confirm password", type: "password", placeholder: "Repeat your password" },
+    {
+      id: "email",
+      label: "Email address",
+      type: "email",
+      placeholder: "you@example.com",
+      autoComplete: "email",
+    },
+    {
+      id: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "Min. 8 characters",
+      autoComplete: "new-password",
+    },
+    {
+      id: "confirmPassword",
+      label: "Confirm password",
+      type: "password",
+      placeholder: "Repeat your password",
+    },
   ];
 
   return (
@@ -61,21 +78,35 @@ const Register: React.FC = () => {
         className="w-full max-w-md"
       >
         <div className="mb-10">
-          <Link to="/" className="font-display text-2xl font-bold text-[#FF4500] tracking-tight">
+          <Link
+            to="/"
+            className="font-display text-2xl font-bold text-[#FF4500] tracking-tight"
+          >
             Mobile Gear
           </Link>
-          <h1 data-test="register-title" className="mt-6 font-display text-4xl font-bold text-[#F0EEFF] leading-tight">
+          <h1
+            data-test="register-title"
+            className="mt-6 font-display text-4xl font-bold text-[#F0EEFF] leading-tight"
+          >
             Create account
           </h1>
           <p className="mt-2 text-[#7A7A8C] font-body">
             Already have an account?{" "}
-            <Link to="/login" data-test="sign-in-link" className="text-[#FF4500] hover:text-[#FF6B47] transition-colors">
+            <Link
+              to="/login"
+              data-test="sign-in-link"
+              className="text-[#FF4500] hover:text-[#FF6B47] transition-colors"
+            >
               Sign in here
             </Link>
           </p>
         </div>
 
-        <form data-test="register-form" onSubmit={formik.handleSubmit} className="space-y-5">
+        <form
+          data-test="register-form"
+          onSubmit={formik.handleSubmit}
+          className="space-y-5"
+        >
           <div className="grid grid-cols-2 gap-4">
             {fields.slice(0, 2).map((field) => (
               <div key={field.id}>
@@ -96,7 +127,12 @@ const Register: React.FC = () => {
                   className="w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors placeholder-[#3A3A4A]"
                 />
                 {formik.touched[field.id] && formik.errors[field.id] && (
-                  <p data-test={`${field.id}-error`} className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors[field.id]}</p>
+                  <p
+                    data-test={`${field.id}-error`}
+                    className="mt-1.5 text-xs text-[#FF4500] font-body"
+                  >
+                    {formik.errors[field.id]}
+                  </p>
                 )}
               </div>
             ))}
@@ -122,7 +158,9 @@ const Register: React.FC = () => {
                 className="w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-3 font-body text-sm focus:outline-none focus:border-[#FF4500] transition-colors placeholder-[#3A3A4A]"
               />
               {formik.touched[field.id] && formik.errors[field.id] && (
-                <p className="mt-1.5 text-xs text-[#FF4500] font-body">{formik.errors[field.id]}</p>
+                <p className="mt-1.5 text-xs text-[#FF4500] font-body">
+                  {formik.errors[field.id]}
+                </p>
               )}
             </div>
           ))}

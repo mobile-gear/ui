@@ -19,11 +19,25 @@ const createStore = (shippingAddress: Record<string, string> | null = null) =>
   configureStore({
     reducer: { checkout: checkoutReducer },
     preloadedState: {
-      checkout: { isLoading: false, error: null, clientSecret: null, shippingAddress: shippingAddress as ReturnType<typeof checkoutReducer>["shippingAddress"], success: false },
+      checkout: {
+        isLoading: false,
+        error: null,
+        clientSecret: null,
+        shippingAddress: shippingAddress as ReturnType<
+          typeof checkoutReducer
+        >["shippingAddress"],
+        success: false,
+      },
     },
   });
 
-const address = { street: "123 Main", city: "NY", state: "NY", zipCode: "10001", country: "US" };
+const address = {
+  street: "123 Main",
+  city: "NY",
+  state: "NY",
+  zipCode: "10001",
+  country: "US",
+};
 
 const renderWith = (shippingAddress: Record<string, string> | null = null) =>
   render(
@@ -66,7 +80,9 @@ describe("CheckoutForm", () => {
   });
 
   it("shows error when payment fails", async () => {
-    mockConfirmPayment.mockResolvedValue({ error: { message: "Card declined" } });
+    mockConfirmPayment.mockResolvedValue({
+      error: { message: "Card declined" },
+    });
     renderWith(address);
     fireEvent.submit(screen.getByTestId("pay-now-btn").closest("form")!);
     await screen.findByTestId("payment-error");

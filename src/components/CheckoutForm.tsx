@@ -44,7 +44,11 @@ const CheckoutForm: React.FC = () => {
   return (
     <form data-test="checkout-form" onSubmit={handleSubmit}>
       <PaymentElement data-test="payment-element" />
-      {error && <div data-test="payment-error" className="mt-4 text-red-500 text-sm">{error}</div>}
+      {error && (
+        <div data-test="payment-error" className="mt-4 text-red-500 text-sm">
+          {error}
+        </div>
+      )}
       <button
         data-test="pay-now-btn"
         type="submit"
@@ -54,7 +58,10 @@ const CheckoutForm: React.FC = () => {
         {isProcessing ? "Processing..." : "Pay now"}
       </button>
       {!shippingAddress && (
-        <p data-test="shipping-address-warning" className="mt-2 text-sm text-gray-600">
+        <p
+          data-test="shipping-address-warning"
+          className="mt-2 text-sm text-gray-600"
+        >
           Please fill in your shipping address before proceeding with payment.
         </p>
       )}

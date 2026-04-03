@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Order, CreateOrderPayload, OrderFilters, OrdersResponse } from "../interfaces/order";
+import {
+  Order,
+  CreateOrderPayload,
+  OrderFilters,
+  OrdersResponse,
+} from "../interfaces/order";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,9 +17,12 @@ export const orderService = {
   },
 
   getUserOrders: async (): Promise<{ orders: Order[] }> => {
-    const { data } = await axios.get<{ orders: Order[] }>(`${API_URL}/orders/my-orders`, {
-      withCredentials: true,
-    });
+    const { data } = await axios.get<{ orders: Order[] }>(
+      `${API_URL}/orders/my-orders`,
+      {
+        withCredentials: true,
+      },
+    );
     return data;
   },
 
@@ -26,7 +34,10 @@ export const orderService = {
     return data;
   },
 
-  updateStatus: async (orderId: number, status: Order["status"]): Promise<Order> => {
+  updateStatus: async (
+    orderId: number,
+    status: Order["status"],
+  ): Promise<Order> => {
     const { data } = await axios.patch<Order>(
       `${API_URL}/orders/${orderId}/status`,
       { status },

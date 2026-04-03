@@ -10,7 +10,15 @@ import { productService } from "@/services/product.service";
 vi.mock("@/services/product.service");
 const mockedService = vi.mocked(productService, true);
 
-const mockProduct = { id: 1, name: "Phone", description: "A phone", img: "/img.jpg", price: 999, category: "smartphone", stock: 10 };
+const mockProduct = {
+  id: 1,
+  name: "Phone",
+  description: "A phone",
+  img: "/img.jpg",
+  price: 999,
+  category: "smartphone",
+  stock: 10,
+};
 
 const createStore = (overrides = {}) =>
   configureStore({
@@ -47,7 +55,9 @@ describe("Admin ProductsPage", () => {
 
   it("renders page heading", () => {
     renderWith();
-    expect(screen.getByRole("heading", { name: "Products" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Products" }),
+    ).toBeInTheDocument();
   });
 
   it("renders the add product form", () => {
@@ -69,13 +79,25 @@ describe("Admin ProductsPage", () => {
   });
 
   it("fills and submits the new product form", async () => {
-    mockedService.create.mockResolvedValue({ ...mockProduct, id: 2, name: "Tablet" });
+    mockedService.create.mockResolvedValue({
+      ...mockProduct,
+      id: 2,
+      name: "Tablet",
+    });
     renderWith();
 
-    fireEvent.change(document.querySelector("input[name='name']")!, { target: { value: "Tablet" } });
-    fireEvent.change(document.querySelector("input[name='price']")!, { target: { value: "599" } });
-    fireEvent.change(document.querySelector("input[name='stock']")!, { target: { value: "5" } });
-    fireEvent.change(document.querySelector("textarea[name='description']")!, { target: { value: "A tablet" } });
+    fireEvent.change(document.querySelector("input[name='name']")!, {
+      target: { value: "Tablet" },
+    });
+    fireEvent.change(document.querySelector("input[name='price']")!, {
+      target: { value: "599" },
+    });
+    fireEvent.change(document.querySelector("input[name='stock']")!, {
+      target: { value: "5" },
+    });
+    fireEvent.change(document.querySelector("textarea[name='description']")!, {
+      target: { value: "A tablet" },
+    });
 
     fireEvent.submit(screen.getByTestId("add-product-btn").closest("form")!);
 
@@ -89,7 +111,9 @@ describe("Admin ProductsPage", () => {
     const selects = screen.getAllByRole("combobox");
     const filterSelect = selects.find((s) => !s.closest("form"));
     if (filterSelect) {
-      fireEvent.change(filterSelect, { target: { value: "smartphone", name: "category" } });
+      fireEvent.change(filterSelect, {
+        target: { value: "smartphone", name: "category" },
+      });
     }
   });
 
