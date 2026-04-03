@@ -23,28 +23,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Run tests with coverage (allowing ES module errors)
-      run: |
-        echo "Running tests with coverage..."
-        npm run test:unit:coverage 2>&1 | grep -v "ERR_REQUIRE_ESM" | grep -v "html-encoding-sniffer" | grep -v "@exodus/bytes" || true
-        echo "Unit tests completed"
-
-    - name: Start dev server for E2E tests
-      run: |
-        npm run dev:coverage &
-        sleep 10
-
-    - name: Run E2E tests with coverage
-      run: |
-        echo "Running E2E tests with coverage..."
-        npm run test:e2e:coverage 2>&1 | grep -v "ERR_REQUIRE_ESM" | grep -v "html-encoding-sniffer" | grep -v "@exodus/bytes" || true
-        echo "E2E tests completed"
-
-    - name: Stop dev server
-      run: pkill -f "vite" || true
-
-    - name: Merge coverage
-      run: npm run coverage:merge
+    - name: Run all tests with coverage
+      run: npm run coverage
 
     - name: Check coverage threshold
       run: |
