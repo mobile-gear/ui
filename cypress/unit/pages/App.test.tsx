@@ -12,23 +12,19 @@ import AppRoutes from "@/routes/index";
 
 vi.mock("@/services/product.service", () => ({
   productService: {
-    getAll: vi
-      .fn()
-      .mockResolvedValue({
-        products: [],
-        pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
-      }),
-    getById: vi
-      .fn()
-      .mockResolvedValue({
-        id: 1,
-        name: "Phone",
-        description: "",
-        img: "",
-        price: 999,
-        category: "smartphone",
-        stock: 10,
-      }),
+    getAll: vi.fn().mockResolvedValue({
+      products: [],
+      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+    }),
+    getById: vi.fn().mockResolvedValue({
+      id: 1,
+      name: "Phone",
+      description: "",
+      img: "",
+      price: 999,
+      category: "smartphone",
+      stock: 10,
+    }),
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),

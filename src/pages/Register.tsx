@@ -46,8 +46,20 @@ const Register: React.FC = () => {
     autoComplete?: string;
     "data-test"?: string;
   }> = [
-    { id: "firstName", label: "First name", type: "text", placeholder: "John", "data-test": "first-name" },
-    { id: "lastName", label: "Last name", type: "text", placeholder: "Doe", "data-test": "last-name" },
+    {
+      id: "firstName",
+      label: "First name",
+      type: "text",
+      placeholder: "John",
+      "data-test": "first-name",
+    },
+    {
+      id: "lastName",
+      label: "Last name",
+      type: "text",
+      placeholder: "Doe",
+      "data-test": "last-name",
+    },
     {
       id: "email",
       label: "Email address",

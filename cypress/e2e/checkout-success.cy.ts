@@ -36,7 +36,10 @@ describe("Checkout success page", () => {
 
   it("shows error when redirect_status is not succeeded", () => {
     cy.visit("/checkout/success?payment_intent=pi_123&redirect_status=failed");
-    cy.getBySel("error-message").should("contain.text", "Payment verification failed");
+    cy.getBySel("error-message").should(
+      "contain.text",
+      "Payment verification failed",
+    );
     cy.getBySel("return-to-cart").should("exist");
   });
 
@@ -66,7 +69,9 @@ describe("Checkout success page", () => {
     );
     cy.wait("@createOrder");
     cy.getBySel("payment-success").should("exist");
-    cy.getBySel("payment-success").parent().should("contain.text", "Thank you for your purchase");
+    cy.getBySel("payment-success")
+      .parent()
+      .should("contain.text", "Thank you for your purchase");
   });
 
   it("navigates to cart on error", () => {

@@ -103,7 +103,9 @@ const Checkout: React.FC = () => {
                 placeholder="123 Main St"
               />
               {formik.touched.street && formik.errors.street && (
-                <p data-test="street-error" className={errorClass}>{formik.errors.street}</p>
+                <p data-test="street-error" className={errorClass}>
+                  {formik.errors.street}
+                </p>
               )}
             </div>
 
@@ -123,7 +125,9 @@ const Checkout: React.FC = () => {
                   placeholder="New York"
                 />
                 {formik.touched.city && formik.errors.city && (
-                  <p data-test="city-error" className={errorClass}>{formik.errors.city}</p>
+                  <p data-test="city-error" className={errorClass}>
+                    {formik.errors.city}
+                  </p>
                 )}
               </div>
               <div>
@@ -141,7 +145,9 @@ const Checkout: React.FC = () => {
                   placeholder="NY"
                 />
                 {formik.touched.state && formik.errors.state && (
-                  <p data-test="state-error" className={errorClass}>{formik.errors.state}</p>
+                  <p data-test="state-error" className={errorClass}>
+                    {formik.errors.state}
+                  </p>
                 )}
               </div>
             </div>
@@ -162,7 +168,9 @@ const Checkout: React.FC = () => {
                   placeholder="10001"
                 />
                 {formik.touched.zipCode && formik.errors.zipCode && (
-                  <p data-test="zipcode-error" className={errorClass}>{formik.errors.zipCode}</p>
+                  <p data-test="zipcode-error" className={errorClass}>
+                    {formik.errors.zipCode}
+                  </p>
                 )}
               </div>
               <div>
@@ -180,7 +188,9 @@ const Checkout: React.FC = () => {
                   placeholder="United States"
                 />
                 {formik.touched.country && formik.errors.country && (
-                  <p data-test="country-error" className={errorClass}>{formik.errors.country}</p>
+                  <p data-test="country-error" className={errorClass}>
+                    {formik.errors.country}
+                  </p>
                 )}
               </div>
             </div>

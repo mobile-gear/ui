@@ -58,7 +58,10 @@ describe("Checkout page", () => {
     addItemAndGoToCheckout();
     cy.wait("@createPayment");
     cy.getBySel("save-address").click();
-    cy.getBySel("street-error").should("contain.text", "Street address is required");
+    cy.getBySel("street-error").should(
+      "contain.text",
+      "Street address is required",
+    );
   });
 
   it("saves shipping address", () => {
