@@ -58,7 +58,7 @@ describe("Checkout page", () => {
     addItemAndGoToCheckout();
     cy.wait("@createPayment");
     cy.getBySel("save-address").click();
-    cy.contains("Street address is required").should("exist");
+    cy.getBySel("street-error").should("contain.text", "Street address is required");
   });
 
   it("saves shipping address", () => {
@@ -70,6 +70,6 @@ describe("Checkout page", () => {
     cy.get("#zipCode").type("62704");
     cy.get("#country").type("US");
     cy.getBySel("save-address").click();
-    cy.contains("Update address").should("exist");
+    cy.getBySel("save-address").should("contain.text", "Update address");
   });
 });

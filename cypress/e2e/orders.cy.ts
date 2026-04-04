@@ -30,12 +30,12 @@ describe("Order history page", () => {
 
   it("shows shipping address", () => {
     cy.wait("@getOrders");
-    cy.contains("123 Main St").should("exist");
-    cy.contains("Springfield").should("exist");
+    cy.getBySel("shipping-address").should("contain.text", "123 Main St");
+    cy.getBySel("shipping-address").should("contain.text", "Springfield");
   });
 
   it("shows order items", () => {
     cy.wait("@getOrders");
-    cy.contains("iPhone 15 Pro").should("exist");
+    cy.getBySel("order-item").should("contain.text", "iPhone 15 Pro");
   });
 });

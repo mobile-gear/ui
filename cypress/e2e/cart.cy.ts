@@ -29,6 +29,6 @@ describe("Cart page", () => {
     cy.getBySel("cart-link").first().click();
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-price").should("exist");
-    cy.contains("Cart Summary").should("exist");
+    cy.getBySel("cart-summary-title").should("contain.text", "Cart Summary");
   });
 });

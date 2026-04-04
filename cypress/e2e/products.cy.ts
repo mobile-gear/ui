@@ -14,7 +14,7 @@ describe("Products page", () => {
     cy.wait("@getProducts");
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-price").should("exist");
-    cy.contains("Samsung Galaxy S24").should("exist");
+    cy.getBySel("product-name").should("contain.text", "Samsung Galaxy S24");
   });
 
   it("has a search input", () => {
@@ -54,8 +54,8 @@ describe("Product detail page", () => {
     cy.wait("@getProduct");
     cy.getBySel("product-name").should("exist");
     cy.getBySel("product-price").should("exist");
-    cy.contains("smartphone").should("exist");
-    cy.contains("25 in stock").should("exist");
+    cy.getBySel("product-category").should("contain.text", "smartphone");
+    cy.getBySel("stock-status").should("contain.text", "25 in stock");
   });
 
   it("has quantity controls", () => {

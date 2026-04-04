@@ -60,7 +60,7 @@ describe("Admin pages", () => {
     });
 
     it("shows product table", () => {
-      cy.contains("iPhone 15 Pro").should("exist");
+      cy.getBySel("product-name").should("contain.text", "iPhone 15 Pro");
       cy.getBySel("delete-product").should("exist");
     });
   });
