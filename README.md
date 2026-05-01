@@ -1,52 +1,111 @@
-# React + TypeScript + Vite
+# MobileGear UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for MobileGear - E-commerce platform for mobile accessories.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite 6
+- **Styling**: Tailwind CSS 3
+- **State Management**: Redux Toolkit
+- **Routing**: React Router DOM 6
+- **Forms**: Formik + Yup
+- **Payment**: Stripe
+- **Icons**: Heroicons + React Icons
+- **Animations**: Framer Motion
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+```
+src/
+├── components/       # Reusable UI components
+├── pages/           # Route-level page components
+├── routes/          # Route configuration
+├── store/           # Redux store and slices
+├── services/        # API services
+├── hooks/           # Custom React hooks
+├── interfaces/      # TypeScript interfaces
+├── types/           # Type definitions
+├── utils/           # Utility functions
+└── assets/          # Static assets
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Prerequisites
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+- Node.js 18+
+- npm 9+
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
+## Installation
+
+```bash
+npm install
 ```
 
-// Test change
+## Development
+
+```bash
+npm run dev
+```
+
+The development server runs at `http://localhost:3000` with API proxy to `http://localhost:8000`.
+
+## Build
+
+```bash
+npm run build
+```
+
+Output is generated in the `dist/` directory.
+
+## Testing
+
+### Unit Tests (Vitest)
+
+```bash
+npm run test:unit           # Run once
+npm run test               # Watch mode
+npm run test:unit:coverage # With coverage
+```
+
+### E2E Tests (Cypress)
+
+```bash
+npm run test:e2e      # Interactive mode
+npm run test:e2e:run  # Headless mode
+```
+
+### Full Coverage
+
+```bash
+npm run coverage
+```
+
+## Code Quality
+
+```bash
+npm run lint         # ESLint
+npm run format       # Prettier
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```env
+VITE_API_URL=http://localhost:8000
+VITE_STRIPE_PUBLIC_KEY=your_stripe_key
+```
+
+## Scripts Reference
+
+| Script | Description |
+|--------|-------------|
+| `dev` | Start development server |
+| `build` | Production build |
+| `preview` | Preview production build |
+| `test` | Unit tests (watch) |
+| `test:unit` | Unit tests (single run) |
+| `test:e2e` | E2E tests (interactive) |
+| `coverage` | Full test coverage |
+| `lint` | Run ESLint |
+| `format` | Format with Prettier |
