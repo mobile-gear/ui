@@ -2,6 +2,8 @@
 
 Frontend application for MobileGear - E-commerce platform for mobile accessories.
 
+<img width="967" height="559" alt="image" src="https://github.com/user-attachments/assets/e3502c50-5c7e-47b4-ba85-42adc3bb4e1c" />
+
 ## Tech Stack
 
 - **Framework**: React 18 + TypeScript
