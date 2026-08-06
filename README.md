@@ -100,14 +100,14 @@ VITE_STRIPE_PUBLIC_KEY=your_stripe_key
 
 ## Scripts Reference
 
-| Script | Description |
-|--------|-------------|
-| `dev` | Start development server |
-| `build` | Production build |
-| `preview` | Preview production build |
-| `test` | Unit tests (watch) |
-| `test:unit` | Unit tests (single run) |
-| `test:e2e` | E2E tests (interactive) |
-| `coverage` | Full test coverage |
-| `lint` | Run ESLint |
-| `format` | Format with Prettier |
+| Script      | Description              |
+| ----------- | ------------------------ |
+| `dev`       | Start development server |
+| `build`     | Production build         |
+| `preview`   | Preview production build |
+| `test`      | Unit tests (watch)       |
+| `test:unit` | Unit tests (single run)  |
+| `test:e2e`  | E2E tests (interactive)  |
+| `coverage`  | Full test coverage       |
+| `lint`      | Run ESLint               |
+| `format`    | Format with Prettier     |

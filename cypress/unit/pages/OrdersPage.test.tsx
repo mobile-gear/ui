@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import orderReducer from "@/store/slices/orderSlice";
 import OrdersPage from "@/pages/admin/OrdersPage";
 import { orderService } from "@/services/order.service";

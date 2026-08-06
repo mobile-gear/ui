@@ -6,7 +6,7 @@ import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
 import { useDebounce } from "../hooks/useDebounce";
 import { BiSortUp, BiSortDown, BiSort } from "react-icons/bi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 const CATEGORIES = [
   { value: "", label: "All Categories" },

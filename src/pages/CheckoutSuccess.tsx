@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../store/slices/cartSlice";
 import { createOrder } from "../store/slices/orderSlice";
@@ -61,8 +61,8 @@ const CheckoutSuccess: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-[#09090F]">
+        <div className="max-w-md w-full bg-[#13131C] border border-[#252535] rounded-lg p-8 text-center">
           <div className="mb-6">
             <svg
               className="mx-auto h-12 w-12 text-red-500"
@@ -80,17 +80,17 @@ const CheckoutSuccess: React.FC = () => {
           </div>
           <h2
             data-test="payment-error"
-            className="text-2xl font-bold text-gray-800 mb-4"
+            className="text-2xl font-bold text-[#F0EEFF] mb-4"
           >
             Payment Error
           </h2>
-          <p data-test="error-message" className="text-gray-600 mb-8">
+          <p data-test="error-message" className="text-[#9B9BAD] mb-8">
             {error}
           </p>
           <button
             data-test="return-to-cart"
             onClick={() => navigate("/cart")}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-[#FF4500] text-white px-6 py-2 rounded hover:bg-[#FF6B47]"
           >
             Return to Cart
           </button>
@@ -100,8 +100,8 @@ const CheckoutSuccess: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-[#09090F]">
+      <div className="max-w-md w-full bg-[#13131C] border border-[#252535] rounded-lg p-8 text-center">
         <div className="mb-6">
           <svg
             className="mx-auto h-12 w-12 text-green-500"
@@ -119,15 +119,15 @@ const CheckoutSuccess: React.FC = () => {
         </div>
         <h2
           data-test="payment-success"
-          className="text-2xl font-bold text-gray-800 mb-4"
+          className="text-2xl font-bold text-[#F0EEFF] mb-4"
         >
           Payment Successful!
         </h2>
-        <p className="text-gray-600 mb-8">
+        <p className="text-[#9B9BAD] mb-8">
           Thank you for your purchase. We're processing your order and will send
           you a confirmation email shortly.
         </p>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-[#7A7A8C]">
           You will be redirected to your orders in a few seconds...
         </div>
       </div>

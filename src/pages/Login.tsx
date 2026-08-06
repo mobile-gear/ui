@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router";
 import { motion } from "framer-motion";
 import { AppDispatch, RootState } from "../store";
 import { loginUser } from "../store/slices/authSlice";
@@ -47,7 +47,7 @@ const Login: React.FC = () => {
             Welcome back
           </h1>
           <p className="mt-2 text-[#7A7A8C] font-body">
-            Don&apos;t have an account?{" "}
+            Don't have an account?{" "}
             <Link
               to="/register"
               data-test="register-link"

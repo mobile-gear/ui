@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RootState, AppDispatch } from "../store";
@@ -15,8 +15,8 @@ import { shippingAddressSchema } from "../utils/schemas/checkoutSchemas";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const inputClass =
-  "w-full bg-white border border-gray-200 text-gray-900 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors";
-const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
+  "w-full bg-[#13131C] border border-[#252535] text-[#F0EEFF] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition-colors placeholder-[#3A3A4A]";
+const labelClass = "block text-sm font-medium text-[#9B9BAD] mb-1.5";
 const errorClass = "mt-1 text-xs text-red-500";
 
 const Checkout: React.FC = () => {
@@ -56,34 +56,34 @@ const Checkout: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500" />
+      <div className="min-h-screen flex items-center justify-center bg-[#09090F]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF4500]" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-red-500">{error}</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#09090F]">
+        <p className="text-[#FF4500]">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-[#09090F] py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
         <h1
           data-test="checkout-heading"
-          className="text-3xl font-display font-bold text-gray-900"
+          className="text-3xl font-display font-bold text-[#F0EEFF]"
         >
           Checkout
         </h1>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-[#13131C] rounded-2xl border border-[#252535] p-8">
           <h2
             data-test="shipping-heading"
-            className="text-lg font-display font-bold text-gray-900 mb-6"
+            className="text-lg font-display font-bold text-[#F0EEFF] mb-6"
           >
             Shipping Address
           </h2>
@@ -198,7 +198,7 @@ const Checkout: React.FC = () => {
             <button
               data-test="save-address"
               type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-display font-bold text-sm tracking-widest uppercase py-3.5 rounded-lg transition-colors"
+              className="w-full bg-[#FF4500] hover:bg-[#FF6B47] text-white font-display font-bold text-sm tracking-widest uppercase py-3.5 rounded-lg transition-colors"
             >
               {shippingAddress ? "Update address" : "Save address"}
             </button>
@@ -206,32 +206,47 @@ const Checkout: React.FC = () => {
         </div>
 
         {clientSecret && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-lg font-display font-bold text-gray-900 mb-6">
+          <div className="bg-[#13131C] rounded-2xl border border-[#252535] p-8">
+            <h2 className="text-lg font-display font-bold text-[#F0EEFF] mb-6">
               Payment
             </h2>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance: {
+                  theme: "night",
+                  variables: {
+                    colorPrimary: "#FF4500",
+                    colorBackground: "#13131C",
+                    colorText: "#F0EEFF",
+                    colorDanger: "#FF4500",
+                    borderRadius: "8px",
+                  },
+                },
+              }}
+            >
               <CheckoutForm />
             </Elements>
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-[#13131C] rounded-2xl border border-[#252535] p-8">
           <h2
             data-test="order-summary"
-            className="text-lg font-display font-bold text-gray-900 mb-4"
+            className="text-lg font-display font-bold text-[#F0EEFF] mb-4"
           >
             Order Summary
           </h2>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-[#252535]">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="flex justify-between py-3 text-sm text-gray-700"
+                className="flex justify-between py-3 text-sm text-[#9B9BAD]"
               >
                 <span data-test="product-name">
                   {item.name}{" "}
-                  <span className="text-gray-400">× {item.quantity}</span>
+                  <span className="text-[#7A7A8C]">× {item.quantity}</span>
                 </span>
                 <span className="font-medium">
                   ${(item.price * item.quantity).toFixed(2)}
@@ -239,7 +254,7 @@ const Checkout: React.FC = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-between pt-4 mt-2 border-t border-gray-100 font-display font-bold text-gray-900">
+          <div className="flex justify-between pt-4 mt-2 border-t border-[#252535] font-display font-bold text-[#F0EEFF]">
             <span>Total</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>

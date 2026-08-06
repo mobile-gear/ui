@@ -2,7 +2,7 @@ import Carousel from "react-multi-carousel";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Spinner from "./Spinner";
 
 const FeaturedProducts = () => {

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import cartReducer, { CartItem } from "@/store/slices/cartSlice";
 import checkoutReducer from "@/store/slices/checkoutSlice";
 import orderReducer from "@/store/slices/orderSlice";
@@ -14,8 +14,8 @@ vi.mock("@/services/order.service");
 const mockedOrderService = vi.mocked(orderService, true);
 
 const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual("react-router");
   return { ...actual, useNavigate: () => mockNavigate };
 });
 

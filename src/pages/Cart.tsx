@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { RootState, AppDispatch } from "../store";
 import {
   removeFromCart,
@@ -35,20 +35,20 @@ const Cart: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       <h1
         data-test="cart-heading"
-        className="text-3xl font-bold mb-8 text-black"
+        className="text-3xl font-bold mb-8 text-[#F0EEFF]"
       >
         Your Cart
       </h1>
 
       {items.length === 0 ? (
         <div className="text-center">
-          <p data-test="empty-cart" className="text-xl text-gray-600 mb-4">
+          <p data-test="empty-cart" className="text-xl text-[#7A7A8C] mb-4">
             Your cart is empty
           </p>
           <Link
             to="/products"
             data-test="continue-shopping"
-            className="bg-blue-600 text-white hover:text-white px-6 py-3 rounded hover:bg-blue-700"
+            className="bg-[#FF4500] text-white hover:text-white px-6 py-3 rounded hover:bg-[#FF6B47]"
           >
             Continue Shopping
           </Link>
@@ -60,7 +60,7 @@ const Cart: React.FC = () => {
               <div
                 key={item.id}
                 data-test={`cart-item`}
-                className="flex items-center bg-white rounded-lg shadow-md p-4"
+                className="flex items-center bg-[#13131C] border border-[#252535] rounded-lg p-4"
               >
                 <img
                   src={item.img}
@@ -75,7 +75,7 @@ const Cart: React.FC = () => {
                   >
                     {item.name}
                   </h3>
-                  <p data-test="product-price" className="text-gray-600">
+                  <p data-test="product-price" className="text-[#7A7A8C]">
                     ${item.price.toFixed(2)}
                   </p>
                 </div>
@@ -86,7 +86,7 @@ const Cart: React.FC = () => {
                     onClick={() =>
                       handleUpdateQuantity(item.id, item.quantity - 1)
                     }
-                    className="bg-gray-200 px-3 py-1 rounded"
+                    className="bg-[#1E1E2C] border border-[#252535] text-[#F0EEFF] px-3 py-1 rounded hover:border-[#FF4500]/40 transition-colors"
                   >
                     -
                   </button>
@@ -96,14 +96,14 @@ const Cart: React.FC = () => {
                     onClick={() =>
                       handleUpdateQuantity(item.id, item.quantity + 1)
                     }
-                    className="bg-gray-200 px-3 py-1 rounded"
+                    className="bg-[#1E1E2C] border border-[#252535] text-[#F0EEFF] px-3 py-1 rounded hover:border-[#FF4500]/40 transition-colors"
                   >
                     +
                   </button>
                   <button
                     data-test={`remove-item`}
                     onClick={() => handleRemoveItem(item.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-[#FF4500] hover:text-[#FF6B47]"
                   >
                     Remove
                   </button>
@@ -112,7 +112,7 @@ const Cart: React.FC = () => {
             ))}
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-[#13131C] border border-[#252535] rounded-lg p-6">
             <h2
               data-test="cart-summary-title"
               className="text-2xl font-bold mb-4"
@@ -133,7 +133,7 @@ const Cart: React.FC = () => {
             <button
               data-test="checkout-btn"
               onClick={handleCheckout}
-              className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
+              className="w-full bg-[#FF4500] text-white py-3 rounded hover:bg-[#FF6B47]"
             >
               Proceed to Checkout
             </button>

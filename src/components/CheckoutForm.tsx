@@ -53,14 +53,14 @@ const CheckoutForm: React.FC = () => {
         data-test="pay-now-btn"
         type="submit"
         disabled={!stripe || isProcessing || !shippingAddress}
-        className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="w-full mt-6 bg-[#FF4500] text-white py-2 px-4 rounded hover:bg-[#FF6B47] transition-colors disabled:bg-[#252535] disabled:cursor-not-allowed"
       >
         {isProcessing ? "Processing..." : "Pay now"}
       </button>
       {!shippingAddress && (
         <p
           data-test="shipping-address-warning"
-          className="mt-2 text-sm text-gray-600"
+          className="mt-2 text-sm text-[#7A7A8C]"
         >
           Please fill in your shipping address before proceeding with payment.
         </p>

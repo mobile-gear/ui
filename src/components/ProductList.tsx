@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { AppDispatch } from "../store";
 import { Product } from "../store/slices/productSlice";

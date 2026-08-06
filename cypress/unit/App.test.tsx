@@ -12,12 +12,13 @@ vi.mock("@/routes", () => ({
 
 describe("App", () => {
   it("renders Navbar and AppRoutes inside the app container", () => {
-    const { container } = render(<App />);
+    render(<App />);
 
     expect(screen.getByTestId("mock-navbar")).toBeInTheDocument();
     expect(screen.getByTestId("mock-app-routes")).toBeInTheDocument();
 
-    const appWrapper = container.querySelector(".min-h-screen.bg-gray-100");
+    const appWrapper = screen.getByTestId("app-container");
     expect(appWrapper).toBeInTheDocument();
+    expect(appWrapper).toHaveClass("min-h-screen");
   });
 });

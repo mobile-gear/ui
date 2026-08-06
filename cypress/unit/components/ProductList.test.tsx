@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "@/store/slices/cartSlice";
 import ProductList from "@/components/ProductList";

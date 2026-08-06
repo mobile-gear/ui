@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router";
 import { motion } from "framer-motion";
 import { AppDispatch, RootState } from "../store";
 import { registerUser } from "../store/slices/authSlice";
